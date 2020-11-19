@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../common/common.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="signup.css">
+  <meta charset="UTF-8">
+  <title>signup</title>
+</head>
+<body>
+  <main>
+    <div class="signup-wrapper">
+      <div class="signup">
+        <p class="signup-header">Регистрация</p>
+        <form class="signup-form"
+              onsubmit={onSubmit()}
+        >
+          <input type="email"
+                 name="email"
+                 class="signup-form__email-input"
+                 placeholder="Почта"
+          >
+          <input type="text"
+                 name="login"
+                 class="signup-form__login-input"
+                 placeholder="Логин"
+          />
+          <input type="text"
+                 name="first_name"
+                 class="signup-form__firstname-input"
+                 placeholder="Имя"
+          />
+          <input type="text"
+                 name="second_name"
+                 class="signup-form__lastname-input"
+                 placeholder="Фамилия"
+          />
+          <input type="tel"
+                 name="phone"
+                 class="signup-form__phone-input"
+                 placeholder="Телефон"
+          />
+          <input type="password"
+                 name="password"
+                 class="signup-form__password-input"
+                 placeholder="Пароль"
+          />
+          <input type="password"
+                 name="second-password"
+                 class="signup-form__password-input"
+                 placeholder="Повторите пароль"
+          />
+          <input type="submit"
+                 value="Зарегистрироваться"
+                 class="signup-form__submit-btn"
+                 onclick={showFormData()}
+          />
+        </form>
+        <button class="signup-registration-btn">Войти</button>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

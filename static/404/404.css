@@ -1,0 +1,33 @@
+body{
+  padding: 0;
+  margin: 0;
+}
+
+.not-found-page{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  text-align: center;
+}
+
+.not-found-page-header{
+  font-family: 'Open Sans', sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 36px;
+  line-height: 49px;
+  color: #000000;
+}
+
+.not-found-page-btn{
+  font-family: 'Open Sans', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 13px;
+  line-height: 18px;
+  color: #CEA100;
+  background: none;
+  border: none;
+}
