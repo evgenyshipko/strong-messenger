@@ -1,7 +1,3 @@
-body{
-  padding: 0;
-  margin: 0;
-}
 
 .delete-chat-modal-shadow{
   display: flex;
@@ -33,7 +29,6 @@ body{
 }
 
 .delete-chat-modal-delete-btn{
-  font-family: 'Open Sans', sans-serif;
   font-size: 15px;
   margin-top: 5%;
   margin-bottom: 5%;
@@ -42,10 +37,4 @@ body{
 .delete-chat-modal-reject-btn{
   font-size: 15px;
   font-weight: 600;
-  font-family: 'Open Sans', sans-serif;
-  color: #CEA100;
-
-  background: none;
-  border: none;
-  cursor: pointer;
 }

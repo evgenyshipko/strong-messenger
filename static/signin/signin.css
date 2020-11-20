@@ -1,9 +1,4 @@
 
-body{
-  padding: 0;
-  margin: 0;
-}
-
 .signin-wrapper{
   display: flex;
   flex-direction: column;
@@ -23,10 +18,7 @@ body{
 .signin-header{
   display: inline-block;
   margin: 34px 0 0 0;
-
   font-family: 'Open Sans', sans-serif;
-  font-style: normal;
-  font-weight: normal;
   font-size: 36px;
   line-height: 49px;
 }
@@ -36,18 +28,10 @@ body{
   margin: 35px 0 0 0;
 }
 
-
-
 .signin-form__login-input, .signin-form__password-input{
   width: 306px;
   height: 30px;
   margin: 10px 0;
-
-  border: none;
-  border-bottom: 1px solid #C4C4C4;
-  font-family: 'Open Sans', sans-serif;
-  font-size: 15px;
-  background-color: #F0F0F0;
 }
 
 .signin-form__login-input:focus,
@@ -56,27 +40,14 @@ body{
 }
 
 .signin-form__submit-btn{
-  width: 308px;
-  height: 52px;
-  left: 48px;
-  top: 302px;
-  margin: 84px 0 0 0;
+  margin-top: 20%;
+  font-size: 17px;
 }
 
 .signin-registration-btn{
-  font-family: 'Open Sans', sans-serif;
-  display: inline-block;
   margin: 23px 0 0 0;
-
   font-size: 17px;
   font-weight: 400;
-
-  color: #CEA100;
-  background: none;
-  border: none;
-  cursor: pointer;
 }
 
-.signin-registration-btn{
-  outline-width: 0;
-}
+

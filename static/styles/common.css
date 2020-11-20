@@ -1,3 +1,8 @@
+body{
+  padding: 0;
+  margin: 0;
+}
+
 .messenger-button{
   width: 308px;
   height: 52px;
@@ -29,7 +34,18 @@
   background: none;
   border: none;
   cursor: pointer;
-  text-decoration: underline;
+}
+
+.messenger-button_no-background:focus{
+  outline-width: 0;
+}
+
+.form-input{
+  border: none;
+  border-bottom: 1px solid #C4C4C4;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  background-color: #F0F0F0;
 }
 
 .icon-trash{

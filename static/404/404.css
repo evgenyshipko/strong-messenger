@@ -1,7 +1,3 @@
-body{
-  padding: 0;
-  margin: 0;
-}
 
 .not-found-page{
   display: flex;
@@ -22,12 +18,6 @@ body{
 }
 
 .not-found-page-btn{
-  font-family: 'Open Sans', sans-serif;
-  font-style: normal;
   font-weight: bold;
   font-size: 13px;
-  line-height: 18px;
-  color: #CEA100;
-  background: none;
-  border: none;
 }

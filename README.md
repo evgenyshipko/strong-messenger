@@ -8,3 +8,6 @@
 **Макеты в фигма:** https://www.figma.com/file/l0jgte4N2dzWv5zMITIC4f/shipko_messenger?node-id=0%3A1
 
 **Хостинг проекта на Netlify:** https://distracted-swartz-d8b108.netlify.app/
+
+**Команда для запуска локального express-сервера:** $ node ./static/server.js
+

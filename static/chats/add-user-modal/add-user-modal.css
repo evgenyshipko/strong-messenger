@@ -1,7 +1,3 @@
-body{
-  padding: 0;
-  margin: 0;
-}
 
 .add-user-modal-shadow{
   display: flex;
@@ -33,7 +29,6 @@ body{
 }
 
 .add-user-modal-change-btn{
-  font-family: 'Open Sans', sans-serif;
   font-size: 15px;
   margin-top: 5%;
   margin-bottom: 5%;
