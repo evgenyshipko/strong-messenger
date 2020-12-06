@@ -1,5 +1,6 @@
 
-import Templator from "./Templator.js";
+// import Templator from '../Templator.js'
+import TextNodeParser from '../TextNodeParser.js'
 
 // const TEMPLATE = `
 //     <div>
@@ -35,21 +36,8 @@ import Templator from "./Templator.js";
 // })
 
 const template = `
-            <form class={{formClass}}> 
-                <div>{{loginInput}}</div>
-                <div>{{passwordInput}}</div>
-                <div>{{submitButton}}</div>
-            </form>`
+                <div class="form-item-block-validated">
+                    <input class={{class}} name={{inputName}} placeholder={{placeholder}} type={{type}} />
+                </div>`
 
-const context = {
-    ded: 'DEDED',
-    form: 'FFFORN'
-}
-
-const templator = new Templator(template)
-const nodeList = templator.compile(context)
-console.log(nodeList)
-
-nodeList.forEach((node) => {
-    document.body.appendChild(node)
-})
+console.log(new TextNodeParser(template).findAllTextNodes())
