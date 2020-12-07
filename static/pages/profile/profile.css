@@ -104,10 +104,11 @@
 
 .profile-form-item__input{
   border: none;
-  width: 30%;
+  width: 60%;
   font-size: 15px;
   font-family: 'Open Sans', sans-serif;
   text-align: right;
+  border-bottom: 1px solid #C4C4C4;
 }
 
 .profile-form-item__input:focus, .profile-form-item__input:hover {
@@ -150,4 +151,41 @@
 }
 
 
+.upload-avatar-modal-shadow{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  height: 100vh;
+  background: rgba(160, 160, 160, 0.5);
+}
+
+.upload-avatar-modal{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+
+  height: 300px;
+  width: 450px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.upload-avatar-modal-header{
+  font-family: 'Open Sans', sans-serif;
+  color: black;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.upload-avatar-modal-change-btn{
+  font-family: 'Open Sans', sans-serif;
+  margin-bottom: 10%;
+}
+
+.upload-avatar-modal-browse-btn{
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: underline;
+}

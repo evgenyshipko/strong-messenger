@@ -128,9 +128,6 @@ class TextNodeParser {
 
     _isStartsWithSelfClosingTag(template: string) {
         const result = (/<(\w+)\b[^>]*\/>/g).exec(template.trim())
-        if (result && result.index === 0) {
-            console.log('_isStartsWithSelfClosingTag', template)
-        }
         return !!result && result.index === 0
     }
 
@@ -145,7 +142,6 @@ class TextNodeParser {
     }
 
     _isParsable(template: string):boolean {
-        // return this._isOpeningTag(template) || !!this._isStartsWithPercent(template)
         return this._isOpeningTag(template) || this._isStartsWithSelfClosingTag(template)
     }
 

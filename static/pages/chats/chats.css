@@ -54,7 +54,7 @@
 }
 
 .chats-profile-btn__icon{
-  background-image: url("../../images/arrow.svg");
+  background-image: url("static/images/arrow.svg");
   background-repeat: no-repeat;
   background-position: center;
 
@@ -80,7 +80,7 @@
 .chats-search-input::placeholder{
   font-family: 'Open Sans', sans-serif;
   text-align: center;
-  background-image: url("../../images/union.svg");
+  background-image: url("static/images/union.svg");
   background-repeat: no-repeat;
   background-position: 39% center;
 }
@@ -121,7 +121,7 @@
 }
 
 .chats-head-btn__icon{
-  background-image: url("../../images/more-vertical.svg");
+  background-image: url("static/images/more-vertical.svg");
   background-repeat: no-repeat;
   float: left;
   width: 20px;
@@ -156,7 +156,7 @@
 }
 
 .chats-footer-attach-btn{
-  background-image: url("../../images/attach.svg");
+  background-image: url("static/images/attach.svg");
   background-repeat: no-repeat;
   background-color: transparent;
   border: none;
@@ -171,7 +171,7 @@
 }
 
 .chats-footer-send-btn{
-  background-image: url("../../images/send.svg");
+  background-image: url("static/images/send.svg");
   background-repeat: no-repeat;
   background-color: transparent;
   border: none;
@@ -356,7 +356,7 @@
 }
 
 .chats-message__icon{
-  background-image: url("../../images/checked.svg");
+  background-image: url("static/images/checked.svg");
   background-repeat: no-repeat;
   background-color: transparent;
   float: left;

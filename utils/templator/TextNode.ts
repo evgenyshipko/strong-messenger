@@ -1,4 +1,4 @@
-import { Nullable, Context } from '../../types/Types'
+import {Nullable, Context, EventData} from '../../types/Types'
 import Component from '../Component.js'
 /* global HTMLElement, EventListenerOrEventListenerObject */
 
@@ -29,7 +29,7 @@ class TextNode {
     //     const pathObj = (/\{\{(.*?)}}/gi).exec(this.textContent!)
     //     if (pathObj) {
     //         const path = pathObj[1]
-    //         const data = this._getData(context, path)
+    //         const data = this._getDataFromContext(context, path)
     //         if (data instanceof Component) {
     //             return data.getContent()![0]
     //         }
@@ -43,15 +43,14 @@ class TextNode {
                 const pathObj = (/\{\{(.*?)}}/gi).exec(this.textContent)
                 if (pathObj) {
                     const path = pathObj[1]
-                    const data = this._getData(context, path)
+                    const data = this._getDataFromContext(context, path)
+                    if (data === undefined) {
+                        console.log(this, path, context)
+                        throw new Error(`${path} attribute is undefined in context`)
+                    }
                     // console.log('_handleTextContentParsing', path, data)
                     if (Array.isArray(data) && data[0] instanceof Component) {
-                        console.log(' ========= ARRAY COMPONENT ========')
-                        console.log('data', data)
-
                         data.forEach((component: Component<Context>) => {
-                            console.log(component.getContent()![0].children)
-
                             component.getContent()!.forEach(node => {
                                 target.appendChild(node)
                             })
@@ -79,13 +78,12 @@ class TextNode {
     _addEventListener(target: HTMLElement, context: Context): void {
         const availableEvents = ['click', 'focus', 'submit',
             'mousemove', 'mouseup', 'mousedown', 'mouseout', 'mouseover', 'contextmenu']
-        const eventObj = (/@(\w+)?=\{\{(\w+)}}/gi).exec(this.openingTag!)
+        const eventObj = (/@event=\{\{(\w+)}}/gi).exec(this.openingTag!)
         if (eventObj) {
-            const eventType = eventObj[1]
-            const path = eventObj[2]
-            const callback: EventListenerOrEventListenerObject = this._getData(context, path)
-            if (typeof callback === 'function' && availableEvents.includes(eventType)) {
-                target.addEventListener(eventType, callback)
+            const path = eventObj[1]
+            const data: EventData = this._getDataFromContext(context, path)
+            if (data && data.callback instanceof Function && availableEvents.includes(data.name)) {
+                target.addEventListener(data.name, data.callback)
             }
         }
     }
@@ -113,7 +111,7 @@ class TextNode {
         const classNameObj = (/class=\{\{(.*?)}}/gi).exec(this.openingTag!)
         if (classNameObj) {
             const path = classNameObj[1]
-            const classNameStr: string = this._getData(context, path)
+            const classNameStr: string = this._getDataFromContext(context, path)
             if (classNameStr) {
                 return classNameStr.split(' ')
             }
@@ -129,28 +127,27 @@ class TextNode {
     }
 
     _setAttributes(target: HTMLElement, context: Context): void {
-        const availableAttributes = ['type', 'name', 'placeholder']
+        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form']
         const REGEXP = /(\w+)=\{\{(.*?)}}/gi
         let result = null
         while ((result = REGEXP.exec(this.openingTag!))) {
             const attrName = result[1]
             const attrPath = result[2]
             if (availableAttributes.includes(attrName)) {
-                const attrValue: any = this._getData(context, attrPath)
+                const attrValue: any = this._getDataFromContext(context, attrPath)
                 // console.log('target', target.tagName, 'attrName', attrName, 'attrValue', attrValue)
-                target.setAttribute(attrName, attrValue)
+                if (attrValue) {
+                    target.setAttribute(attrName, attrValue)
+                }
             }
         }
     }
 
-    _getData(context: Context, path: string): any {
+    _getDataFromContext(context: Context, path: string): any {
         const keys = path.split('.')
         let result = context
         for (const key of keys) {
             result = result[key]
-            if (result === undefined) {
-                throw new Error(`${path} attribute is undefined in context`)
-            }
         }
         return result
     }

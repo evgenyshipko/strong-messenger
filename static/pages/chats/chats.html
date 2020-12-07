@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../../styles/common.css">
+    <link rel="stylesheet" href="chats.css">
+    <title>Title</title>
+</head>
+<body>
+<!--  <main>-->
+<!--    <div class="chats-wrapper">-->
+<!--      <div class="chats-left-block">-->
+<!--        <div class="chats-functions-block">-->
+<!--          <button class="chats-profile-btn">-->
+<!--            <span>Профиль</span>-->
+<!--            <i class="chats-profile-btn__icon"></i>-->
+<!--          </button>-->
+<!--          <input type="text"-->
+<!--                 placeholder="Поиск"-->
+<!--                 class="chats-search-input">-->
+<!--        </div>-->
+<!--        <div class="chats-navigation">-->
+<!--          <ul class="chats-list">-->
+<!--            <li class="chats-list-item">-->
+<!--              <div class="chat-item checked-item">-->
+<!--                <div class="chat-item-avatar-wrapper">-->
+<!--                  <div class="chat-item-avatar"></div>-->
+<!--                </div>-->
+<!--                <div class="chat-item-info">-->
+<!--                  <span class="chat-item-info__chat-name">Анна</span><br />-->
+<!--                  <span class="chat-item-info__message">Вы: Спасибо!</span>-->
+<!--                </div>-->
+<!--                <div class="chat-item-indicators">-->
+<!--                  <span class="chat-item-indicators__time">10:33</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </li>-->
+<!--            <li class="chats-list-item">-->
+<!--              <div class="chat-item">-->
+<!--                <div class="chat-item-avatar-wrapper">-->
+<!--                  <div class="chat-item-avatar"></div>-->
+<!--                </div>-->
+<!--                <div class="chat-item-info">-->
+<!--                  <span class="chat-item-info__chat-name">Вася</span><br />-->
+<!--                  <span class="chat-item-info__message">Привет!</span>-->
+<!--                </div>-->
+<!--                <div class="chat-item-indicators">-->
+<!--                  <span class="chat-item-indicators__time">10:11</span>-->
+<!--                  <span class="chat-item-indicators__unread-quantity">1</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </li>-->
+<!--            <li class="chats-list-item">-->
+<!--              <div class="chat-item">-->
+<!--                <div class="chat-item-avatar-wrapper">-->
+<!--                  <div class="chat-item-avatar"></div>-->
+<!--                </div>-->
+<!--                <div class="chat-item-info">-->
+<!--                  <span class="chat-item-info__chat-name">Чат работа</span><br />-->
+<!--                  <span class="chat-item-info__message">Коллеги, сегодня...</span>-->
+<!--                </div>-->
+<!--                <div class="chat-item-indicators">-->
+<!--                  <span class="chat-item-indicators__time">10:05</span>-->
+<!--                  <span class="chat-item-indicators__unread-quantity">1</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </li>-->
+<!--            <li class="chats-list-item">-->
+<!--              <div class="chat-item">-->
+<!--                <div class="chat-item-avatar-wrapper">-->
+<!--                  <div class="chat-item-avatar"></div>-->
+<!--                </div>-->
+<!--                <div class="chat-item-info">-->
+<!--                  <span class="chat-item-info__chat-name">Кирилл</span><br />-->
+<!--                  <span class="chat-item-info__message">Завтра будет.</span>-->
+<!--                </div>-->
+<!--                <div class="chat-item-indicators">-->
+<!--                  <span class="chat-item-indicators__time">9:34</span>-->
+<!--                  <span class="chat-item-indicators__unread-quantity">2</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </li>-->
+<!--            <li class="chats-list-item">-->
+<!--              <div class="chat-item">-->
+<!--                <div class="chat-item-avatar-wrapper">-->
+<!--                  <div class="chat-item-avatar"></div>-->
+<!--                </div>-->
+<!--                <div class="chat-item-info">-->
+<!--                  <span class="chat-item-info__chat-name">Киноклуб</span><br />-->
+<!--                  <span class="chat-item-info__message">(фото)</span>-->
+<!--                </div>-->
+<!--                <div class="chat-item-indicators">-->
+<!--                  <span class="chat-item-indicators__time">8:05</span><br />-->
+<!--                  <span class="chat-item-indicators__unread-quantity">1</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="chats-right-block">-->
+<!--        <div class="chats-head">-->
+<!--          <div class="chats-head-avatar"></div>-->
+<!--          <div class="chats-head-text">Анна</div>-->
+<!--          <button class="chats-head-btn">-->
+<!--            <i class="chats-head-btn__icon"></i>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="chats-message-block">-->
+<!--          <ul class="chats-message-list">-->
+<!--            <li class="chats-message-list__item">-->
+<!--              <div class="chats-message-incoming chats-message">-->
+<!--                <span class="chats-message__text">Привет, Как дела?</span>-->
+<!--                <div class="chat-message-transaction-info">-->
+<!--                  <span class="chats-message__time">10:30</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </li>-->
+<!--            <li class="chats-message-list__item">-->
+<!--              <div class="chats-message-outcoming">-->
+<!--                <span class="chats-message__text">-->
+<!--                  Cверстал страницу чатов для проекта яндекс-практикума!-->
+<!--                  Учитывая, что никогда до этого раньше не верстал - результат кажется хорошим!-->
+<!--                </span>-->
+<!--                <div class="chat-message-transaction-info">-->
+<!--                  <i class="chats-message__icon"></i>-->
+<!--                  <span class="chats-message__time">10:31</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </li>-->
+<!--            <li class="chats-message-list__item">-->
+<!--              <div class="chats-message-incoming">-->
+<!--                <span class="chats-message__text">Поздравляю!</span>-->
+<!--                <div class="chat-message-transaction-info">-->
+<!--                  <span class="chats-message__time">10:32</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </li>-->
+<!--            <li class="chats-message-list__item">-->
+<!--              <div class="chats-message-outcoming">-->
+<!--                <span class="chats-message__text">Спасибо!</span>-->
+<!--                <div class="chat-message-transaction-info">-->
+<!--                  <i class="chats-message__icon"></i>-->
+<!--                  <span class="chats-message__time">10:33</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </li>-->
+<!--          </ul>-->
+<!--        </div>-->
+<!--        <div class="chats-footer">-->
+<!--          <button class="chats-footer-attach-btn"></button>-->
+<!--          <input type="text"-->
+<!--                 name="message"-->
+<!--                 class="chats-footer-input"-->
+<!--                 placeholder="Сообщение"-->
+<!--          >-->
+<!--          <button class="chats-footer-send-btn"></button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </main>-->
+<script src="../../../js/pages/chats/chats.js" type="module"></script>
+</body>
+</html>
