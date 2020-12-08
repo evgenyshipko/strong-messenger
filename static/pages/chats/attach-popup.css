@@ -1,0 +1,42 @@
+
+.attach-popup{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  width: 149px;
+  height: 70px;
+  /*background-color: rgba(206, 161, 0, 0.2);*/
+  background-color: #FFEC9B;
+  border-radius: 10px;
+
+  bottom: 0;
+  position: absolute;
+  margin-left: 3px;
+  margin-bottom: 3px;
+}
+
+.attach-popup-btn{
+  background-color: transparent;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+}
+
+.attach-popup-btn:focus{
+  outline-width: 0;
+}
+
+.attach-popup-btn__icon{
+  background-repeat: no-repeat;
+  background-color: transparent;
+  float: left;
+  width: 25px;
+  height: 25px;
+}
+
+.attach-popup-btn__text{
+  margin-left: 3%;
+}
