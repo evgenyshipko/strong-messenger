@@ -1,17 +1,23 @@
-import Component from './Component.js'
-import { Context } from '../types/Types'
+import Component from '../../utils/Component.js'
+import Button from "../../components/Button.js";
 
-export class ErrorPage extends Component {
-    constructor(props: Context) {
+interface ErrorPageProps {
+    errorNumber: string,
+    pageText :string,
+    button: Button
+}
+
+export class ErrorPage extends Component<ErrorPageProps> {
+    constructor(props: ErrorPageProps) {
         super(props)
     }
 
     template() {
         return `
         <div>
-            <div class={{rootClass}}>
-                    <h1 class={{headerClass}}>{{errorNumber}}</h1>
-                    <h1 class={{headerClass}}>{{pageText}}</h1>
+            <div class='error-page'>
+                    <h1 class='error-page-header'>{{errorNumber}}</h1>
+                    <h1 class='error-page-header'>{{pageText}}</h1>
                     <div>{{button}}</div>
             </div>
         </div>`

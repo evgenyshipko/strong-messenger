@@ -104,7 +104,7 @@
 
 .profile-form-item__input{
   border: none;
-  width: 60%;
+  width: 75%;
   font-size: 15px;
   font-family: 'Open Sans', sans-serif;
   text-align: right;
@@ -128,6 +128,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 15px;
 }
 
 .profile-button-block{

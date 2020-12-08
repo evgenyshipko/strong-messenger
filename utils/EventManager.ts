@@ -1,5 +1,5 @@
 export class EventManager {
-    listeners: {[key: string]: Array<Function>}
+    listeners: {[key: string]: Function[]}
 
     constructor() {
         this.listeners = {}
@@ -22,7 +22,7 @@ export class EventManager {
         )
     }
 
-    emit(event: string, ...args: Array<any>) {
+    emit(event: string, ...args: any[]) {
         if (!this.listeners[event]) {
             throw new Error(`Нет события: ${event}`)
         }

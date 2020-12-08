@@ -1,16 +1,16 @@
 import Component from '../../utils/Component.js'
-import MessageItem from './MessageItem.js'
+import Message from './Message.js'
 import { EventData } from '../../types/Types'
 
 interface ChatItemProps {
     checked?: boolean,
     chatName: string,
-    messageList: MessageItem[],
+    messageList: Message[],
     unreadQuantity?: number,
     eventData?: EventData
 }
 
-class ChatItem extends Component<ChatItemProps> {
+class Chat extends Component<ChatItemProps> {
     constructor(props: ChatItemProps) {
         super(props)
     }
@@ -18,9 +18,14 @@ class ChatItem extends Component<ChatItemProps> {
     template(): string {
         let youIndicator = ''
         const lastMessage = this.props.messageList[this.props.messageList.length - 1]
-        if (lastMessage.props.isUser) {
+        if (!lastMessage.props.isIncoming) {
             youIndicator = 'Вы: '
         }
+        let unreadQuantitySpan = ''
+        if (this.props.unreadQuantity) {
+            unreadQuantitySpan = `<span class="chat-item-indicators__unread-quantity">${this.props.unreadQuantity}</span>`
+        }
+
         return `<li class="chats-list-item" @event={{eventData}}>
               <div class="chat-item">
                 <div class="chat-item-avatar-wrapper">
@@ -32,11 +37,11 @@ class ChatItem extends Component<ChatItemProps> {
                 </div>
                 <div class="chat-item-indicators">
                   <span class="chat-item-indicators__time">${lastMessage.props.time}</span>
-                  <span class="chat-item-indicators__unread-quantity">{{unreadQuantity}}</span>
+                  ${unreadQuantitySpan}
                 </div>
               </div>
             </li>`
     }
 }
 
-export default ChatItem
+export default Chat

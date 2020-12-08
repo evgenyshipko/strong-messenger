@@ -3,22 +3,22 @@ import Component from '../../utils/Component.js'
 interface MessageItemProps {
     message: string,
     time: string,
-    isUser?: boolean
+    isIncoming?: boolean
 }
 
-class MessageItem extends Component<MessageItemProps> {
+class Message extends Component<MessageItemProps> {
     constructor(props: MessageItemProps) {
         super(props)
     }
 
     template(): string {
-        let divClass = 'chats-message-incoming'
-        if (this.props.isUser) {
-            divClass = 'chats-message-outcoming'
+        let divClass = 'chats-message-outcoming'
+        if (this.props.isIncoming) {
+            divClass = 'chats-message-incoming'
         }
 
         return `<li class="chats-message-list__item">
-              <div class=${divClass}>
+              <div class="${divClass}">
                 <span class="chats-message__text">
                   {{message}}
                 </span>
@@ -31,4 +31,4 @@ class MessageItem extends Component<MessageItemProps> {
     }
 }
 
-export default MessageItem
+export default Message

@@ -1,17 +1,17 @@
-import Component from '../Component.js'
+import Component from './Component.js'
+import { Context } from '../types/Types'
 /* global HTMLElement */
 
-export function renderBody(block: Component): void {
-    console.log('======= renderBody ======')
+export default function renderDom(block: Component<Context>): void {
+    // console.log('======= renderDom ======')
     const root = document.createElement('div')
     const content = block.getContent()
-    console.log('renderBody', content)
-    // if (content != null){
-    //     console.log('renderBody content', content[0].outerHTML)
-    // }
+    // console.log('render', content)
     if (root != null && content != null) {
         content.forEach((node) => {
-            root.appendChild(node)
+            if (node) {
+                root.appendChild(node)
+            }
         })
     }
     document.body.appendChild(root)

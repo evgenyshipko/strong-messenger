@@ -1,8 +1,8 @@
-import { EventManager } from './utils/EventManager.js'
-import { Nullable, Context } from '../types/Types'
-import Templator from '../utils/templator/Templator.js'
+import { EventManager } from './EventManager.js'
+import { Nullable } from '../types/Types'
+import Templator from './templator/Templator.js'
 
-/* global HTMLElement*/
+/* global HTMLElement, EventListenerOrEventListenerObject */
 
 enum Event {
     INIT = 'init',
@@ -11,16 +11,21 @@ enum Event {
     FLOW_CDU = 'flow:component-did-update'
 }
 
-class Component {
-    props: Context
+/*
+ В отличие от реализации блока в тренажере, решил не использовать _meta.
+ Теперь getContent() возвращает не один элемент, а массив элементов.
+*/
+
+class Component<T> {
+    props: T
     eventManager: () => EventManager
-    _elements: Nullable<Array<HTMLElement>> = null
+    _elements: HTMLElement[] = []
     _templator: Templator
 
-    constructor(props: Context = {}) {
+    constructor(props: T) {
         const eventManager = new EventManager()
-        this._templator = new Templator(this.template())
         this.props = this._makePropsProxy(props)
+        this._templator = new Templator(this.template())
         this.eventManager = () => eventManager
         this._registerEvents(eventManager)
         eventManager.emit(Event.INIT)
@@ -41,40 +46,35 @@ class Component {
     _createResources() {
         // console.log('_createResources')
         this._elements = this._templator.compile(this.props)
-        console.log('this.props', this.props)
-        console.log('this._elements', this._elements)
     }
 
     init() {
-        console.log(`===== init =====`)
         this._createResources()
         this.eventManager().emit(Event.FLOW_CDM)
+        // console.log('init', this.getContent())
     }
 
     _componentDidMount() {
         // console.log('_componentDidMount')
-        this.componentDidMount(undefined)
-        // this.eventManager().emit(Event.FLOW_RENDER)
+        this.componentDidMount(this.props)
     }
 
-    // Может переопределять пользователь, необязательно трогать
-    componentDidMount(_oldProps: any) {}
+    componentDidMount(_oldProps: T) {}
 
-    _componentDidUpdate(oldProps: any, newProps: any) {
+    _componentDidUpdate(oldProps: T, newProps: T) {
         // console.log('_componentDidUpdate')
-        const response = this.componentDidUpdate(oldProps, newProps)
-        if (response) {
+        const isEnabled = this.componentDidUpdate(oldProps, newProps)
+        if (isEnabled) {
             this.props = Object.assign(oldProps, newProps)
-            console.log('assigned props', this.props)
         }
     }
 
-    // Может переопределять пользователь, необязательно трогать
-    componentDidUpdate(oldProps: any, newProps: any) {
-        return oldProps !== newProps
+    componentDidUpdate(oldProps: T, newProps: T) {
+        // знаю, что это очень топорно, но до этого я просто в любом случае изменения пропсов делал рендер
+        return JSON.stringify(oldProps) !== JSON.stringify(newProps)
     }
 
-    setProps = (nextProps: any) => {
+    setProps = (nextProps: Partial<T>) => {
         // console.log('setProps')
         if (!nextProps) {
             return
@@ -83,28 +83,23 @@ class Component {
     };
 
     _render() {
-        // console.log('_render')
+        // console.log('_render', this.props)
         const newElements = this._templator.compile(this.props)
-        const oldElements = this._elements
-
-        console.log('newElements',newElements)
-        console.log('oldElements',oldElements)
-
-        oldElements?.forEach((oldNode, index) => {
-            const parent = oldNode.parentNode
-            oldNode.remove()
-            console.log('parent', parent)
-            console.log('newElements[index]', newElements[index])
-            if (parent != null) {
+        this._elements?.forEach((oldNode, index) => {
+            if (oldNode) {
+                const parent = oldNode.parentNode
                 oldNode.remove()
-                parent.appendChild(newElements[index])
-                console.log('parent appendChild', parent)
+                if (parent != null) {
+                    oldNode.remove()
+                    const newNode = newElements[index]
+                    parent.appendChild(newNode)
+                }
             }
         })
         this._elements = newElements
     }
 
-    getContent(): Nullable<Array<HTMLElement>> {
+    getContent(): Nullable<HTMLElement[]> {
         // console.log('getContent')
         return this._elements
     }
@@ -124,17 +119,24 @@ class Component {
         })
     }
 
-    show(): void {
+    addEventListener(listenerName: string, callback: EventListenerOrEventListenerObject): void {
         const contentArr = this.getContent()
-        contentArr?.forEach((content) => {
-            content.style.display = 'block'
+        contentArr?.forEach((node) => {
+            node.addEventListener(listenerName, callback)
+        })
+    }
+
+    show(display: 'flex' | 'block'): void {
+        const contentArr = this.getContent()
+        contentArr?.forEach((node) => {
+            node.style.display = display
         })
     }
 
     hide(): void {
         const contentArr = this.getContent()
-        contentArr?.forEach((content) => {
-            content.style.display = 'none'
+        contentArr?.forEach((node) => {
+            node.style.display = 'none'
         })
     }
 }

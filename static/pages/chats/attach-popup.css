@@ -6,8 +6,14 @@
 
   width: 149px;
   height: 70px;
-  background-color: rgba(206, 161, 0, 0.2);
+  /*background-color: rgba(206, 161, 0, 0.2);*/
+  background-color: #FFEC9B;
   border-radius: 10px;
+
+  bottom: 0;
+  position: absolute;
+  margin-left: 3px;
+  margin-bottom: 3px;
 }
 
 .attach-popup-btn{

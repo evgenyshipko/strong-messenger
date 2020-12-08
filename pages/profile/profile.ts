@@ -9,22 +9,8 @@ import Header from '../../components/Header.js'
 import Avatar from '../../components/Avatar.js'
 
 const formId = 'profile-form'
-
-// подготавливаем компоненты
-const backToChatsButton = new Button({
-    class: 'profile-back-btn',
-    iconClass: 'profile-back-btn__icon'
-})
-
-const changePassBtn = new Button({
-    class: 'messenger-button',
-    text: 'Изменить пароль'
-})
-
-const logOutButton = new Button({
-    class: 'profile-exit-btn messenger-button_no-background',
-    text: 'Выйти'
-})
+const inputClass = 'profile-form-item__input'
+const inputWrapperClass = 'profile-form-item'
 
 const buttonListMain = [
     new Button({
@@ -33,8 +19,30 @@ const buttonListMain = [
         type: 'submit',
         formId: formId
     }),
-    changePassBtn,
-    logOutButton
+    new Button({
+        class: 'messenger-button',
+        text: 'Изменить пароль',
+        eventData: {
+            name: 'click',
+            callback: () => {
+                // вешаем на кнопку отображение формы изменения пароля
+                profilePage.setProps({
+                    form: formChangePassword,
+                    buttonList: buttonListChangePassword
+                })
+            }
+        }
+    }),
+    new Button({
+        class: 'profile-exit-btn messenger-button_no-background',
+        text: 'Выйти',
+        eventData: {
+            name: 'click',
+            callback: () => {
+                location.assign( '../signin/signin.html')
+            }
+        }
+    })
 ]
 
 const formMain = new Form({
@@ -44,44 +52,44 @@ const formMain = new Form({
         new FormInputLabeled({
             type: 'text',
             inputName: InputName.EMAIL,
-            class: 'profile-form-item__input',
+            class: inputClass,
             label: 'Почта',
-            wrapperClass: 'profile-form-item'
+            wrapperClass: inputWrapperClass
         }),
         new FormInputLabeled({
             type: 'text',
             inputName: InputName.LOGIN,
-            class: 'profile-form-item__input',
+            class: inputClass,
             label: 'Логин',
-            wrapperClass: 'profile-form-item'
+            wrapperClass: inputWrapperClass
         }),
         new FormInputLabeled({
             type: 'text',
             inputName: InputName.FIRST_NAME,
-            class: 'profile-form-item__input',
+            class: inputClass,
             label: 'Имя',
-            wrapperClass: 'profile-form-item'
+            wrapperClass: inputWrapperClass
         }),
         new FormInputLabeled({
             type: 'text',
             inputName: InputName.LAST_NAME,
-            class: 'profile-form-item__input',
+            class: inputClass,
             label: 'Фамилия',
-            wrapperClass: 'profile-form-item'
+            wrapperClass: inputWrapperClass
         }),
         new FormInputLabeled({
             type: 'text',
             inputName: InputName.SECOND_NAME,
-            class: 'profile-form-item__input',
+            class: inputClass,
             label: 'Имя для отображения',
-            wrapperClass: 'profile-form-item'
+            wrapperClass: inputWrapperClass
         }),
         new FormInputLabeled({
             type: 'text',
             inputName: InputName.PHONE,
-            class: 'profile-form-item__input',
+            class: inputClass,
             label: 'Телефон',
-            wrapperClass: 'profile-form-item'
+            wrapperClass: inputWrapperClass
         })
     ]
 })
@@ -95,7 +103,16 @@ const buttonListChangePassword = [
     }),
     new Button({
         class: 'profile-exit-btn messenger-button_no-background',
-        text: 'Отмена'
+        text: 'Отмена',
+        eventData: {
+            name: 'click',
+            callback: () => {
+                profilePage.setProps({
+                    form: formMain,
+                    buttonList: buttonListMain
+                })
+            }
+        }
     })
 ]
 
@@ -107,36 +124,24 @@ const formChangePassword = new Form({
             label: 'Старый пароль',
             type: 'password',
             inputName: InputName.OLD_PASSWORD,
-            class: 'profile-form-item__input',
-            wrapperClass: 'profile-form-item'
+            class: inputClass,
+            wrapperClass: inputWrapperClass
         }),
         new FormInputLabeled({
             label: 'Новый пароль',
             type: 'password',
             inputName: InputName.NEW_PASSWORD,
-            class: 'profile-form-item__input',
-            wrapperClass: 'profile-form-item'
+            class: inputClass,
+            wrapperClass: inputWrapperClass
         }),
         new FormInputLabeled({
             label: 'Повторите новый пароль',
             type: 'password',
             inputName: InputName.NEW_PASSWORD_REPEAT,
-            class: 'profile-form-item__input',
-            wrapperClass: 'profile-form-item'
+            class: inputClass,
+            wrapperClass: inputWrapperClass
         })
     ]
-})
-
-const changeButton = new Button({
-    text: 'Изменить',
-    class: 'messenger-button upload-avatar-modal-change-btn',
-    eventData: {
-        name: 'click',
-        callback: () => {
-            profilePage.show('flex')
-            modalWindow.hide()
-        }
-    }
 })
 
 const modalWindow = new Modal({
@@ -151,14 +156,40 @@ const modalWindow = new Modal({
             text: 'Выбрать файл на компьютере',
             class: 'upload-avatar-modal-browse-btn messenger-button_no-background'
         }),
-        changeButton
+        new Button({
+            text: 'Изменить',
+            class: 'messenger-button upload-avatar-modal-change-btn',
+            eventData: {
+                name: 'click',
+                callback: () => {
+                    profilePage.show('flex')
+                    modalWindow.hide()
+                }
+            }
+        })
     ]
 })
 
-const avatar = new Avatar({})
 const profilePage = new ProfilePage({
-    avatar: avatar,
-    backButton: backToChatsButton,
+    avatar: new Avatar({
+        eventData: {
+            name: 'click',
+            callback: () => {
+                profilePage.hide()
+                modalWindow.show('flex')
+            }
+        }
+    }),
+    backButton: new Button({
+        class: 'profile-back-btn',
+        iconClass: 'profile-back-btn__icon',
+        eventData: {
+            name: 'click',
+            callback: () => {
+                location.assign('../chats/chats.html')
+            }
+        }
+    }),
     userName: 'Evgeny',
     form: formMain,
     buttonList: buttonListMain
@@ -170,34 +201,6 @@ modalWindow.hide()
 // вешаем валидацию на формы
 formMain.addValidator()
 formChangePassword.addValidator()
-
-// вешаем на кнопку отображение формы изменения пароля
-changePassBtn.addEventListener('click', () => {
-    profilePage.setProps({
-        form: formChangePassword,
-        buttonList: buttonListChangePassword
-    })
-})
-
-// вешаем на кнопку возврат на основную страницу профиля
-buttonListChangePassword[1].addEventListener('click', () => {
-    profilePage.setProps({
-        form: formMain,
-        buttonList: buttonListMain
-    })
-})
-
-// вешаем появление модального окна на аватар
-avatar.addEventListener('click', () => {
-    profilePage.hide()
-    modalWindow.show('flex')
-})
-
-// вешаем скрытие модального окна и возврат к основной странице на кнопку модала
-// changeButton.addEventListener('click', () => {
-//     profilePage.show('flex')
-//     modalWindow.hide()
-// })
 
 // рисуем страницу
 render(profilePage)

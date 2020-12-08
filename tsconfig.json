@@ -1,13 +1,25 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "static/js",
     "target": "es2016",
     "declaration": false,
-    "module": "commonjs",
+    "module": "ESNext",
     "strictNullChecks": true,
     "sourceMap": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "alwaysStrict": true,
+    "allowUmdGlobalAccess": true,
+    "typeRoots" : ["./node_modules/@types"]
   },
-  "include": ["src/**/*.ts"],
+  "include": [
+    "pages/**/*.ts",
+    "templates/*.ts",
+    "utils/templator/*.ts",
+    "utils/templator/example/*.ts"
+  ],
   "exclude": ["node_modues"]
 }

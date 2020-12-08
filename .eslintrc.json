@@ -1,30 +1,25 @@
 {
     "extends": [
-        "standard",
-        "standard-react"
+        "standard"
     ],
     "parser": "@typescript-eslint/parser",
-    "plugins": ["react","@typescript-eslint"],
+    "plugins": ["@typescript-eslint"],
     "env": {
         "es6": true
     },
-
     "parserOptions": {
         "sourceType": "module"
     },
     "rules": {
-        // don't force es6 functions to include space before paren
         "space-before-function-paren": 0,
-
-        // allow specifying true explicitly for boolean props
         "react/jsx-boolean-value": 0,
         "indent": ["error", 4],
         "react/jsx-indent": ["error", 4],
         "react/jsx-indent-props": [0],
-        "spaced-comment": ["error", "always"]
+        "spaced-comment": ["error", "always"],
+        "no-unused-vars": "off"
     },
     "globals": {
-        "localStorage": true,
-        "fetch": true
+        "localStorage": true
     }
 }
