@@ -13,7 +13,7 @@ class TextNodeParser {
         this._template = template
     }
 
-    findAllTextNodes(): Array<TextNode> {
+    findAllTextNodes(): TextNode[] {
         let template = this._template
         const commonArr = []
         let endIndex: Nullable<Number> = 0
@@ -28,8 +28,6 @@ class TextNodeParser {
             if (executionResult.result !== null) {
                 commonArr.push(executionResult.result)
             }
-            // console.log('template', template)
-            // console.log('endIndex', endIndex)
         }
         if (commonArr.length === 0) {
             throw new Error('text todes not found, check your template')
@@ -45,28 +43,7 @@ class TextNodeParser {
         }
     }
 
-    // _findTextNodeInPercent(template: string): TextNodeData {
-    //     const tagObject = (/%({{\w+}})%/g).exec(template)
-    //     if (tagObject !== null) {
-    //         const tagRow = tagObject[0]
-    //         const textContent = tagObject[1]
-    //
-    //         console.log('==== _findTextNodeInPercent ===')
-    //         console.log('tagRow', tagRow, 'textContent', textContent)
-    //
-    //         return {
-    //             result: new TextNode(
-    //                 undefined,
-    //                 undefined,
-    //                 undefined,
-    //                 textContent
-    //             ),
-    //             endIndex: tagRow.length
-    //         }
-    //     }
-    //     return { result: null, endIndex: null }
-    // }
-
+    // генерируем TextNode по самозакрывающемуся тэгу (например, <input />)
     _findTextNodeInSelfClosingTag(template: string): TextNodeData {
         const openingTagObject = (/<(\w+)\b[^>]*\/?>/g).exec(template)
         // console.log('=== _findTextNodeInSelfClosingTag ===')
@@ -86,6 +63,7 @@ class TextNodeParser {
         return { result: null, endIndex: null }
     }
 
+    // генерируем TextNode по тэгу, который закрывается и открывается (например, <div></div>)
     _findTextNodeInUsualTag(template: string): TextNodeData {
         const openingTagObject = (/<(\w+)\b[^>]*>/g).exec(template)
         if (openingTagObject == null) {
@@ -95,13 +73,15 @@ class TextNodeParser {
         const openingTag = openingTagObject[0]
         const openingTagName = openingTagObject[1]
 
-        const GENERATED_TAG_REGEXP = new RegExp(`<[/]?(${openingTagName})+\\b[^>]*>`, 'g')
+        const TAG_REGEXP = new RegExp(`<[/]?(${openingTagName})+\\b[^>]*>`, 'g')
 
         let endIndex = null
         let result = null
         let counter = -1
         let resultString = null
-        while ((result = GENERATED_TAG_REGEXP.exec(template))) {
+
+        // поиск закрывающего тэга на том же уровне вложенности, что и открывающий
+        while ((result = TAG_REGEXP.exec(template))) {
             const tag = result[0]
             if (this._isOpeningTag(tag)) {
                 counter++
@@ -110,21 +90,15 @@ class TextNodeParser {
             } else if (this._isClosingTag(tag) && counter === 0) {
                 endIndex = result.index + tag.length
                 resultString = template.substring(startIndex, endIndex).trim()
+                // entrails - это все, что находится между открывающим и закрывающим тэгом
                 const entrails = resultString.substring(openingTag.length, resultString.length - tag.length)
                 result = this._generateTextNode(openingTag, openingTagName, entrails)
                 break
             }
         }
+        // возвращаем TextNode и индекс элемента шаблонной строки, на котором закончился поиск
         return { result: result, endIndex: endIndex }
     }
-
-    // _isStartsWithPercent(template: string) {
-    //     const result = (/%({{\w+}})%/g).exec(template)
-    //     if (result && result.index === 0) {
-    //         console.log('_isStartsWithPercent', template)
-    //     }
-    //     return result && result.index === 0
-    // }
 
     _isStartsWithSelfClosingTag(template: string) {
         const result = (/<(\w+)\b[^>]*\/>/g).exec(template.trim())

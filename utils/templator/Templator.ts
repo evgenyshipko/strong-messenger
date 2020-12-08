@@ -10,7 +10,7 @@ class Templator {
         this._template = template
     }
 
-    compile(context: Context): Array<HTMLElement> {
+    compile(context: Context): HTMLElement[] {
         const textNodes = new TextNodeParser(this._template).findAllTextNodes()
         return textNodes.map((textNode) => {
             return textNode.toHTMLElement(context)

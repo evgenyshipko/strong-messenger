@@ -1,14 +1,14 @@
-import {Nullable, Context, EventData} from '../../types/Types'
+import { Nullable, Context, EventData } from '../../types/Types'
 import Component from '../Component.js'
 /* global HTMLElement, EventListenerOrEventListenerObject */
 
 class TextNode {
     openingTag: string
     tagName: string
-    children?: Array<TextNode>
+    children?: TextNode[]
     textContent?: string
 
-    constructor(openingTag: string, tagName: string, children?: Array<TextNode>, textContent?: string) {
+    constructor(openingTag: string, tagName: string, children?: TextNode[], textContent?: string) {
         this.openingTag = openingTag
         this.tagName = tagName
         this.children = children
@@ -24,18 +24,6 @@ class TextNode {
         this._handleTextContentParsing(element, context)
         return element
     }
-
-    // _getElementFromTextContent(context: Context):Nullable<HTMLElement> {
-    //     const pathObj = (/\{\{(.*?)}}/gi).exec(this.textContent!)
-    //     if (pathObj) {
-    //         const path = pathObj[1]
-    //         const data = this._getDataFromContext(context, path)
-    //         if (data instanceof Component) {
-    //             return data.getContent()![0]
-    //         }
-    //     }
-    //     return null
-    // }
 
     _handleTextContentParsing(target: HTMLElement, context: Context) {
         if (this.textContent) {
@@ -107,7 +95,7 @@ class TextNode {
         }
     }
 
-    _getClassName(context: Context): Nullable<Array<string>> {
+    _getClassName(context: Context): Nullable<string[]> {
         const classNameObj = (/class=\{\{(.*?)}}/gi).exec(this.openingTag!)
         if (classNameObj) {
             const path = classNameObj[1]
@@ -135,7 +123,6 @@ class TextNode {
             const attrPath = result[2]
             if (availableAttributes.includes(attrName)) {
                 const attrValue: any = this._getDataFromContext(context, attrPath)
-                // console.log('target', target.tagName, 'attrName', attrName, 'attrValue', attrValue)
                 if (attrValue) {
                     target.setAttribute(attrName, attrValue)
                 }
