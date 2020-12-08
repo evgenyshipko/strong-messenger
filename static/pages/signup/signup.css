@@ -1,0 +1,66 @@
+
+.signup-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.signup{
+  width:400px;
+  height: 600px;
+  text-align: center;
+  background: #F0F0F0;
+  border-radius: 10px;
+}
+
+.signup-header{
+  display: inline-block;
+  margin: 34px 0 0 0;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 36px;
+  line-height: 49px;
+}
+
+.signup-form{
+  display: inline-block;
+  margin: 25px 0 0 0;
+}
+
+.signup-form__login-input,
+.signup-form__password-input,
+.signup-form__email-input,
+.signup-form__firstname-input,
+.signup-form__lastname-input,
+.signup-form__phone-input
+{
+  width: 306px;
+  height: 25px;
+  margin: 10px 0;
+}
+
+.signup-form__login-input:focus,
+.signup-form__email-input:focus,
+.signup-form__firstname-input:focus,
+.signup-form__lastname-input:focus,
+.signup-form__phone-input:focus,
+.signup-form__password-input:focus
+{
+  outline-width: 0;
+}
+
+.signup-form__submit-btn{
+  margin-top: 6%;
+  font-size: 17px;
+}
+
+.signup-registration-btn{
+  margin: 23px 0 0 0;
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.signup-registration-btn:focus{
+  outline-width: 0;
+}

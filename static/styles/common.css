@@ -67,3 +67,18 @@ body{
 .icon-file{
   background-image: url("../images/file.svg");
 }
+
+.form-item-block-validated{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-input-validation-message{
+  font-size: 13px;
+  font-family: 'Open Sans', sans-serif;
+  color: #FF0000;
+  position: absolute;
+  margin-top: 40px;
+}
