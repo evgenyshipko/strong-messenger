@@ -8,7 +8,13 @@ render(new ErrorPage({
     button: new Button(
         {
             text: 'Вернуться к чатам',
-            class: 'error-page-btn messenger-button_no-background'
+            class: 'error-page-btn messenger-button_no-background',
+            eventData: {
+                name: 'click',
+                callback: () => {
+                    location.assign('../chats/chats.html')
+                }
+            }
         }
     )
 }))
