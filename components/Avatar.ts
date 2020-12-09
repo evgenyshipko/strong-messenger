@@ -6,10 +6,6 @@ interface AvatarProps {
 }
 
 class Avatar extends Component<AvatarProps> {
-    constructor(props: AvatarProps) {
-        super(props)
-    }
-
     template(): string {
         return `<span class="profile-avatar__content" @event={{eventData}}>Изменить аватар</span>`
     }

@@ -38,7 +38,7 @@ render(new SigninPage({
         eventData: {
             name: 'click',
             callback: () => {
-                location.assign('../signup/signup.html')
+                document.location.assign('../signup/signup.html')
             }
         }
     })

@@ -1,8 +1,5 @@
 import Component from '../../utils/Component.js';
 class MessageList extends Component {
-    constructor(props) {
-        super(props);
-    }
     template() {
         return `<ul class="chats-message-list">{{messageItemList}}</ul>`;
     }

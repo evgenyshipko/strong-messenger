@@ -13,10 +13,6 @@ interface FormProps {
 }
 
 class Form extends Component<FormProps> {
-    constructor(props: FormProps) {
-        super(props)
-    }
-
     addValidator() {
         const nodeList = this.getContent()
         if (nodeList) {

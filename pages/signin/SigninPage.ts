@@ -8,10 +8,6 @@ interface SigninPageProps {
 }
 
 class SigninPage extends Component<SigninPageProps> {
-    constructor(props: SigninPageProps) {
-        super(props)
-    }
-
     template() {
         return `
             <div class='signin-wrapper'>

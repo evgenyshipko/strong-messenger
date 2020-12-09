@@ -37,7 +37,7 @@ const buttonListMain = [
         eventData: {
             name: 'click',
             callback: () => {
-                location.assign('../signin/signin.html');
+                document.location.assign('../signin/signin.html');
             }
         }
     })
@@ -179,7 +179,7 @@ const profilePage = new ProfilePage({
         eventData: {
             name: 'click',
             callback: () => {
-                location.assign('../chats/chats.html');
+                document.location.assign('../chats/chats.html');
             }
         }
     }),

@@ -1,8 +1,5 @@
 import Component from '../../utils/Component.js';
 export class ErrorPage extends Component {
-    constructor(props) {
-        super(props);
-    }
     template() {
         return `
         <div>

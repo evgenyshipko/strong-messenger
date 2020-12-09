@@ -11,16 +11,9 @@ interface ChatItemProps {
 }
 
 class Chat extends Component<ChatItemProps> {
-    constructor(props: ChatItemProps) {
-        super(props)
-    }
-
     template(): string {
-        let youIndicator = ''
         const lastMessage = this.props.messageList[this.props.messageList.length - 1]
-        if (!lastMessage.props.isIncoming) {
-            youIndicator = 'Вы: '
-        }
+        const youIndicator = !lastMessage.props.isIncoming ? 'Вы: ' : ''
         let unreadQuantitySpan = ''
         if (this.props.unreadQuantity) {
             unreadQuantitySpan = `<span class="chat-item-indicators__unread-quantity">${this.props.unreadQuantity}</span>`

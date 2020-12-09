@@ -1,8 +1,5 @@
 import Component from '../../utils/Component.js';
 class SignupPage extends Component {
-    constructor(props) {
-        super(props);
-    }
     template() {
         return `
             <div class='signup-wrapper'>

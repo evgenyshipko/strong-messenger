@@ -15,10 +15,6 @@ interface ChatsPageProps {
 }
 
 class ChatsPage extends Component<ChatsPageProps> {
-    constructor(props: ChatsPageProps) {
-        super(props)
-    }
-
     template(): string {
         return `
             <div class="chats-wrapper">

@@ -13,24 +13,11 @@ interface ButtonProps {
 }
 
 class Button extends Component<ButtonProps> {
-    constructor(props: ButtonProps) {
-        super(props)
-    }
-
     template(): string {
         const entrails: string = (() => {
-            if (this.props.text && this.props.iconClass) {
-                return `<i class={{iconClass}}></i>
-                        <span>{{text}}</span>`
-            } else if (this.props.iconClass) {
-                return '<i class={{iconClass}}></i>'
-            } else if (this.props.text) {
-                return '{{text}}'
-            } else {
-                return ''
-            }
-        }
-        )()
+            const { text, iconClass } = this.props
+            return `${iconClass ? '<i class={{iconClass}}></i>' : ''}${text ? '<span>{{text}}</span>' : ''}`
+        })()
         return `<button class={{class}} type={{type}} form={{formId}} @event={{eventData}}>${entrails}</button>`
     }
 }

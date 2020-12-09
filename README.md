@@ -9,6 +9,8 @@
 * /static/pages/ - статика для Netlify (html, css) и js скомпилированные из ts
 * /types/Types.ts - общие типы для проекта
 
+**Развернуть проект локально:** npm start
+
 **Макеты в фигма:** https://www.figma.com/file/l0jgte4N2dzWv5zMITIC4f/shipko_messenger?node-id=0%3A1
 
 **Хостинг проекта на Netlify:** https://distracted-swartz-d8b108.netlify.app/

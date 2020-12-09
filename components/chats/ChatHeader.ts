@@ -7,10 +7,6 @@ interface ChatHeaderProps {
 }
 
 class ChatHeader extends Component<ChatHeaderProps> {
-    constructor(props: ChatHeaderProps) {
-        super(props)
-    }
-
     template(): string {
         return `
           <div class="chats-head-avatar"></div>

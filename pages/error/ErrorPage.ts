@@ -8,10 +8,6 @@ interface ErrorPageProps {
 }
 
 export class ErrorPage extends Component<ErrorPageProps> {
-    constructor(props: ErrorPageProps) {
-        super(props)
-    }
-
     template() {
         return `
         <div>

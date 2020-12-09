@@ -10,7 +10,7 @@ render(new ErrorPage({
         eventData: {
             name: 'click',
             callback: () => {
-                location.assign('../chats/chats.html');
+                document.location.assign('../chats/chats.html');
             }
         }
     })

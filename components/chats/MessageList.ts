@@ -6,10 +6,6 @@ interface MessageListProps {
 }
 
 class MessageList extends Component<MessageListProps> {
-    constructor(props: MessageListProps) {
-        super(props)
-    }
-
     template(): string {
         return `<ul class="chats-message-list">{{messageItemList}}</ul>`
     }

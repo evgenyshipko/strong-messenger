@@ -6,10 +6,6 @@ interface ChatListProps {
 }
 
 class ChatList extends Component<ChatListProps> {
-    constructor(props: ChatListProps) {
-        super(props)
-    }
-
     template(): string {
         return `<ul class="chats-list">{{chatItemList}}</ul>`
     }

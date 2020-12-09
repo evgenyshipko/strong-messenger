@@ -1,8 +1,5 @@
 import Component from '../../utils/Component.js';
 class ChatHeader extends Component {
-    constructor(props) {
-        super(props);
-    }
     template() {
         return `
           <div class="chats-head-avatar"></div>

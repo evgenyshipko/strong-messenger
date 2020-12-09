@@ -73,43 +73,46 @@ class InputValidator {
         }
     }
     _validate(inputName, inputDisplayName, value) {
-        switch (inputName) {
-            case InputName.PASSWORD:
-            case InputName.SECOND_PASSWORD:
-            case InputName.NEW_PASSWORD_REPEAT:
-            case InputName.NEW_PASSWORD:
-            case InputName.OLD_PASSWORD:
-                return this._validateLength(inputDisplayName, value, 8);
-            case InputName.LOGIN:
-                return this._validateLength(inputDisplayName, value, 3);
-            case InputName.EMAIL:
-                return this._validateEmail(value);
-            case InputName.PHONE:
-                return this._validatePhone(value);
-            case InputName.FIRST_NAME:
-                return this._validateLength(inputDisplayName, value, 2);
-            case InputName.SECOND_NAME:
-                return this._validateLength(inputDisplayName, value, 2);
-            case InputName.LAST_NAME:
-                return this._validateLength(inputDisplayName, value, 2);
-        }
+        const obj = {
+            [InputName.PASSWORD]: this._validateLength(inputDisplayName, value, 8),
+            [InputName.SECOND_PASSWORD]: this._validateLength(inputDisplayName, value, 8),
+            [InputName.NEW_PASSWORD_REPEAT]: this._validateLength(inputDisplayName, value, 8),
+            [InputName.NEW_PASSWORD]: this._validateLength(inputDisplayName, value, 8),
+            [InputName.OLD_PASSWORD]: this._validateLength(inputDisplayName, value, 8),
+            [InputName.LOGIN]: this._validateLength(inputDisplayName, value, 3),
+            [InputName.FIRST_NAME]: this._validateLength(inputDisplayName, value, 2),
+            [InputName.SECOND_NAME]: this._validateLength(inputDisplayName, value, 2),
+            [InputName.LAST_NAME]: this._validateLength(inputDisplayName, value, 2),
+            [InputName.EMAIL]: this._validateEmail(value),
+            [InputName.PHONE]: this._validatePhone(value)
+        };
+        return obj[inputName]();
     }
     _validateLength(inputDisplayName, value, length) {
-        if (value.length < length) {
-            throw new Error(`Минимальная длина ввода поля "${inputDisplayName}": ${length}`);
-        }
+        return () => {
+            if (value.length < length) {
+                throw new Error(`Минимальная длина ввода поля "${inputDisplayName}": ${length}`);
+            }
+        };
     }
     _validateEmail(value) {
-        const matchingResult = (/\w+@\w+.[a-z]{2,3}/).exec(value);
-        if (!matchingResult || matchingResult[0].length !== value.length) {
-            throw new Error('Невалидный адрес (шаблон: example@mail.com)');
-        }
+        // источник: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+        const EMAIL_REGEXP = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const matchingResult = EMAIL_REGEXP.exec(value);
+        return () => {
+            if (!matchingResult || matchingResult[0].length !== value.length) {
+                throw new Error('Невалидный адрес (шаблон: example@mail.com)');
+            }
+        };
     }
     _validatePhone(value) {
-        const matchingResult = (/\+*(\d{1}-*\(*\)*){11,13}/).exec(value);
-        if (!matchingResult || matchingResult[0].length !== value.length) {
-            throw new Error('Невалидный телефон (шаблон: +7-999-999-99-99)');
-        }
+        return () => {
+            const PHONE_REGEXP = /\+*(\d{1}-*\(*\)*){11,13}/;
+            const matchingResult = PHONE_REGEXP.exec(value);
+            if (!matchingResult || matchingResult[0].length !== value.length) {
+                throw new Error('Невалидный телефон (шаблон: +7-999-999-99-99)');
+            }
+        };
     }
 }
 export default InputValidator;

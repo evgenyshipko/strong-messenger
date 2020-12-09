@@ -1,15 +1,9 @@
 import Component from '../../utils/Component.js';
 class Message extends Component {
-    constructor(props) {
-        super(props);
-    }
     template() {
-        let divClass = 'chats-message-outcoming';
-        if (this.props.isIncoming) {
-            divClass = 'chats-message-incoming';
-        }
+        const direction = this.props.isIncoming ? 'incoming' : 'outcoming';
         return `<li class="chats-message-list__item">
-              <div class="${divClass}">
+              <div class="chats-message-${direction}">
                 <span class="chats-message__text">
                   {{message}}
                 </span>

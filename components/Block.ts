@@ -6,10 +6,6 @@ interface BlockProps {
 }
 
 class Block extends Component<BlockProps> {
-    constructor(props: BlockProps) {
-        super(props)
-    }
-
     template(): string {
         return `<div class={{class}}>{{content}}</div>`
     }

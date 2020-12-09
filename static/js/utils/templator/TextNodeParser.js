@@ -34,27 +34,32 @@ class TextNodeParser {
     }
     // генерируем TextNode по самозакрывающемуся тэгу (например, <input />)
     _findTextNodeInSelfClosingTag(template) {
-        const openingTagObject = (/<(\w+)\b[^>]*\/?>/g).exec(template);
-        // console.log('=== _findTextNodeInSelfClosingTag ===')
-        if (openingTagObject !== null) {
-            const openingTag = openingTagObject[0];
-            const openingTagName = openingTagObject[1];
+        const SELF_CLOSING_TAG_REGEXP = /<(\w+)\b[^>]*\/?>/g;
+        const selfClosingTagObject = SELF_CLOSING_TAG_REGEXP.exec(template);
+        if (selfClosingTagObject !== null) {
+            const TAG_INDEX = 0;
+            const TAG_NAME_INDEX = 1;
+            const tag = selfClosingTagObject[TAG_INDEX];
+            const tagName = selfClosingTagObject[TAG_NAME_INDEX];
             return {
-                result: new TextNode(openingTag, openingTagName, undefined, undefined),
-                endIndex: openingTag.length
+                result: new TextNode(tag, tagName, undefined, undefined),
+                endIndex: tag.length
             };
         }
         return { result: null, endIndex: null };
     }
     // генерируем TextNode по тэгу, который закрывается и открывается (например, <div></div>)
     _findTextNodeInUsualTag(template) {
-        const openingTagObject = (/<(\w+)\b[^>]*>/g).exec(template);
+        const USUAL_TAG_REGEXP = /<(\w+)\b[^>]*>/g;
+        const openingTagObject = USUAL_TAG_REGEXP.exec(template);
         if (openingTagObject == null) {
             return { result: null, endIndex: null };
         }
+        const TAG_INDEX = 0;
+        const TAG_NAME_INDEX = 1;
         const startIndex = openingTagObject.index;
-        const openingTag = openingTagObject[0];
-        const openingTagName = openingTagObject[1];
+        const openingTag = openingTagObject[TAG_INDEX];
+        const openingTagName = openingTagObject[TAG_NAME_INDEX];
         const TAG_REGEXP = new RegExp(`<[/]?(${openingTagName})+\\b[^>]*>`, 'g');
         let endIndex = null;
         let result = null;
@@ -62,7 +67,8 @@ class TextNodeParser {
         let resultString = null;
         // поиск закрывающего тэга на том же уровне вложенности, что и открывающий
         while ((result = TAG_REGEXP.exec(template))) {
-            const tag = result[0];
+            const TAG_INDEX = 0;
+            const tag = result[TAG_INDEX];
             if (this._isOpeningTag(tag)) {
                 counter++;
             }
@@ -82,7 +88,8 @@ class TextNodeParser {
         return { result: result, endIndex: endIndex };
     }
     _isStartsWithSelfClosingTag(template) {
-        const result = (/<(\w+)\b[^>]*\/>/g).exec(template.trim());
+        const SELF_CLOSING_TAG_REGEXP = /<(\w+)\b[^>]*\/>/g;
+        const result = SELF_CLOSING_TAG_REGEXP.exec(template.trim());
         return !!result && result.index === 0;
     }
     _isOpeningTag(tag) {

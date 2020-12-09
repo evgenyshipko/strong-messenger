@@ -3,7 +3,7 @@
 
 export type Nullable<T> = T | null
 
-export type Context = {[key: string]: any}
+export type Context = Record<string, any>
 
 export interface EventData {
     name: string,

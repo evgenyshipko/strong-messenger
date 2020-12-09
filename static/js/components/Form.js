@@ -2,9 +2,6 @@ import Component from '../utils/Component.js';
 import FormValidator from '../utils/validator/FormValidator.js';
 import InputValidator from '../utils/validator/InputValidator.js';
 class Form extends Component {
-    constructor(props) {
-        super(props);
-    }
     addValidator() {
         const nodeList = this.getContent();
         if (nodeList) {

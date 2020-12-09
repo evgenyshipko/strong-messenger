@@ -7,15 +7,8 @@ interface HeaderProps {
 }
 
 class Header extends Component<HeaderProps> {
-    constructor(props: HeaderProps) {
-        super(props)
-    }
-
     template(): string {
-        let level = this.props.level
-        if (!level){
-            level = '1'
-        }
+        const level = this.props.level || '1'
         return `<h${level} class={{class}}>{{text}}</h${level}>`
     }
 }

@@ -1,8 +1,9 @@
-const express = require('express');
-const app = express();
-const PORT = 4000;
+const express = require('express')
+const app = express()
+const PORT = 4000
 
-app.use(express.static(__dirname));
+app.use(express.static('/home/shipko/devel/messenger-yandex/static/'))
+console.log(__dirname)
 app.listen(PORT, function () {
-  console.log(`Messenger app listen on port ${PORT}!`);
-});
+    console.log(`Messenger app listen on port ${PORT}!`)
+})

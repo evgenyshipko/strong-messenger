@@ -28,15 +28,16 @@ class TextNode {
     _handleTextContentParsing(target: HTMLElement, context: Context) {
         if (this.textContent) {
             if (this._isParsable(this.textContent)) {
-                const pathObj = (/\{\{(.*?)}}/gi).exec(this.textContent)
+                const TEMPLATOR_ATTRIBUTE_REGEXP = /\{\{(.*?)}}/gi
+                const pathObj = TEMPLATOR_ATTRIBUTE_REGEXP.exec(this.textContent)
                 if (pathObj) {
-                    const path = pathObj[1]
+                    const PATH_INDEX = 1
+                    const path = pathObj[PATH_INDEX]
                     const data = this._getDataFromContext(context, path)
                     if (data === undefined) {
                         console.log(this, path, context)
                         throw new Error(`${path} attribute is undefined in context`)
                     }
-                    // console.log('_handleTextContentParsing', path, data)
                     if (Array.isArray(data) && data[0] instanceof Component) {
                         data.forEach((component: Component<Context>) => {
                             component.getContent()!.forEach(node => {
@@ -66,9 +67,11 @@ class TextNode {
     _addEventListener(target: HTMLElement, context: Context): void {
         const availableEvents = ['click', 'focus', 'submit',
             'mousemove', 'mouseup', 'mousedown', 'mouseout', 'mouseover', 'contextmenu']
-        const eventObj = (/@event=\{\{(\w+)}}/gi).exec(this.openingTag!)
+        const EVENT_REGEXP = /@event=\{\{(\w+)}}/gi
+        const eventObj = EVENT_REGEXP.exec(this.openingTag!)
         if (eventObj) {
-            const path = eventObj[1]
+            const PATH_INDEX = 1
+            const path = eventObj[PATH_INDEX]
             const data: EventData = this._getDataFromContext(context, path)
             if (data && data.callback instanceof Function && availableEvents.includes(data.name)) {
                 target.addEventListener(data.name, data.callback)
@@ -85,7 +88,8 @@ class TextNode {
     }
 
     _isParsable(str: string):boolean {
-        return !!(/\{\{(.*?)}}/gi).exec(str)
+        const TEMPLATOR_ATTRIBUTE_REGEXP = /\{\{(.*?)}}/gi
+        return !!TEMPLATOR_ATTRIBUTE_REGEXP.exec(str)
     }
 
     _setClassName(target: HTMLElement, context: Context): void {
@@ -96,17 +100,21 @@ class TextNode {
     }
 
     _getClassName(context: Context): Nullable<string[]> {
-        const classNameObj = (/class=\{\{(.*?)}}/gi).exec(this.openingTag!)
+        const CLASS_AS_TEMPLATOR_ATTRIBUTE_REGEXP = /class=\{\{(.*?)}}/gi
+        const classNameObj = CLASS_AS_TEMPLATOR_ATTRIBUTE_REGEXP.exec(this.openingTag!)
         if (classNameObj) {
-            const path = classNameObj[1]
+            const PATH_INDEX = 1
+            const path = classNameObj[PATH_INDEX]
             const classNameStr: string = this._getDataFromContext(context, path)
             if (classNameStr) {
                 return classNameStr.split(' ')
             }
         }
-        const simpleStringClassNameObj = (/class=["'](.*?)["']/g).exec(this.openingTag!)
+        const CLASS_AS_STRING_REGEXP = /class=["'](.*?)["']/g
+        const simpleStringClassNameObj = CLASS_AS_STRING_REGEXP.exec(this.openingTag!)
         if (simpleStringClassNameObj) {
-            const classNameStr: string = simpleStringClassNameObj[1]
+            const CLASS_NAME_INDEX = 1
+            const classNameStr = simpleStringClassNameObj[CLASS_NAME_INDEX]
             if (classNameStr) {
                 return classNameStr.split(' ')
             }
@@ -116,13 +124,15 @@ class TextNode {
 
     _setAttributes(target: HTMLElement, context: Context): void {
         const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form']
-        const REGEXP = /(\w+)=\{\{(.*?)}}/gi
+        const ATTRIBUTES_REGEXP = /(\w+)=\{\{(.*?)}}/gi
         let result = null
-        while ((result = REGEXP.exec(this.openingTag!))) {
-            const attrName = result[1]
-            const attrPath = result[2]
+        while ((result = ATTRIBUTES_REGEXP.exec(this.openingTag!))) {
+            const ATTR_INDEX = 1
+            const PATH_INDEX = 2
+            const attrName = result[ATTR_INDEX]
+            const attrPath = result[PATH_INDEX]
             if (availableAttributes.includes(attrName)) {
-                const attrValue: any = this._getDataFromContext(context, attrPath)
+                const attrValue = this._getDataFromContext(context, attrPath)
                 if (attrValue) {
                     target.setAttribute(attrName, attrValue)
                 }
@@ -130,13 +140,10 @@ class TextNode {
         }
     }
 
-    _getDataFromContext(context: Context, path: string): any {
+    _getDataFromContext(context: Context, path: string) {
         const keys = path.split('.')
-        let result = context
-        for (const key of keys) {
-            result = result[key]
-        }
-        return result
+        const firstKey = keys[0]
+        return keys.slice(1).reduce((acc, key) => (acc = acc[key]), context[firstKey])
     }
 }
 export default TextNode

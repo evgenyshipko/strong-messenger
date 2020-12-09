@@ -8,10 +8,6 @@ interface ModalProps {
 }
 
 class Modal extends Component<ModalProps> {
-    constructor(props: ModalProps) {
-        super(props)
-    }
-
     template(): string {
         return `
             <div class={{backgroundClass}}>

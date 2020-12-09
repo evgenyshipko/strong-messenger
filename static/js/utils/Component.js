@@ -20,14 +20,13 @@ class Component {
             if (!nextProps) {
                 return;
             }
-            this.eventManager().emit(Event.FLOW_CDU, this.props, nextProps);
+            this.eventManager.emit(Event.FLOW_CDU, this.props, nextProps);
         };
-        const eventManager = new EventManager();
         this.props = this._makePropsProxy(props);
         this._templator = new Templator(this.template());
-        this.eventManager = () => eventManager;
-        this._registerEvents(eventManager);
-        eventManager.emit(Event.INIT);
+        this.eventManager = new EventManager();
+        this._registerEvents(this.eventManager);
+        this.eventManager.emit(Event.INIT);
     }
     _registerEvents(eventManager) {
         // console.log('_registerEvents')
@@ -45,7 +44,7 @@ class Component {
     }
     init() {
         this._createResources();
-        this.eventManager().emit(Event.FLOW_CDM);
+        this.eventManager.emit(Event.FLOW_CDM);
         // console.log('init', this.getContent())
     }
     _componentDidMount() {
@@ -91,7 +90,7 @@ class Component {
         return new Proxy(props, {
             set(target, prorerty, value) {
                 target[prorerty] = value;
-                self.eventManager().emit(Event.FLOW_RENDER);
+                self.eventManager.emit(Event.FLOW_RENDER);
                 return true;
             },
             deleteProperty() {

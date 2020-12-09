@@ -1,13 +1,8 @@
-import Input, { InputProps } from './Input.js'
+import Input from './Input.js'
 
 /* global HTMLFormElement, HTMLInputElement */
 
 class FormInput extends Input {
-
-    constructor(props: InputProps) {
-        super(props)
-    }
-
     template() {
         return `<div class="form-item-block-validated">
                 ${super.template()}

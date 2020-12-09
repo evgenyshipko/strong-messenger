@@ -161,7 +161,7 @@ const functionsBlockComponents = [
         eventData: {
             name: 'click',
             callback: () => {
-                location.assign('../profile/profile.html')
+                document.location.assign('../profile/profile.html')
             }
         }
     }),

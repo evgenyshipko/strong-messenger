@@ -8,10 +8,6 @@ export interface InputProps {
 }
 
 class Input extends Component<InputProps> {
-    constructor(props: InputProps) {
-        super(props)
-    }
-
     template():string {
         return '<input class={{class}} name={{inputName}} placeholder={{placeholder}} type={{type}}/>'
     }

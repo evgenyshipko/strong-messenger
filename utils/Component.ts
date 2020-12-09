@@ -18,17 +18,16 @@ enum Event {
 
 class Component<T> {
     props: T
-    eventManager: () => EventManager
+    eventManager: EventManager
     _elements: HTMLElement[] = []
     _templator: Templator
 
     constructor(props: T) {
-        const eventManager = new EventManager()
         this.props = this._makePropsProxy(props)
         this._templator = new Templator(this.template())
-        this.eventManager = () => eventManager
-        this._registerEvents(eventManager)
-        eventManager.emit(Event.INIT)
+        this.eventManager = new EventManager()
+        this._registerEvents(this.eventManager)
+        this.eventManager.emit(Event.INIT)
     }
 
     _registerEvents(eventManager: EventManager) {
@@ -50,7 +49,7 @@ class Component<T> {
 
     init() {
         this._createResources()
-        this.eventManager().emit(Event.FLOW_CDM)
+        this.eventManager.emit(Event.FLOW_CDM)
         // console.log('init', this.getContent())
     }
 
@@ -79,7 +78,7 @@ class Component<T> {
         if (!nextProps) {
             return
         }
-        this.eventManager().emit(Event.FLOW_CDU, this.props, nextProps)
+        this.eventManager.emit(Event.FLOW_CDU, this.props, nextProps)
     };
 
     _render() {
@@ -110,7 +109,7 @@ class Component<T> {
         return new Proxy(props, {
             set(target: any, prorerty: PropertyKey, value: any): boolean {
                 target[prorerty] = value
-                self.eventManager().emit(Event.FLOW_RENDER)
+                self.eventManager.emit(Event.FLOW_RENDER)
                 return true
             },
             deleteProperty(): boolean {
