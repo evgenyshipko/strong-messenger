@@ -1,9 +1,10 @@
-import render from '../../utils/renderDom.js'
-import Button from '../../components/Button.js'
-import { InputName } from '../../utils/validator/InputValidator.js'
-import FormInput from '../../components/FormInput.js'
-import Form from '../../components/Form.js'
-import SignupPage from './SignupPage.js'
+import Button from '../../components/Button'
+import {InputName} from '../../utils/validator/InputValidator'
+import FormInput from '../../components/FormInput'
+import Form from '../../components/Form'
+import SignupPage from './SignupPage'
+import Router from '../../utils/router/Router'
+import Path from '../../constants/Path'
 
 /* global HTMLFormElement, HTMLInputElement */
 
@@ -77,7 +78,7 @@ const form = new Form({
 
 form.addValidator()
 
-render(new SignupPage({
+export const signup = new SignupPage({
     form: form,
     entranceBtn: new Button({
         text: 'Войти',
@@ -85,8 +86,8 @@ render(new SignupPage({
         eventData: {
             name: 'click',
             callback: () => {
-                document.location.assign('../signin/signin.html')
+                new Router('.app').go(Path.SIGNIN)
             }
         }
     })
-}))
+})

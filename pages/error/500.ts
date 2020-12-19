@@ -1,6 +1,8 @@
-import render from '../../utils/renderDom.js'
-import { ErrorPage } from './ErrorPage.js'
-import Button from '../../components/Button.js'
+import render from '../../utils/renderDom'
+import { ErrorPage } from './ErrorPage'
+import Button from '../../components/Button'
+import Path from '../../constants/Path'
+import Router from '../../utils/router/Router'
 
 render(new ErrorPage({
     errorNumber: '500',
@@ -12,7 +14,7 @@ render(new ErrorPage({
             eventData: {
                 name: 'click',
                 callback: () => {
-                    document.location.assign('../chats/chats.html')
+                    new Router('.app').go(Path.CHATS)
                 }
             }
         }

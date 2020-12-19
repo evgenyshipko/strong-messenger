@@ -1,4 +1,4 @@
-import Message from '../../components/chats/Message.js'
+import Message from '../../components/chats/Message'
 
 export const messageItemList1 = [
     new Message({

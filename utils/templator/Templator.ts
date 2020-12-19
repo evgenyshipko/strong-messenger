@@ -1,4 +1,4 @@
-import TextNodeParser from './TextNodeParser.js'
+import TextNodeParser from './TextNodeParser'
 import { Context } from '../../types/Types'
 
 /* global HTMLElement */
@@ -15,6 +15,10 @@ class Templator {
         return textNodes.map((textNode) => {
             return textNode.toHTMLElement(context)
         })
+    }
+
+    sum(lhs: number, rhs: number) {
+        return lhs + rhs
     }
 }
 

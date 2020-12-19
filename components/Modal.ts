@@ -1,4 +1,4 @@
-import Component from '../utils/Component.js'
+import Component from '../utils/Component'
 import { Context } from '../types/Types'
 
 interface ModalProps {

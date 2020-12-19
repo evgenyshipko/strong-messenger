@@ -16,10 +16,7 @@
     "typeRoots" : ["./node_modules/@types"]
   },
   "include": [
-    "pages/**/*.ts",
-    "templates/*.ts",
-    "utils/templator/*.ts",
-    "utils/templator/example/*.ts"
+    "*.ts"
   ],
-  "exclude": ["node_modues"]
+  "exclude": ["node_modules","test"]
 }

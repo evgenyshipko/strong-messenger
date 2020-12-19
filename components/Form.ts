@@ -1,8 +1,8 @@
-import Component from '../utils/Component.js'
-import FormValidator from '../utils/validator/FormValidator.js'
-import InputValidator from '../utils/validator/InputValidator.js'
-import FormInput from './FormInput.js'
-import Button from './Button.js'
+import Component from '../utils/Component'
+import FormValidator from '../utils/validator/FormValidator'
+import InputValidator from '../utils/validator/InputValidator'
+import FormInput from './FormInput'
+import Button from './Button'
 
 /* global HTMLFormElement, HTMLInputElement */
 

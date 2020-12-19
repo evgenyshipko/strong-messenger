@@ -1,6 +1,6 @@
-import Component from '../../utils/Component.js'
-import Form from "../../components/Form.js";
-import Button from "../../components/Button.js";
+import Component from '../../utils/Component'
+import Form from "../../components/Form";
+import Button from "../../components/Button";
 
 interface SigninPageProps {
     form: Form,

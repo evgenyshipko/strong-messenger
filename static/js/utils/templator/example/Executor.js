@@ -1,5 +1,5 @@
-// import Templator from '../Templator.js'
-import TextNodeParser from '../TextNodeParser.js';
+// import Templator from '../Templator.js.js.js.js.js.js'
+import TextNodeParser from '../TextNodeParser.js.js.js.js.js.js';
 // const TEMPLATE = `
 //     <div>
 //         <div>

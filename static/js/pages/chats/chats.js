@@ -11,6 +11,8 @@ import Modal from '../../components/Modal.js';
 import Header from '../../components/Header.js';
 import { InputName } from '../../utils/validator/InputValidator.js';
 import Block from '../../components/Block.js';
+import Router from '../../utils/router/Router.js';
+import Path from '../../constants/Path.js';
 // создаем модальные окна и попапы
 const addUserModal = new Modal({
     modalClass: 'add-user-modal',
@@ -33,7 +35,7 @@ const addUserModal = new Modal({
                 name: 'click',
                 callback: () => {
                     addUserModal.hide();
-                    chatsPage.show('flex');
+                    chats.show('flex');
                 }
             }
         })
@@ -60,7 +62,7 @@ const deleteUserModal = new Modal({
                 name: 'click',
                 callback: () => {
                     deleteUserModal.hide();
-                    chatsPage.show('flex');
+                    chats.show('flex');
                 }
             }
         })
@@ -92,7 +94,7 @@ const actionsPopup = new Block({
                 name: 'click',
                 callback: () => {
                     addUserModal.show('flex');
-                    chatsPage.hide();
+                    chats.hide();
                 }
             }
         }),
@@ -104,7 +106,7 @@ const actionsPopup = new Block({
                 name: 'click',
                 callback: () => {
                     deleteUserModal.show('flex');
-                    chatsPage.hide();
+                    chats.hide();
                 }
             }
         }),
@@ -116,7 +118,7 @@ const actionsPopup = new Block({
                 name: 'click',
                 callback: () => {
                     deleteChatModal.show('flex');
-                    chatsPage.hide();
+                    chats.hide();
                 }
             }
         })
@@ -141,7 +143,7 @@ const deleteChatModal = new Modal({
                 name: 'click',
                 callback: () => {
                     deleteChatModal.hide();
-                    chatsPage.show('flex');
+                    chats.show('flex');
                 }
             }
         })
@@ -155,7 +157,7 @@ const functionsBlockComponents = [
         eventData: {
             name: 'click',
             callback: () => {
-                document.location.assign('../profile/profile.html');
+                new Router('.app').go(Path.PROFILE);
             }
         }
     }),
@@ -179,7 +181,7 @@ const chatItemList = [
                 chatHeader.setProps({
                     chatName: 'Вася'
                 });
-                chatsPage.setProps({
+                chats.setProps({
                     chatHeader: chatHeader
                 });
             }
@@ -198,7 +200,7 @@ const chatItemList = [
                 chatHeader.setProps({
                     chatName: 'Анна'
                 });
-                chatsPage.setProps({
+                chats.setProps({
                     chatHeader: chatHeader
                 });
             }
@@ -257,7 +259,7 @@ const footerComponents = [
         class: 'chats-footer-send-btn'
     })
 ];
-const chatsPage = new ChatsPage({
+export const chats = new ChatsPage({
     functionsBlockComponents: functionsBlockComponents,
     footerComponents: footerComponents,
     chatList: new ChatList({
@@ -271,7 +273,7 @@ actionsPopup.hide();
 addUserModal.hide();
 deleteChatModal.hide();
 deleteUserModal.hide();
-render(chatsPage);
+// render(chats)
 render(addUserModal);
 render(deleteChatModal);
 render(deleteUserModal);

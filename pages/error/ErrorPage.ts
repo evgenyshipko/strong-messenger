@@ -1,5 +1,5 @@
-import Component from '../../utils/Component.js'
-import Button from "../../components/Button.js";
+import Component from '../../utils/Component'
+import Button from "../../components/Button";
 
 interface ErrorPageProps {
     errorNumber: string,

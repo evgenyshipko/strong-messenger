@@ -1,6 +1,6 @@
-import { EventManager } from './EventManager.js'
+import { EventManager } from './EventManager'
 import { Nullable } from '../types/Types'
-import Templator from './templator/Templator.js'
+import Templator from './templator/Templator'
 
 /* global HTMLElement, EventListenerOrEventListenerObject */
 

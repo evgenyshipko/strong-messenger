@@ -1,7 +1,7 @@
-import Component from '../../utils/Component.js'
-import Button from '../../components/Button.js'
-import Form from '../../components/Form.js'
-import Avatar from '../../components/Avatar.js'
+import Component from '../../utils/Component'
+import Button from '../../components/Button'
+import Form from '../../components/Form'
+import Avatar from '../../components/Avatar'
 
 interface ProfilePageProps {
     avatar: Avatar,

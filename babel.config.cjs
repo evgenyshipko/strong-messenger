@@ -7,5 +7,8 @@ module.exports = api => {
         '@babel/preset-env'
     ]
 
-    return { presets }
+    return {
+        presets,
+        "plugins": ["@babel/plugin-proposal-class-properties"]
+    }
 }

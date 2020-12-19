@@ -1,5 +1,5 @@
 import { Nullable, Context, EventData } from '../../types/Types'
-import Component from '../Component.js'
+import Component from '../Component'
 /* global HTMLElement, EventListenerOrEventListenerObject */
 
 class TextNode {

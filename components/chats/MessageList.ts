@@ -1,5 +1,5 @@
-import Component from '../../utils/Component.js'
-import Message from './Message.js'
+import Component from '../../utils/Component'
+import Message from './Message'
 
 interface MessageListProps {
     messageItemList: Message[]

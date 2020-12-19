@@ -7,6 +7,8 @@ import FormInputLabeled from '../../components/FormInputLabeled.js';
 import Modal from '../../components/Modal.js';
 import Header from '../../components/Header.js';
 import Avatar from '../../components/Avatar.js';
+import Path from '../../constants/Path.js';
+import Router from '../../utils/router/Router.js';
 const formId = 'profile-form';
 const inputClass = 'profile-form-item__input';
 const inputWrapperClass = 'profile-form-item';
@@ -24,7 +26,7 @@ const buttonListMain = [
             name: 'click',
             callback: () => {
                 // вешаем на кнопку отображение формы изменения пароля
-                profilePage.setProps({
+                profile.setProps({
                     form: formChangePassword,
                     buttonList: buttonListChangePassword
                 });
@@ -37,7 +39,7 @@ const buttonListMain = [
         eventData: {
             name: 'click',
             callback: () => {
-                document.location.assign('../signin/signin.html');
+                new Router('.app').go(Path.SIGNIN);
             }
         }
     })
@@ -103,7 +105,7 @@ const buttonListChangePassword = [
         eventData: {
             name: 'click',
             callback: () => {
-                profilePage.setProps({
+                profile.setProps({
                     form: formMain,
                     buttonList: buttonListMain
                 });
@@ -156,19 +158,19 @@ const modalWindow = new Modal({
             eventData: {
                 name: 'click',
                 callback: () => {
-                    profilePage.show('flex');
+                    profile.show('flex');
                     modalWindow.hide();
                 }
             }
         })
     ]
 });
-const profilePage = new ProfilePage({
+export const profile = new ProfilePage({
     avatar: new Avatar({
         eventData: {
             name: 'click',
             callback: () => {
-                profilePage.hide();
+                profile.hide();
                 modalWindow.show('flex');
             }
         }
@@ -179,7 +181,7 @@ const profilePage = new ProfilePage({
         eventData: {
             name: 'click',
             callback: () => {
-                document.location.assign('../chats/chats.html');
+                new Router('.app').go(Path.CHATS);
             }
         }
     }),
@@ -193,6 +195,6 @@ modalWindow.hide();
 formMain.addValidator();
 formChangePassword.addValidator();
 // рисуем страницу
-render(profilePage);
+// render(profile)
 render(modalWindow);
 //# sourceMappingURL=profile.js.map

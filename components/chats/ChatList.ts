@@ -1,5 +1,5 @@
-import Component from '../../utils/Component.js'
-import Chat from './Chat.js'
+import Component from '../../utils/Component'
+import Chat from './Chat'
 
 interface ChatListProps {
     chatItemList: Chat[]

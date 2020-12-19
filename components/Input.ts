@@ -1,4 +1,4 @@
-import Component from '../utils/Component.js'
+import Component from '../utils/Component'
 
 export interface InputProps {
     class: string,

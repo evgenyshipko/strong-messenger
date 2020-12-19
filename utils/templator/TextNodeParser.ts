@@ -1,4 +1,4 @@
-import TextNode from './TextNode.js'
+import TextNode from './TextNode'
 import { Nullable } from '../../types/Types'
 
 interface TextNodeData {

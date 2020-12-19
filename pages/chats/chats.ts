@@ -1,16 +1,18 @@
-import Button from '../../components/Button.js'
-import Input from '../../components/Input.js'
-import Chat from '../../components/chats/Chat.js'
-import ChatHeader from '../../components/chats/ChatHeader.js'
-import MessageList from '../../components/chats/MessageList.js'
-import ChatsPage from './ChatsPage.js'
-import ChatList from '../../components/chats/ChatList.js'
-import render from '../../utils/renderDom.js'
-import { messageItemList1, messageItemList2 } from './MessageMock.js'
-import Modal from '../../components/Modal.js'
-import Header from '../../components/Header.js'
-import { InputName } from '../../utils/validator/InputValidator.js'
-import Block from '../../components/Block.js'
+import Button from '../../components/Button'
+import Input from '../../components/Input'
+import Chat from '../../components/chats/Chat'
+import ChatHeader from '../../components/chats/ChatHeader'
+import MessageList from '../../components/chats/MessageList'
+import ChatsPage from './ChatsPage'
+import ChatList from '../../components/chats/ChatList'
+import render from '../../utils/renderDom'
+import { messageItemList1, messageItemList2 } from './MessageMock'
+import Modal from '../../components/Modal'
+import Header from '../../components/Header'
+import { InputName } from '../../utils/validator/InputValidator'
+import Block from '../../components/Block'
+import Router from '../../utils/router/Router'
+import Path from '../../constants/Path'
 
 // создаем модальные окна и попапы
 const addUserModal = new Modal({
@@ -34,7 +36,7 @@ const addUserModal = new Modal({
                 name: 'click',
                 callback: () => {
                     addUserModal.hide()
-                    chatsPage.show('flex')
+                    chats.show('flex')
                 }
             }
         })
@@ -62,7 +64,7 @@ const deleteUserModal = new Modal({
                 name: 'click',
                 callback: () => {
                     deleteUserModal.hide()
-                    chatsPage.show('flex')
+                    chats.show('flex')
                 }
             }
         })
@@ -96,7 +98,7 @@ const actionsPopup = new Block({
                 name: 'click',
                 callback: () => {
                     addUserModal.show('flex')
-                    chatsPage.hide()
+                    chats.hide()
                 }
             }
         }),
@@ -108,7 +110,7 @@ const actionsPopup = new Block({
                 name: 'click',
                 callback: () => {
                     deleteUserModal.show('flex')
-                    chatsPage.hide()
+                    chats.hide()
                 }
             }
         }),
@@ -120,7 +122,7 @@ const actionsPopup = new Block({
                 name: 'click',
                 callback: () => {
                     deleteChatModal.show('flex')
-                    chatsPage.hide()
+                    chats.hide()
                 }
             }
         })
@@ -146,7 +148,7 @@ const deleteChatModal = new Modal({
                 name: 'click',
                 callback: () => {
                     deleteChatModal.hide()
-                    chatsPage.show('flex')
+                    chats.show('flex')
                 }
             }
         })
@@ -161,7 +163,7 @@ const functionsBlockComponents = [
         eventData: {
             name: 'click',
             callback: () => {
-                document.location.assign('../profile/profile.html')
+                new Router('.app').go(Path.PROFILE)
             }
         }
     }),
@@ -186,7 +188,7 @@ const chatItemList = [
                 chatHeader.setProps({
                     chatName: 'Вася'
                 })
-                chatsPage.setProps({
+                chats.setProps({
                     chatHeader: chatHeader
                 })
             }
@@ -205,7 +207,7 @@ const chatItemList = [
                 chatHeader.setProps({
                     chatName: 'Анна'
                 })
-                chatsPage.setProps({
+                chats.setProps({
                     chatHeader: chatHeader
                 })
             }
@@ -266,7 +268,7 @@ const footerComponents = [
     })
 ]
 
-const chatsPage = new ChatsPage({
+export const chats = new ChatsPage({
     functionsBlockComponents: functionsBlockComponents,
     footerComponents: footerComponents,
     chatList: new ChatList({
@@ -282,7 +284,7 @@ addUserModal.hide()
 deleteChatModal.hide()
 deleteUserModal.hide()
 
-render(chatsPage)
+// render(chats)
 render(addUserModal)
 render(deleteChatModal)
 render(deleteUserModal)
