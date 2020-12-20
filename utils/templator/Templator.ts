@@ -16,10 +16,6 @@ class Templator {
             return textNode.toHTMLElement(context)
         })
     }
-
-    sum(lhs: number, rhs: number) {
-        return lhs + rhs
-    }
 }
 
 export default Templator

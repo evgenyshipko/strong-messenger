@@ -107,17 +107,26 @@ class TextNodeParser {
     }
 
     _isStartsWithSelfClosingTag(template: string) {
+        if (typeof template !== 'string') {
+            throw new Error('invalid data type')
+        }
         const SELF_CLOSING_TAG_REGEXP = /<(\w+)\b[^>]*\/>/g
         const result = SELF_CLOSING_TAG_REGEXP.exec(template.trim())
         return !!result && result.index === 0
     }
 
     _isOpeningTag(tag: string):boolean {
+        if (typeof tag !== 'string') {
+            throw new Error('invalid data type')
+        }
         const OPENING_TAG_REGEXP = /<\w+\b[^/>]*>/g
         return !!OPENING_TAG_REGEXP.exec(tag)
     }
 
     _isClosingTag(tag: string):boolean {
+        if (typeof tag !== 'string') {
+            throw new Error('invalid data type')
+        }
         const CLOSING_TAG_REGEXP = /<\/\w+\b[^>]*>/g
         return !!CLOSING_TAG_REGEXP.exec(tag)
     }
