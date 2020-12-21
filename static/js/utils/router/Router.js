@@ -17,13 +17,17 @@ class Router {
         this.routes.push(route);
         return this;
     }
-    start() {
+    start(path) {
         console.log('window.location.pathname', window.location.pathname);
         window.onpopstate = (event) => {
-            console.log('onpopstate', window.location.pathname);
             this._onRoute(event.currentTarget.location.pathname);
         };
-        this._onRoute(window.location.pathname);
+        if (path) {
+            this._onRoute(path);
+        }
+        else {
+            this._onRoute(window.location.pathname);
+        }
     }
     _onRoute(pathname) {
         console.log('_onRoute', pathname);

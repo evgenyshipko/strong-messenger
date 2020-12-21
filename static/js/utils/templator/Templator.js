@@ -10,9 +10,6 @@ class Templator {
             return textNode.toHTMLElement(context);
         });
     }
-    sum(lhs, rhs) {
-        return lhs + rhs;
-    }
 }
 export default Templator;
 //# sourceMappingURL=Templator.js.map

@@ -1,7 +1,7 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
 import TextNodeParser from '../../utils/templator/TextNodeParser'
-import TextNode from "../../utils/templator/TextNode";
+import TextNode from '../../utils/templator/TextNode'
 
 describe('TextNodeParser', function() {
     function getInstance(template: string) {
@@ -29,15 +29,6 @@ describe('TextNodeParser', function() {
             it('Рандомная строка', function() {
                 assert.equal(emptyTextNodeParser._isOpeningTag('аоп_675ваповс:%;5'), false)
             })
-            it('Null', function() {
-                assert.throw(() => { emptyTextNodeParser._isOpeningTag(null) }, Error)
-            })
-            it('Число', function() {
-                assert.throw(() => { emptyTextNodeParser._isOpeningTag(1) }, Error)
-            })
-            it('Объект', function() {
-                assert.throw(() => { emptyTextNodeParser._isOpeningTag({ a: 1 }) }, Error)
-            })
         })
 
         describe('_isClosingTag', function() {
@@ -59,15 +50,6 @@ describe('TextNodeParser', function() {
             })
             it('Рандомная строка', function() {
                 assert.equal(emptyTextNodeParser._isClosingTag('аоп_675ваповс:%;5'), false)
-            })
-            it('Null', function() {
-                assert.throw(() => { emptyTextNodeParser._isClosingTag(null) }, Error)
-            })
-            it('Число', function() {
-                assert.throw(() => { emptyTextNodeParser._isClosingTag(1) }, Error)
-            })
-            it('Объект', function() {
-                assert.throw(() => { emptyTextNodeParser._isClosingTag({ a: 1 }) }, Error)
             })
         })
 
@@ -94,15 +76,6 @@ describe('TextNodeParser', function() {
             it('Рандомная строка', function() {
                 assert.equal(emptyTextNodeParser._isStartsWithSelfClosingTag('аоп_675ваповс:%;5'), false)
             })
-            it('Null', function() {
-                assert.throw(() => { emptyTextNodeParser._isStartsWithSelfClosingTag(null) }, Error)
-            })
-            it('Число', function() {
-                assert.throw(() => { emptyTextNodeParser._isStartsWithSelfClosingTag(1) }, Error)
-            })
-            it('Объект', function() {
-                assert.throw(() => { emptyTextNodeParser._isStartsWithSelfClosingTag({ a: 1 }) }, Error)
-            })
         })
 
         describe('_isParsable', function() {
@@ -128,27 +101,27 @@ describe('TextNodeParser', function() {
             it('Рандомная строка', function() {
                 assert.equal(emptyTextNodeParser._isParsable('аоп_675ваповс:%;5'), false)
             })
-            it('Null', function() {
-                assert.throw(() => { emptyTextNodeParser._isParsable(null) }, Error)
-            })
-            it('Число', function() {
-                assert.throw(() => { emptyTextNodeParser._isParsable(1) }, Error)
-            })
-            it('Объект', function() {
-                assert.throw(() => { emptyTextNodeParser._isParsable({ a: 1 }) }, Error)
-            })
         })
     })
 
     describe('_generateTextNode', function () {
         const emptyTextNodeParser = getInstance('')
-        it('возвращает TextNode без children', function() {
+        it('entrails - простой текст, возвращает TextNode без children', function() {
             const result = emptyTextNodeParser._generateTextNode('<div content >', 'div', 'some_text')
             assert.equal(result instanceof TextNode, true)
             assert.equal(result.textContent, 'some_text')
             assert.equal(result.tagName, 'div')
             assert.equal(result.openingTag, '<div content >')
             assert.equal(result.children, undefined)
+        })
+        it('entrails содержит в себе тег, возвращает TextNode с children', function() {
+            const result = emptyTextNodeParser._generateTextNode('<div content >', 'div', '<input />')
+            assert.equal(result instanceof TextNode, true)
+            assert.equal(result.textContent, undefined)
+            assert.equal(result.tagName, 'div')
+            assert.equal(result.openingTag, '<div content >')
+            assert.equal(Array.isArray(result.children), true)
+            assert.equal(result.children![0] instanceof TextNode, true)
         })
     })
 })

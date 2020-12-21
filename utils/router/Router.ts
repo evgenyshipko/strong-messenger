@@ -33,13 +33,16 @@ class Router {
         return this
     }
 
-    start() {
+    start(path?: string) {
         console.log('window.location.pathname', window.location.pathname)
         window.onpopstate = (event: Event) => {
-            console.log('onpopstate', window.location.pathname)
             this._onRoute((event.currentTarget as Window).location.pathname)
         }
-        this._onRoute(window.location.pathname)
+        if (path) {
+            this._onRoute(path)
+        } else {
+            this._onRoute(window.location.pathname)
+        }
     }
 
     _onRoute(pathname: string) {
