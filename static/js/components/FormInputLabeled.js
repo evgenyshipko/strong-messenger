@@ -1,4 +1,4 @@
-import FormInput from './FormInput.js';
+import FormInput from './FormInput';
 class FormInputLabeled extends FormInput {
     constructor(props) {
         super(props);

@@ -1,7 +1,7 @@
-import { ErrorPage } from './ErrorPage.js';
-import Button from '../../components/Button.js';
-import Path from '../../constants/Path.js';
-import Router from '../../utils/router/Router.js';
+import { ErrorPage } from './ErrorPage';
+import Button from '../../components/Button';
+import Path from '../../constants/Path';
+import Router from '../../utils/router/Router';
 export const notFoundPage = new ErrorPage({
     errorNumber: '404',
     pageText: 'Страница не найдена',

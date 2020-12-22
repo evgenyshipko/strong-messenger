@@ -1,4 +1,4 @@
-import Component from '../Component.js';
+import Component from '../Component';
 /* global HTMLElement, EventListenerOrEventListenerObject */
 class TextNode {
     constructor(openingTag, tagName, children, textContent) {
@@ -113,7 +113,7 @@ class TextNode {
         return null;
     }
     _setAttributes(target, context) {
-        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form'];
+        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form', 'value'];
         const ATTRIBUTES_REGEXP = /(\w+)=\{\{(.*?)}}/gi;
         let result = null;
         while ((result = ATTRIBUTES_REGEXP.exec(this.openingTag))) {

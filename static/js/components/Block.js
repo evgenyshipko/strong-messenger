@@ -1,4 +1,4 @@
-import Component from '../utils/Component.js';
+import Component from '../utils/Component';
 class Block extends Component {
     template() {
         return `<div class={{class}}>{{content}}</div>`;

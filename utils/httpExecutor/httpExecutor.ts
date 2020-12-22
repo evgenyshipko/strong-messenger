@@ -1,4 +1,4 @@
-/* global XMLHttpRequest,ProgressEvent */
+/* global XMLHttpRequest,ProgressEvent,Document,Blob,FormData,ReadableStream */
 
 import { queryStringify } from '../utils'
 
@@ -10,24 +10,30 @@ enum Method {
 }
 
 interface Options {
-    data?: Record<string, unknown>,
+    data?: string | Document | Blob | ArrayBufferView | ArrayBuffer | FormData | URLSearchParams | ReadableStream<Uint8Array> | null | undefined,
     timeout?: number,
     method?: Method,
     headers?: Record<string, string>,
     credentials?: boolean
 }
 
+type OptionsGet = Omit<Options, 'data'> & {
+    data?: Record<string, any>
+}
+
 export interface ErrorResponse {
     status: number,
-    message: string
+    response: any,
+    responseText: string,
+    statusText: string
 }
 
 class HTTPExecutor {
-    get = (url: string, options: Options = {}) => {
-        if (options.data) {
-            url = url + queryStringify(options.data)
-            console.log('url', url)
+    get = (url: string, optionsGet: OptionsGet = {}) => {
+        if (optionsGet.data) {
+            url = url + queryStringify(optionsGet.data)
         }
+        const options = { ...optionsGet, data: undefined } as Options
         return this.request(url, { ...options, method: Method.GET }, options.timeout)
     };
 
@@ -48,7 +54,14 @@ class HTTPExecutor {
 
         return new Promise<XMLHttpRequest>((resolve, reject) => {
             const xhr = new XMLHttpRequest()
+
+            xhr.open(method!, url)
+
             xhr.timeout = timeout
+
+            if (options.credentials) {
+                xhr.withCredentials = true
+            }
 
             if (options.headers) {
                 Object.keys(options.headers).forEach((header) => {
@@ -56,16 +69,12 @@ class HTTPExecutor {
                 })
             }
 
-            if (options.credentials) {
-                xhr.withCredentials = true
-            }
-
-            xhr.open(method!, url)
-
             const rejectFunc = function(this: XMLHttpRequest, _ev?: ProgressEvent) {
                 reject(JSON.stringify({
                     status: this.status,
-                    message: this.statusText ? this.responseText : this.statusText
+                    response: this.response,
+                    responseText: this.responseText,
+                    statusText: this.statusText
                 }))
             }.bind(xhr)
 
@@ -84,7 +93,7 @@ class HTTPExecutor {
             if (method === Method.GET || !data) {
                 xhr.send()
             } else {
-                xhr.send(JSON.stringify(data))
+                xhr.send(data)
             }
         })
     };

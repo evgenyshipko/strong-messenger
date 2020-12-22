@@ -1,9 +1,12 @@
 export var ApiPath;
 (function (ApiPath) {
-    ApiPath["SIGNUP"] = "/auth/signup";
-    ApiPath["SIGNIN"] = "/auth/signin";
-    ApiPath["USER"] = "/auth/user";
-    ApiPath["LOGOUT"] = "/auth/logout";
+    ApiPath["AUTH_SIGNUP"] = "/auth/signup";
+    ApiPath["AUTH_SIGNIN"] = "/auth/signin";
+    ApiPath["AUTH_USER"] = "/auth/user";
+    ApiPath["AUTH_LOGOUT"] = "/auth/logout";
+    ApiPath["USER_PROFILE"] = "/user/profile";
+    ApiPath["USER_AVATAR"] = "/user/profile/avatar";
+    ApiPath["USER_PASSWORD"] = "/user/password";
 })(ApiPath || (ApiPath = {}));
 class Url {
     getApiUrl() {

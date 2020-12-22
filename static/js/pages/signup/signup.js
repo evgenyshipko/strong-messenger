@@ -1,10 +1,12 @@
-import Button from '../../components/Button.js';
-import { InputName } from '../../utils/validator/InputValidator.js';
-import FormInput from '../../components/FormInput.js';
-import Form from '../../components/Form.js';
-import SignupPage from './SignupPage.js';
-import Router from '../../utils/router/Router.js';
-import Path from '../../constants/Path.js';
+import Button from '../../components/Button';
+import { InputName } from '../../utils/validator/InputValidator';
+import FormInput from '../../components/FormInput';
+import Form from '../../components/Form';
+import SignupPage from './SignupPage';
+import Router from '../../utils/router/Router';
+import Path from '../../constants/Path';
+import HTTPExecutor from '../../utils/httpExecutor/httpExecutor';
+import Url, { ApiPath } from '../../constants/Url';
 /* global HTMLFormElement, HTMLInputElement */
 const postInput = new FormInput({
     type: 'text',
@@ -26,7 +28,7 @@ const firstNameInput = new FormInput({
 });
 const lastNameInput = new FormInput({
     type: 'text',
-    inputName: InputName.LAST_NAME,
+    inputName: InputName.SECOND_NAME,
     class: 'signup-form__lastname-input form-input',
     placeholder: 'Фамилия'
 });
@@ -65,7 +67,24 @@ const form = new Form({
         registrationBtn
     ]
 });
-form.addValidator();
+form.addValidator((formData) => {
+    const data = Object.fromEntries(formData);
+    delete data[InputName.SECOND_PASSWORD];
+    console.log('data', JSON.stringify(data));
+    new HTTPExecutor()
+        .post(Url.generate(ApiPath.AUTH_SIGNUP), {
+        data: JSON.stringify(data),
+        credentials: true,
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then((_res) => {
+        new Router('.app').go(Path.CHATS);
+    })
+        .catch((error) => {
+        const errorData = JSON.parse(error);
+        window.alert(errorData.responseText);
+    });
+});
 export const signup = new SignupPage({
     form: form,
     entranceBtn: new Button({

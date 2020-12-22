@@ -5,8 +5,8 @@ export var InputName;
     InputName["LOGIN"] = "login";
     InputName["EMAIL"] = "email";
     InputName["FIRST_NAME"] = "first_name";
-    InputName["LAST_NAME"] = "last_name";
     InputName["SECOND_NAME"] = "second_name";
+    InputName["DISPLAY_NAME"] = "display_name";
     InputName["PHONE"] = "phone";
     InputName["SECOND_PASSWORD"] = "second-password";
     InputName["OLD_PASSWORD"] = "oldPassword";
@@ -25,9 +25,11 @@ class InputValidator {
             this._checkEmptiness(inputDisplayName, value);
             this._validate(inputName, inputDisplayName, value);
             this.disableMessage();
+            return true;
         }
         catch (e) {
             this._showMessage(e.message);
+            return false;
         }
     }
     _getInputDisplayName() {
@@ -81,8 +83,8 @@ class InputValidator {
             [InputName.OLD_PASSWORD]: this._validateLength(inputDisplayName, value, 8),
             [InputName.LOGIN]: this._validateLength(inputDisplayName, value, 3),
             [InputName.FIRST_NAME]: this._validateLength(inputDisplayName, value, 2),
+            [InputName.DISPLAY_NAME]: this._validateLength(inputDisplayName, value, 2),
             [InputName.SECOND_NAME]: this._validateLength(inputDisplayName, value, 2),
-            [InputName.LAST_NAME]: this._validateLength(inputDisplayName, value, 2),
             [InputName.EMAIL]: this._validateEmail(value),
             [InputName.PHONE]: this._validatePhone(value)
         };

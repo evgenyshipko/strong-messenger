@@ -1,4 +1,4 @@
-import Component from '../../utils/Component.js';
+import Component from '../../utils/Component';
 class Message extends Component {
     template() {
         const direction = this.props.isIncoming ? 'incoming' : 'outcoming';

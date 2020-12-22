@@ -8,8 +8,8 @@ export enum InputName {
     LOGIN = 'login',
     EMAIL = 'email',
     FIRST_NAME = 'first_name',
-    LAST_NAME = 'last_name',
     SECOND_NAME = 'second_name',
+    DISPLAY_NAME = 'display_name',
     PHONE = 'phone',
     SECOND_PASSWORD = 'second-password',
     OLD_PASSWORD = 'oldPassword',
@@ -26,7 +26,7 @@ class InputValidator {
         this.input = input
     }
 
-    validate() {
+    validate(): boolean {
         const inputDisplayName = this._getInputDisplayName()
         const inputName = this.input.getAttribute('name') as InputName
         const value = this.input.value
@@ -34,8 +34,10 @@ class InputValidator {
             this._checkEmptiness(inputDisplayName, value)
             this._validate(inputName, inputDisplayName, value)
             this.disableMessage()
+            return true
         } catch (e) {
             this._showMessage(e.message)
+            return false
         }
     }
 
@@ -91,8 +93,8 @@ class InputValidator {
             [InputName.OLD_PASSWORD]: this._validateLength(inputDisplayName, value, 8),
             [InputName.LOGIN]: this._validateLength(inputDisplayName, value, 3),
             [InputName.FIRST_NAME]: this._validateLength(inputDisplayName, value, 2),
+            [InputName.DISPLAY_NAME]: this._validateLength(inputDisplayName, value, 2),
             [InputName.SECOND_NAME]: this._validateLength(inputDisplayName, value, 2),
-            [InputName.LAST_NAME]: this._validateLength(inputDisplayName, value, 2),
             [InputName.EMAIL]: this._validateEmail(value),
             [InputName.PHONE]: this._validatePhone(value)
         }

@@ -1,5 +1,5 @@
-import Route from './Route.js';
-import { notFoundPage } from '../../pages/error/404.js';
+import Route from './Route';
+import { notFoundPage } from '../../pages/error/404';
 /* global History, Event, Window */
 class Router {
     constructor(rootQuery) {

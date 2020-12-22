@@ -123,7 +123,7 @@ class TextNode {
     }
 
     _setAttributes(target: HTMLElement, context: Context): void {
-        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form']
+        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form', 'value']
         const ATTRIBUTES_REGEXP = /(\w+)=\{\{(.*?)}}/gi
         let result = null
         while ((result = ATTRIBUTES_REGEXP.exec(this.openingTag!))) {

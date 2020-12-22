@@ -1,5 +1,5 @@
-import { EventManager } from './EventManager.js';
-import Templator from './templator/Templator.js';
+import { EventManager } from './EventManager';
+import Templator from './templator/Templator';
 /* global HTMLElement, EventListenerOrEventListenerObject */
 var Event;
 (function (Event) {

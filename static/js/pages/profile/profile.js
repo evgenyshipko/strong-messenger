@@ -1,14 +1,18 @@
-import Button from '../../components/Button.js';
-import Form from '../../components/Form.js';
-import { InputName } from '../../utils/validator/InputValidator.js';
-import ProfilePage from './ProfilePage.js';
-import render from '../../utils/renderDom.js';
-import FormInputLabeled from '../../components/FormInputLabeled.js';
-import Modal from '../../components/Modal.js';
-import Header from '../../components/Header.js';
-import Avatar from '../../components/Avatar.js';
-import Path from '../../constants/Path.js';
-import Router from '../../utils/router/Router.js';
+var _a;
+import Button from '../../components/Button';
+import Form from '../../components/Form';
+import { InputName } from '../../utils/validator/InputValidator';
+import ProfilePage from './ProfilePage';
+import render from '../../utils/renderDom';
+import FormInputLabeled from '../../components/FormInputLabeled';
+import Modal from '../../components/Modal';
+import Header from '../../components/Header';
+import Avatar from '../../components/Avatar';
+import Path from '../../constants/Path';
+import Router from '../../utils/router/Router';
+import HTTPExecutor from '../../utils/httpExecutor/httpExecutor';
+import Url, { ApiPath } from '../../constants/Url';
+import Store from "../../store/Store";
 const formId = 'profile-form';
 const inputClass = 'profile-form-item__input';
 const inputWrapperClass = 'profile-form-item';
@@ -39,7 +43,11 @@ const buttonListMain = [
         eventData: {
             name: 'click',
             callback: () => {
-                new Router('.app').go(Path.SIGNIN);
+                new HTTPExecutor()
+                    .post(Url.generate(ApiPath.AUTH_LOGOUT), { credentials: true })
+                    .then((_res) => {
+                    new Router('.app').go(Path.SIGNIN);
+                });
             }
         }
     })
@@ -67,18 +75,20 @@ const formMain = new Form({
             inputName: InputName.FIRST_NAME,
             class: inputClass,
             label: 'Имя',
-            wrapperClass: inputWrapperClass
-        }),
-        new FormInputLabeled({
-            type: 'text',
-            inputName: InputName.LAST_NAME,
-            class: inputClass,
-            label: 'Фамилия',
-            wrapperClass: inputWrapperClass
+            wrapperClass: inputWrapperClass,
+            value: 'test'
         }),
         new FormInputLabeled({
             type: 'text',
             inputName: InputName.SECOND_NAME,
+            class: inputClass,
+            label: 'Фамилия',
+            wrapperClass: inputWrapperClass,
+            value: (_a = Store.userProps) === null || _a === void 0 ? void 0 : _a.second_name
+        }),
+        new FormInputLabeled({
+            type: 'text',
+            inputName: InputName.DISPLAY_NAME,
             class: inputClass,
             label: 'Имя для отображения',
             wrapperClass: inputWrapperClass
@@ -192,9 +202,21 @@ export const profile = new ProfilePage({
 // скрыли модальное окно
 modalWindow.hide();
 // вешаем валидацию на формы
-formMain.addValidator();
+formMain.addValidator((formData) => {
+    new HTTPExecutor()
+        .put(Url.generate(ApiPath.USER_PROFILE), {
+        data: JSON.stringify(Object.fromEntries(formData)),
+        credentials: true,
+        headers: { 'Content-Type': 'application/json' }
+    })
+        .then((_res) => {
+        window.alert('Данные изменены успешно!');
+    })
+        .catch((error) => {
+        const errorData = JSON.parse(error);
+        window.alert(errorData.responseText);
+    });
+});
 formChangePassword.addValidator();
-// рисуем страницу
-// render(profile)
 render(modalWindow);
 //# sourceMappingURL=profile.js.map

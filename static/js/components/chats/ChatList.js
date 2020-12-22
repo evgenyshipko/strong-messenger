@@ -1,4 +1,4 @@
-import Component from '../../utils/Component.js';
+import Component from '../../utils/Component';
 class ChatList extends Component {
     template() {
         return `<ul class="chats-list">{{chatItemList}}</ul>`;

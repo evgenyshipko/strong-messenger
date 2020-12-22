@@ -1,4 +1,4 @@
-import Component from '../../utils/Component.js';
+import Component from '../../utils/Component';
 class SignupPage extends Component {
     template() {
         return `

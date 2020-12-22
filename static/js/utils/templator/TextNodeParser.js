@@ -1,4 +1,4 @@
-import TextNode from './TextNode.js';
+import TextNode from './TextNode';
 class TextNodeParser {
     constructor(template) {
         this._template = template;

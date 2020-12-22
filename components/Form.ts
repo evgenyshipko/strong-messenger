@@ -4,7 +4,7 @@ import InputValidator from '../utils/validator/InputValidator'
 import FormInput from './FormInput'
 import Button from './Button'
 
-/* global HTMLFormElement, HTMLInputElement */
+/* global HTMLFormElement, HTMLInputElement, FormData, Event */
 
 interface FormProps {
     class: string,
@@ -13,16 +13,10 @@ interface FormProps {
 }
 
 class Form extends Component<FormProps> {
-    addValidator() {
+    addValidator(onValidationSuccess?: (formData: FormData) => any) {
         const nodeList = this.getContent()
         if (nodeList) {
             const form = nodeList[0] as HTMLFormElement
-            const handleFormValidation = (e: any) => {
-                e.preventDefault()
-                new FormValidator(form).validate()
-            }
-            form.addEventListener('submit', handleFormValidation)
-
             const inputList = form.getElementsByTagName('input')
             for (const input of inputList) {
                 const inputValidator = new InputValidator(input)
@@ -33,6 +27,13 @@ class Form extends Component<FormProps> {
                     inputValidator.disableMessage()
                 })
             }
+            const handleFormValidation = (e: Event) => {
+                e.preventDefault()
+                if (new FormValidator(form).validate() && onValidationSuccess) {
+                    onValidationSuccess(new FormData(form))
+                }
+            }
+            form.addEventListener('submit', handleFormValidation)
         }
     }
 

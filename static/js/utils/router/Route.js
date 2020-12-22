@@ -1,4 +1,4 @@
-import { render } from '../renderDom.js';
+import { render } from '../renderDom';
 class Route {
     constructor(pathname, _block, _rootQuery) {
         this._pathname = pathname;

@@ -1,5 +1,5 @@
-/* global XMLHttpRequest,ProgressEvent */
-import { queryStringify } from '../utils.js';
+/* global XMLHttpRequest,ProgressEvent,Document,Blob,FormData,ReadableStream */
+import { queryStringify } from '../utils';
 var Method;
 (function (Method) {
     Method["GET"] = "GET";
@@ -9,41 +9,42 @@ var Method;
 })(Method || (Method = {}));
 class HTTPExecutor {
     constructor() {
-        this.get = (url, options = {}) => {
-            if (options.data) {
-                url = url + queryStringify(options.data);
-                console.log('url', url);
+        this.get = (url, optionsGet = {}) => {
+            if (optionsGet.data) {
+                url = url + queryStringify(optionsGet.data);
             }
-            return this.request(url, Object.assign(Object.assign({}, options), { method: Method.GET }), options.timeout);
+            const options = { ...optionsGet, data: undefined };
+            return this.request(url, { ...options, method: Method.GET }, options.timeout);
         };
         this.put = (url, options = {}) => {
-            return this.request(url, Object.assign(Object.assign({}, options), { method: Method.PUT }), options.timeout);
+            return this.request(url, { ...options, method: Method.PUT }, options.timeout);
         };
         this.post = (url, options = {}) => {
-            return this.request(url, Object.assign(Object.assign({}, options), { method: Method.POST }), options.timeout);
+            return this.request(url, { ...options, method: Method.POST }, options.timeout);
         };
         this.delete = (url, options = {}) => {
-            return this.request(url, Object.assign(Object.assign({}, options), { method: Method.DELETE }), options.timeout);
+            return this.request(url, { ...options, method: Method.DELETE }, options.timeout);
         };
         this.request = (url, options = { method: Method.GET }, timeout = 5000) => {
             const { method, data } = options;
             return new Promise((resolve, reject) => {
                 const xhr = new XMLHttpRequest();
+                xhr.open(method, url);
                 xhr.timeout = timeout;
+                if (options.credentials) {
+                    xhr.withCredentials = true;
+                }
                 if (options.headers) {
                     Object.keys(options.headers).forEach((header) => {
                         xhr.setRequestHeader(header, options.headers[header]);
                     });
                 }
-                if (options.credentials) {
-                    xhr.withCredentials = true;
-                }
-                xhr.open(method, url);
                 const rejectFunc = function (_ev) {
-                    console.log('rejectFunc');
                     reject(JSON.stringify({
                         status: this.status,
-                        message: this.statusText ? this.responseText : this.statusText
+                        response: this.response,
+                        responseText: this.responseText,
+                        statusText: this.statusText
                     }));
                 }.bind(xhr);
                 xhr.onload = function () {
@@ -61,7 +62,7 @@ class HTTPExecutor {
                     xhr.send();
                 }
                 else {
-                    xhr.send(JSON.stringify(data));
+                    xhr.send(data);
                 }
             });
         };

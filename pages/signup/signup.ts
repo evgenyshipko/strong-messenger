@@ -1,10 +1,12 @@
 import Button from '../../components/Button'
-import {InputName} from '../../utils/validator/InputValidator'
+import { InputName } from '../../utils/validator/InputValidator'
 import FormInput from '../../components/FormInput'
 import Form from '../../components/Form'
 import SignupPage from './SignupPage'
 import Router from '../../utils/router/Router'
 import Path from '../../constants/Path'
+import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
+import Url, { ApiPath } from '../../constants/Url'
 
 /* global HTMLFormElement, HTMLInputElement */
 
@@ -31,7 +33,7 @@ const firstNameInput = new FormInput({
 
 const lastNameInput = new FormInput({
     type: 'text',
-    inputName: InputName.LAST_NAME,
+    inputName: InputName.SECOND_NAME,
     class: 'signup-form__lastname-input form-input',
     placeholder: 'Фамилия'
 })
@@ -76,7 +78,26 @@ const form = new Form({
     ]
 })
 
-form.addValidator()
+form.addValidator((formData) => {
+    const data: Record<string, unknown> = Object.fromEntries(formData)
+    delete data[InputName.SECOND_PASSWORD]
+    console.log('data', JSON.stringify(data))
+    new HTTPExecutor()
+        .post(
+            Url.generate(ApiPath.AUTH_SIGNUP),
+            {
+                data: JSON.stringify(data),
+                credentials: true,
+                headers: { 'Content-Type': 'application/json' }
+            })
+        .then((_res) => {
+            new Router('.app').go(Path.CHATS)
+        })
+        .catch((error) => {
+            const errorData = JSON.parse(error) as ErrorResponse
+            window.alert(errorData.responseText)
+        })
+})
 
 export const signup = new SignupPage({
     form: form,

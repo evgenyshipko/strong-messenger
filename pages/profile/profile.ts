@@ -9,6 +9,9 @@ import Header from '../../components/Header'
 import Avatar from '../../components/Avatar'
 import Path from '../../constants/Path'
 import Router from '../../utils/router/Router'
+import HTTPExecutor, {ErrorResponse} from '../../utils/httpExecutor/httpExecutor'
+import Url, { ApiPath } from '../../constants/Url'
+import Store from "../../store/Store";
 
 const formId = 'profile-form'
 const inputClass = 'profile-form-item__input'
@@ -41,7 +44,11 @@ const buttonListMain = [
         eventData: {
             name: 'click',
             callback: () => {
-                new Router('.app').go(Path.SIGNIN)
+                new HTTPExecutor()
+                    .post(Url.generate(ApiPath.AUTH_LOGOUT), { credentials: true })
+                    .then((_res) => {
+                        new Router('.app').go(Path.SIGNIN)
+                    })
             }
         }
     })
@@ -70,18 +77,20 @@ const formMain = new Form({
             inputName: InputName.FIRST_NAME,
             class: inputClass,
             label: 'Имя',
-            wrapperClass: inputWrapperClass
-        }),
-        new FormInputLabeled({
-            type: 'text',
-            inputName: InputName.LAST_NAME,
-            class: inputClass,
-            label: 'Фамилия',
-            wrapperClass: inputWrapperClass
+            wrapperClass: inputWrapperClass,
+            value: 'test'
         }),
         new FormInputLabeled({
             type: 'text',
             inputName: InputName.SECOND_NAME,
+            class: inputClass,
+            label: 'Фамилия',
+            wrapperClass: inputWrapperClass,
+            value: Store.userProps?.second_name
+        }),
+        new FormInputLabeled({
+            type: 'text',
+            inputName: InputName.DISPLAY_NAME,
             class: inputClass,
             label: 'Имя для отображения',
             wrapperClass: inputWrapperClass
@@ -201,9 +210,26 @@ export const profile = new ProfilePage({
 modalWindow.hide()
 
 // вешаем валидацию на формы
-formMain.addValidator()
+formMain.addValidator(
+    (formData) => {
+        new HTTPExecutor()
+            .put(
+                Url.generate(ApiPath.USER_PROFILE),
+                {
+                    data: JSON.stringify(Object.fromEntries(formData)),
+                    credentials: true,
+                    headers: { 'Content-Type': 'application/json' }
+                })
+            .then((_res) => {
+                window.alert('Данные изменены успешно!')
+            })
+            .catch((error) => {
+                const errorData = JSON.parse(error) as ErrorResponse
+                window.alert(errorData.responseText)
+            })
+    }
+)
+
 formChangePassword.addValidator()
 
-// рисуем страницу
-// render(profile)
 render(modalWindow)

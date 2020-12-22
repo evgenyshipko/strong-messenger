@@ -1,16 +1,11 @@
-import Component from '../utils/Component.js';
-import FormValidator from '../utils/validator/FormValidator.js';
-import InputValidator from '../utils/validator/InputValidator.js';
+import Component from '../utils/Component';
+import FormValidator from '../utils/validator/FormValidator';
+import InputValidator from '../utils/validator/InputValidator';
 class Form extends Component {
-    addValidator() {
+    addValidator(onValidationSuccess) {
         const nodeList = this.getContent();
         if (nodeList) {
             const form = nodeList[0];
-            const handleFormValidation = (e) => {
-                e.preventDefault();
-                new FormValidator(form).validate();
-            };
-            form.addEventListener('submit', handleFormValidation);
             const inputList = form.getElementsByTagName('input');
             for (const input of inputList) {
                 const inputValidator = new InputValidator(input);
@@ -21,6 +16,13 @@ class Form extends Component {
                     inputValidator.disableMessage();
                 });
             }
+            const handleFormValidation = (e) => {
+                e.preventDefault();
+                if (new FormValidator(form).validate() && onValidationSuccess) {
+                    onValidationSuccess(new FormData(form));
+                }
+            };
+            form.addEventListener('submit', handleFormValidation);
         }
     }
     template() {
