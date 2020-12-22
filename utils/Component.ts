@@ -69,7 +69,7 @@ class Component<T> {
     }
 
     componentDidUpdate(oldProps: T, newProps: T) {
-        // знаю, что это очень топорно, но до этого я просто в любом случае изменения пропсов делал рендер
+        // TODO: заменить на isEqual из тренажера практикума
         return JSON.stringify(oldProps) !== JSON.stringify(newProps)
     }
 

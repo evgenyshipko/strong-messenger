@@ -70,14 +70,22 @@
 }
 
 .profile-avatar__content{
-  font-family: 'Open Sans', sans-serif;
-  text-align: center;
-  display: none;
   width: 80%;
   height: 100%;
 }
 
-.profile-avatar:hover .profile-avatar__content{
+.profile-avatar__image{
+  width: 120%;
+}
+
+.profile-avatar__text{
+  display: none;
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+  position: absolute;
+}
+
+.profile-avatar:hover .profile-avatar__text, .profile-avatar__content{
   display: flex;
   justify-content: center;
   align-items: center;

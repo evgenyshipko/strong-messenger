@@ -1,4 +1,4 @@
-import Component from '../utils/Component';
+import Component from '../utils/Component.js';
 class Header extends Component {
     template() {
         const level = this.props.level || '1';

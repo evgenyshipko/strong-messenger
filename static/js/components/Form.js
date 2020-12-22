@@ -1,6 +1,6 @@
-import Component from '../utils/Component';
-import FormValidator from '../utils/validator/FormValidator';
-import InputValidator from '../utils/validator/InputValidator';
+import Component from '../utils/Component.js';
+import FormValidator from '../utils/validator/FormValidator.js';
+import InputValidator from '../utils/validator/InputValidator.js';
 class Form extends Component {
     addValidator(onValidationSuccess) {
         const nodeList = this.getContent();

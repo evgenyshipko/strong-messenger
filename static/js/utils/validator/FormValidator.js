@@ -1,4 +1,4 @@
-import InputValidator from './InputValidator';
+import InputValidator from './InputValidator.js';
 /* global HTMLFormElement */
 class FormValidator {
     constructor(form) {

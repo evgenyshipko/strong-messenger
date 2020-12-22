@@ -1,5 +1,5 @@
 /* global XMLHttpRequest,ProgressEvent,Document,Blob,FormData,ReadableStream */
-import { queryStringify } from '../utils';
+import { queryStringify } from '../utils.js';
 var Method;
 (function (Method) {
     Method["GET"] = "GET";

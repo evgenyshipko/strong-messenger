@@ -1,4 +1,5 @@
 import Component from '../utils/Component'
+import { EventData } from '../types/Types'
 
 export interface InputProps {
     class: string,
@@ -6,11 +7,12 @@ export interface InputProps {
     placeholder?: string,
     type: string,
     value?: string
+    eventData?: EventData
 }
 
 class Input extends Component<InputProps> {
     template():string {
-        return '<input class={{class}} name={{inputName}} placeholder={{placeholder}} type={{type}} value={{value}}/>'
+        return '<input class={{class}} name={{inputName}} placeholder={{placeholder}} type={{type}} value={{value}} @event={{eventData}}/>'
     }
 }
 

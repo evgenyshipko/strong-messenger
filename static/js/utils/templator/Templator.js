@@ -1,4 +1,4 @@
-import TextNodeParser from './TextNodeParser';
+import TextNodeParser from './TextNodeParser.js';
 /* global HTMLElement */
 class Templator {
     constructor(template) {

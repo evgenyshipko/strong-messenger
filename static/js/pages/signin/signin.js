@@ -1,12 +1,12 @@
-import SigninPage from './SigninPage';
-import Button from '../../components/Button';
-import { InputName } from '../../utils/validator/InputValidator';
-import FormInput from '../../components/FormInput';
-import Form from '../../components/Form';
-import Router from '../../utils/router/Router';
-import Path from '../../constants/Path';
-import HTTPExecutor from '../../utils/httpExecutor/httpExecutor';
-import Url, { ApiPath } from '../../constants/Url';
+import SigninPage from './SigninPage.js';
+import Button from '../../components/Button.js';
+import { InputName } from '../../utils/validator/InputValidator.js';
+import FormInput from '../../components/FormInput.js';
+import Form from '../../components/Form.js';
+import Router from '../../utils/router/Router.js';
+import Path from '../../constants/Path.js';
+import HTTPExecutor from '../../utils/httpExecutor/httpExecutor.js';
+import Url, { ApiPath } from '../../constants/Url.js';
 /* global HTMLFormElement, HTMLInputElement */
 const form = new Form({
     class: 'signin-form',

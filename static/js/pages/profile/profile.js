@@ -1,18 +1,19 @@
-var _a;
-import Button from '../../components/Button';
-import Form from '../../components/Form';
-import { InputName } from '../../utils/validator/InputValidator';
-import ProfilePage from './ProfilePage';
-import render from '../../utils/renderDom';
-import FormInputLabeled from '../../components/FormInputLabeled';
-import Modal from '../../components/Modal';
-import Header from '../../components/Header';
-import Avatar from '../../components/Avatar';
-import Path from '../../constants/Path';
-import Router from '../../utils/router/Router';
-import HTTPExecutor from '../../utils/httpExecutor/httpExecutor';
-import Url, { ApiPath } from '../../constants/Url';
-import Store from "../../store/Store";
+import Button from '../../components/Button.js';
+import Form from '../../components/Form.js';
+import { InputName } from '../../utils/validator/InputValidator.js';
+import ProfilePage from './ProfilePage.js';
+import render from '../../utils/renderDom.js';
+import FormInputLabeled from '../../components/FormInputLabeled.js';
+import Modal from '../../components/Modal.js';
+import Header from '../../components/Header.js';
+import Avatar from '../../components/Avatar.js';
+import Path from '../../constants/Path.js';
+import Router from '../../utils/router/Router.js';
+import HTTPExecutor from '../../utils/httpExecutor/httpExecutor.js';
+import Url, { ApiPath } from '../../constants/Url.js';
+import Store from '../../utils/Store.js';
+import Input from "../../components/Input.js";
+/* global FormData */
 const formId = 'profile-form';
 const inputClass = 'profile-form-item__input';
 const inputWrapperClass = 'profile-form-item';
@@ -46,7 +47,7 @@ const buttonListMain = [
                 new HTTPExecutor()
                     .post(Url.generate(ApiPath.AUTH_LOGOUT), { credentials: true })
                     .then((_res) => {
-                    new Router('.app').go(Path.SIGNIN);
+                    store.setState({ isLogged: false });
                 });
             }
         }
@@ -84,7 +85,7 @@ const formMain = new Form({
             class: inputClass,
             label: 'Фамилия',
             wrapperClass: inputWrapperClass,
-            value: (_a = Store.userProps) === null || _a === void 0 ? void 0 : _a.second_name
+            value: 'yryr'
         }),
         new FormInputLabeled({
             type: 'text',
@@ -158,9 +159,17 @@ const modalWindow = new Modal({
             text: 'Загрузите файл',
             class: 'upload-avatar-modal-header'
         }),
-        new Button({
-            text: 'Выбрать файл на компьютере',
-            class: 'upload-avatar-modal-browse-btn messenger-button_no-background'
+        new Input({
+            inputName: 'uploadAvatar',
+            placeholder: 'Выбрать файл на компьютере',
+            class: 'upload-avatar-modal-browse-btn messenger-button_no-background',
+            type: 'file',
+            eventData: {
+                name: 'change',
+                callback: () => {
+                    console.log('INPUT FILE CALLBACK', this);
+                }
+            }
         }),
         new Button({
             text: 'Изменить',
@@ -183,7 +192,8 @@ export const profile = new ProfilePage({
                 profile.hide();
                 modalWindow.show('flex');
             }
-        }
+        },
+        imageLink: 'https://ya-praktikum.tech/api/v2/uploads/1be8ee35-4bdd-48b7-ab9d-c5fb586198d1/arrow1.png'
     }),
     backButton: new Button({
         class: 'profile-back-btn',
@@ -195,28 +205,56 @@ export const profile = new ProfilePage({
             }
         }
     }),
-    userName: 'Evgeny',
+    userName: '',
     form: formMain,
     buttonList: buttonListMain
 });
-// скрыли модальное окно
+// скрыли и вставили в dom модальное окно
 modalWindow.hide();
-// вешаем валидацию на формы
-formMain.addValidator((formData) => {
-    new HTTPExecutor()
-        .put(Url.generate(ApiPath.USER_PROFILE), {
-        data: JSON.stringify(Object.fromEntries(formData)),
-        credentials: true,
-        headers: { 'Content-Type': 'application/json' }
-    })
-        .then((_res) => {
-        window.alert('Данные изменены успешно!');
-    })
-        .catch((error) => {
-        const errorData = JSON.parse(error);
-        window.alert(errorData.responseText);
-    });
-});
-formChangePassword.addValidator();
 render(modalWindow);
+const sendFormData = (url) => {
+    return (formData) => {
+        new HTTPExecutor()
+            .put(url, {
+            data: JSON.stringify(Object.fromEntries(formData)),
+            credentials: true,
+            headers: { 'Content-Type': 'application/json' }
+        })
+            .then((_res) => {
+            window.alert('Данные изменены успешно!');
+        })
+            .catch((error) => {
+            const errorData = JSON.parse(error);
+            window.alert(errorData.responseText);
+        });
+    };
+};
+// вешаем валидацию на формы
+formChangePassword.addValidator(sendFormData(Url.generate(ApiPath.USER_PASSWORD)));
+formMain.addValidator(sendFormData(Url.generate(ApiPath.USER_PROFILE)));
+const updateFormValues = (_state) => {
+    const elemList = formMain.getContent();
+    if (elemList && elemList.length > 0) {
+        const form = elemList[0];
+        const inputList = form.getElementsByTagName('input');
+        for (const input of inputList) {
+            const inputName = input.getAttribute('name');
+            const value = store.content.userProps[inputName];
+            if (inputName && value) {
+                input.setAttribute('value', value);
+            }
+        }
+    }
+};
+// подписались на изменения стейта глобального стора
+const store = new Store();
+store.subscribe('userProps', updateFormValues);
+store.subscribe('userProps', (state) => {
+    profile.setProps({ userName: state.userProps.first_name });
+});
+store.subscribe('userProps', (state) => {
+    if (state.userProps.avatar) {
+        profile.props.avatar.setProps({ imageLink: state.userProps.avatar });
+    }
+});
 //# sourceMappingURL=profile.js.map

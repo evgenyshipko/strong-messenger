@@ -20,3 +20,8 @@ export interface UserProps{
     phone: string,
     avatar: string
 }
+
+export interface MessengerStore extends Record<string, unknown>{
+    userProps: UserProps,
+    isLogged: boolean
+}

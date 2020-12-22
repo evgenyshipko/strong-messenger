@@ -9,9 +9,13 @@ import Header from '../../components/Header'
 import Avatar from '../../components/Avatar'
 import Path from '../../constants/Path'
 import Router from '../../utils/router/Router'
-import HTTPExecutor, {ErrorResponse} from '../../utils/httpExecutor/httpExecutor'
+import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
 import Url, { ApiPath } from '../../constants/Url'
-import Store from "../../store/Store";
+import Store from '../../utils/Store'
+import { MessengerStore, UserProps } from '../../types/Types'
+import Input from "../../components/Input";
+
+/* global FormData */
 
 const formId = 'profile-form'
 const inputClass = 'profile-form-item__input'
@@ -47,7 +51,7 @@ const buttonListMain = [
                 new HTTPExecutor()
                     .post(Url.generate(ApiPath.AUTH_LOGOUT), { credentials: true })
                     .then((_res) => {
-                        new Router('.app').go(Path.SIGNIN)
+                        store.setState({ isLogged: false })
                     })
             }
         }
@@ -86,7 +90,7 @@ const formMain = new Form({
             class: inputClass,
             label: 'Фамилия',
             wrapperClass: inputWrapperClass,
-            value: Store.userProps?.second_name
+            value: 'yryr'
         }),
         new FormInputLabeled({
             type: 'text',
@@ -163,9 +167,17 @@ const modalWindow = new Modal({
             text: 'Загрузите файл',
             class: 'upload-avatar-modal-header'
         }),
-        new Button({
-            text: 'Выбрать файл на компьютере',
-            class: 'upload-avatar-modal-browse-btn messenger-button_no-background'
+        new Input({
+            inputName: 'uploadAvatar',
+            placeholder: 'Выбрать файл на компьютере',
+            class: 'upload-avatar-modal-browse-btn messenger-button_no-background',
+            type: 'file',
+            eventData: {
+                name: 'change',
+                callback: () => {
+                    console.log('INPUT FILE CALLBACK', this)
+                }
+            }
         }),
         new Button({
             text: 'Изменить',
@@ -189,7 +201,8 @@ export const profile = new ProfilePage({
                 profile.hide()
                 modalWindow.show('flex')
             }
-        }
+        },
+        imageLink: 'https://ya-praktikum.tech/api/v2/uploads/1be8ee35-4bdd-48b7-ab9d-c5fb586198d1/arrow1.png'
     }),
     backButton: new Button({
         class: 'profile-back-btn',
@@ -201,20 +214,20 @@ export const profile = new ProfilePage({
             }
         }
     }),
-    userName: 'Evgeny',
+    userName: '',
     form: formMain,
     buttonList: buttonListMain
 })
 
-// скрыли модальное окно
+// скрыли и вставили в dom модальное окно
 modalWindow.hide()
+render(modalWindow)
 
-// вешаем валидацию на формы
-formMain.addValidator(
-    (formData) => {
+const sendFormData = (url: string) => {
+    return (formData: FormData) => {
         new HTTPExecutor()
             .put(
-                Url.generate(ApiPath.USER_PROFILE),
+                url,
                 {
                     data: JSON.stringify(Object.fromEntries(formData)),
                     credentials: true,
@@ -228,8 +241,35 @@ formMain.addValidator(
                 window.alert(errorData.responseText)
             })
     }
-)
+}
 
-formChangePassword.addValidator()
+// вешаем валидацию на формы
+formChangePassword.addValidator(sendFormData(Url.generate(ApiPath.USER_PASSWORD)))
+formMain.addValidator(sendFormData(Url.generate(ApiPath.USER_PROFILE)))
 
-render(modalWindow)
+const updateFormValues = (_state: MessengerStore) => {
+    const elemList = formMain.getContent()
+    if (elemList && elemList.length > 0) {
+        const form = elemList[0]
+        const inputList = form.getElementsByTagName('input')
+        for (const input of inputList) {
+            const inputName = input.getAttribute('name') as keyof UserProps
+            const value = store.content.userProps[inputName] as string
+            if (inputName && value) {
+                input.setAttribute('value', value)
+            }
+        }
+    }
+}
+
+// подписались на изменения стейта глобального стора
+const store = new Store<MessengerStore>()
+store.subscribe('userProps', updateFormValues)
+store.subscribe('userProps', (state) => {
+    profile.setProps({ userName: state.userProps.first_name })
+})
+store.subscribe('userProps', (state) => {
+    if (state.userProps.avatar) {
+        profile.props.avatar.setProps({ imageLink: state.userProps.avatar })
+    }
+})

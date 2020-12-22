@@ -1,4 +1,4 @@
-import Input from './Input';
+import Input from './Input.js';
 /* global HTMLFormElement, HTMLInputElement */
 class FormInput extends Input {
     template() {

@@ -1,4 +1,4 @@
-import TextNode from './TextNode';
+import TextNode from './TextNode.js';
 class TextNodeParser {
     constructor(template) {
         this._template = template;
@@ -88,24 +88,15 @@ class TextNodeParser {
         return { result: result, endIndex: endIndex };
     }
     _isStartsWithSelfClosingTag(template) {
-        if (typeof template !== 'string') {
-            throw new Error('invalid data type');
-        }
         const SELF_CLOSING_TAG_REGEXP = /<(\w+)\b[^>]*\/>/g;
         const result = SELF_CLOSING_TAG_REGEXP.exec(template.trim());
         return !!result && result.index === 0;
     }
     _isOpeningTag(tag) {
-        if (typeof tag !== 'string') {
-            throw new Error('invalid data type');
-        }
         const OPENING_TAG_REGEXP = /<\w+\b[^/>]*>/g;
         return !!OPENING_TAG_REGEXP.exec(tag);
     }
     _isClosingTag(tag) {
-        if (typeof tag !== 'string') {
-            throw new Error('invalid data type');
-        }
         const CLOSING_TAG_REGEXP = /<\/\w+\b[^>]*>/g;
         return !!CLOSING_TAG_REGEXP.exec(tag);
     }

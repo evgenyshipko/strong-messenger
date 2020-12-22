@@ -1,4 +1,4 @@
-import Message from '../../components/chats/Message';
+import Message from '../../components/chats/Message.js';
 export const messageItemList1 = [
     new Message({
         message: 'Проверка связи!',

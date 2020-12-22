@@ -1,46 +1,57 @@
-export type State = Record<any, any>
-export type Subscriber = (state: State) => any
 
-class Store {
-    subscribers: Record<string, Subscriber[]>;
-    state: State;
-    static __instance: Store
+class Store<T extends Record<string, unknown>> {
+    private subscribers: Record<string | number, ((state: T) => unknown)[]>
+    private state: T
+    private static __instance: Store<any>
 
-    constructor(initialState = {}) {
+    constructor(initialState: T = {} as T) {
         if (Store.__instance) {
-            return Store.__instance
+            return Store.__instance as Store<T>
         }
         this.subscribers = {}
-        this.state = initialState
-        this.state = this._makeStateProxy(this.state)
+        this.state = this.makeStateProxy(initialState)
         Store.__instance = this
     }
 
-    _makeStateProxy(state: State) {
+    private makeStateProxy(state: any) {
         const self = this
         return new Proxy((state), {
             set: function(state, propertyName, value) {
-                // @ts-ignore
-                state[propertyName] = value
-                console.log(`stateChange: ${String(propertyName)}: ${value}`)
-                self._dispatch(propertyName, state)
+                console.log('SET FUNC')
+                if (typeof propertyName !== 'symbol') {
+                    state[propertyName] = value
+                    console.log(`stateChange: ${String(propertyName)}: ${value}`)
+                    self.dispatch(propertyName, state)
+                }
                 return true
             }
         })
     }
 
-    _dispatch(propertyName: any, state: State) {
-        this.subscribers[propertyName].forEach(subscriper => {
-            subscriper(state)
+    private dispatch(propertyName: string | number, state: T) {
+        this.subscribers[propertyName].forEach(subscriber => {
+            subscriber(state)
         })
     }
 
-    subscribe(propertyName: string, func:Subscriber) {
+    get content() {
+        return this.state
+    }
+
+    subscribe(propertyName: string, func: (state: T) => unknown) {
         if (this.subscribers[propertyName]) {
             this.subscribers[propertyName].push(func)
         } else {
             this.subscribers[propertyName] = [func]
         }
+    }
+
+    setState(value: Partial<T>) {
+        Object.keys(value).forEach((key) => {
+            // я с ним замучался, если подскажите - буду благодарен
+            // @ts-ignore
+            this.state[key] = value[key]
+        })
     }
 }
 

@@ -1,5 +1,5 @@
-import { EventManager } from './EventManager';
-import Templator from './templator/Templator';
+import { EventManager } from './EventManager.js';
+import Templator from './templator/Templator.js';
 /* global HTMLElement, EventListenerOrEventListenerObject */
 var Event;
 (function (Event) {
@@ -60,7 +60,7 @@ class Component {
         }
     }
     componentDidUpdate(oldProps, newProps) {
-        // знаю, что это очень топорно, но до этого я просто в любом случае изменения пропсов делал рендер
+        // TODO: заменить на isEqual из тренажера практикума
         return JSON.stringify(oldProps) !== JSON.stringify(newProps);
     }
     _render() {

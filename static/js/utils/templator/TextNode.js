@@ -1,4 +1,4 @@
-import Component from '../Component';
+import Component from '../Component.js';
 /* global HTMLElement, EventListenerOrEventListenerObject */
 class TextNode {
     constructor(openingTag, tagName, children, textContent) {
@@ -61,7 +61,7 @@ class TextNode {
     }
     _addEventListener(target, context) {
         const availableEvents = ['click', 'focus', 'submit',
-            'mousemove', 'mouseup', 'mousedown', 'mouseout', 'mouseover', 'contextmenu'];
+            'mousemove', 'mouseup', 'mousedown', 'mouseout', 'mouseover', 'contextmenu', 'change'];
         const EVENT_REGEXP = /@event=\{\{(\w+)}}/gi;
         const eventObj = EVENT_REGEXP.exec(this.openingTag);
         if (eventObj) {
@@ -113,7 +113,7 @@ class TextNode {
         return null;
     }
     _setAttributes(target, context) {
-        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form', 'value'];
+        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form', 'value', 'src'];
         const ATTRIBUTES_REGEXP = /(\w+)=\{\{(.*?)}}/gi;
         let result = null;
         while ((result = ATTRIBUTES_REGEXP.exec(this.openingTag))) {
