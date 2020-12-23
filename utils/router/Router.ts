@@ -25,7 +25,7 @@ class Router {
         Router.__instance = this
     }
 
-    use(pathname: string, block: Component<any>) {
+    use(pathname: string, block: Component<any>[]) {
         const route = new Route(pathname, block, this._rootQuery)
 
         this.routes.push(route)
@@ -34,7 +34,6 @@ class Router {
     }
 
     start(path?: string) {
-        console.log('window.location.pathname', window.location.pathname)
         window.onpopstate = (event: Event) => {
             this._onRoute((event.currentTarget as Window).location.pathname)
         }
@@ -46,11 +45,9 @@ class Router {
     }
 
     _onRoute(pathname: string) {
-        console.log('_onRoute', pathname)
         let route = this.getRoute(pathname)
-        console.log('route', route)
         if (!route) {
-            route = new Route('', notFoundPage, this._rootQuery)
+            route = new Route('', [notFoundPage], this._rootQuery)
         }
 
         if (this._currentRoute && this._currentRoute !== route) {

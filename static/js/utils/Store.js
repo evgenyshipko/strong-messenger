@@ -22,9 +22,11 @@ class Store {
         });
     }
     dispatch(propertyName, state) {
-        this.subscribers[propertyName].forEach(subscriber => {
-            subscriber(state);
-        });
+        if (this.subscribers[propertyName]) {
+            this.subscribers[propertyName].forEach(subscriber => {
+                subscriber(state);
+            });
+        }
     }
     get content() {
         return this.state;

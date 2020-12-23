@@ -29,9 +29,11 @@ class Store<T extends Record<string, unknown>> {
     }
 
     private dispatch(propertyName: string | number, state: T) {
-        this.subscribers[propertyName].forEach(subscriber => {
-            subscriber(state)
-        })
+        if (this.subscribers[propertyName]) {
+            this.subscribers[propertyName].forEach(subscriber => {
+                subscriber(state)
+            })
+        }
     }
 
     get content() {

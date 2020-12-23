@@ -60,7 +60,7 @@ class TextNode {
         }
     }
     _addEventListener(target, context) {
-        const availableEvents = ['click', 'focus', 'submit',
+        const availableEvents = ['click', 'focus', 'submit', 'keyup',
             'mousemove', 'mouseup', 'mousedown', 'mouseout', 'mouseover', 'contextmenu', 'change'];
         const EVENT_REGEXP = /@event=\{\{(\w+)}}/gi;
         const eventObj = EVENT_REGEXP.exec(this.openingTag);
@@ -113,7 +113,7 @@ class TextNode {
         return null;
     }
     _setAttributes(target, context) {
-        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form', 'value', 'src'];
+        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form', 'value', 'src', 'for'];
         const ATTRIBUTES_REGEXP = /(\w+)=\{\{(.*?)}}/gi;
         let result = null;
         while ((result = ATTRIBUTES_REGEXP.exec(this.openingTag))) {

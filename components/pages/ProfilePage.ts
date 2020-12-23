@@ -1,7 +1,7 @@
 import Component from '../../utils/Component'
-import Button from '../../components/Button'
-import Form from '../../components/Form'
-import Avatar from '../../components/Avatar'
+import Button from '../Button'
+import Form from '../Form'
+import Avatar from '../Avatar'
 
 interface ProfilePageProps {
     avatar: Avatar,

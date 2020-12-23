@@ -1,10 +1,9 @@
-import render from '../../utils/renderDom'
-import { ErrorPage } from './ErrorPage'
+import {ErrorPage} from '../../components/pages/ErrorPage'
 import Button from '../../components/Button'
 import Path from '../../constants/Path'
 import Router from '../../utils/router/Router'
 
-render(new ErrorPage({
+export const internalServerErrorPage = new ErrorPage({
     errorNumber: '500',
     pageText: 'Ошибка сервера',
     button: new Button(
@@ -19,4 +18,4 @@ render(new ErrorPage({
             }
         }
     )
-}))
+})

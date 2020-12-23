@@ -7,13 +7,15 @@ export var ApiPath;
     ApiPath["USER_PROFILE"] = "/user/profile";
     ApiPath["USER_AVATAR"] = "/user/profile/avatar";
     ApiPath["USER_PASSWORD"] = "/user/password";
+    ApiPath["CHATS"] = "/chats";
+    ApiPath["CHATS_USERS"] = "/chats/users";
 })(ApiPath || (ApiPath = {}));
 class Url {
-    getApiUrl() {
-        return 'https://ya-praktikum.tech/api/v2';
+    static getHostUrl() {
+        return 'https://ya-praktikum.tech';
     }
     static generate(path) {
-        return new Url().getApiUrl() + path;
+        return Url.getHostUrl() + '/api/v2' + path;
     }
 }
 export default Url;

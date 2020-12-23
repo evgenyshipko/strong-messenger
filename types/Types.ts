@@ -21,7 +21,14 @@ export interface UserProps{
     avatar: string
 }
 
+export interface ChatData {
+    id: number,
+    title: string,
+    avatar: string
+}
+
 export interface MessengerStore extends Record<string, unknown>{
     userProps: UserProps,
-    isLogged: boolean
+    isLogged: boolean,
+    chatList: ChatData[]
 }

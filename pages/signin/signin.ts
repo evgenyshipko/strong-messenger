@@ -1,4 +1,4 @@
-import SigninPage from './SigninPage'
+import SigninPage from '../../components/pages/SigninPage'
 import Button from '../../components/Button'
 import { InputName } from '../../utils/validator/InputValidator'
 import FormInput from '../../components/FormInput'
@@ -7,6 +7,7 @@ import Router from '../../utils/router/Router'
 import Path from '../../constants/Path'
 import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
 import Url, { ApiPath } from '../../constants/Url'
+import {handleErrorResponse, updateUserData} from '../../utils/utils'
 
 /* global HTMLFormElement, HTMLInputElement */
 
@@ -41,11 +42,13 @@ form.addValidator((formData) => {
                 headers: { 'Content-Type': 'application/json' }
             })
         .then((_res) => {
-            new Router('.app').go(Path.CHATS)
+            updateUserData().then(() => {
+                new Router('.app').go(Path.CHATS)
+            })
         })
         .catch((error) => {
             const errorData = JSON.parse(error) as ErrorResponse
-            window.alert(errorData.responseText)
+            handleErrorResponse(errorData)
         })
 })
 

@@ -2,11 +2,12 @@ import Button from '../../components/Button'
 import { InputName } from '../../utils/validator/InputValidator'
 import FormInput from '../../components/FormInput'
 import Form from '../../components/Form'
-import SignupPage from './SignupPage'
+import SignupPage from '../../components/pages/SignupPage'
 import Router from '../../utils/router/Router'
 import Path from '../../constants/Path'
 import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
 import Url, { ApiPath } from '../../constants/Url'
+import { handleErrorResponse } from '../../utils/utils'
 
 /* global HTMLFormElement, HTMLInputElement */
 
@@ -95,7 +96,7 @@ form.addValidator((formData) => {
         })
         .catch((error) => {
             const errorData = JSON.parse(error) as ErrorResponse
-            window.alert(errorData.responseText)
+            handleErrorResponse(errorData)
         })
 })
 

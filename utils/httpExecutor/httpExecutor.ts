@@ -70,6 +70,7 @@ class HTTPExecutor {
             }
 
             const rejectFunc = function(this: XMLHttpRequest, _ev?: ProgressEvent) {
+                console.log('rejectFunc', this)
                 reject(JSON.stringify({
                     status: this.status,
                     response: this.response,

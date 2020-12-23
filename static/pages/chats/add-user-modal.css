@@ -34,7 +34,7 @@
   margin-bottom: 5%;
 }
 
-.add-user-modal-input{
+.add-user-modal-input, .add-chat-modal-input{
   background-color: inherit;
   border: none;
   border-bottom: 1px solid #CEA100;
@@ -42,11 +42,11 @@
   margin-top: 10%;
 }
 
-.add-user-modal-input:focus{
+.add-user-modal-input:focus, .add-chat-modal-input:focus{
   outline-width: 0;
 }
 
-.add-user-modal-input::placeholder{
+.add-user-modal-input::placeholder, .add-chat-modal-input::placeholder{
   font-family: 'Open Sans', sans-serif;
   font-size: 13px;
   font-weight: 600;

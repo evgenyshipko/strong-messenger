@@ -2,11 +2,12 @@ import Button from '../../components/Button.js';
 import { InputName } from '../../utils/validator/InputValidator.js';
 import FormInput from '../../components/FormInput.js';
 import Form from '../../components/Form.js';
-import SignupPage from './SignupPage.js';
+import SignupPage from '../../components/pages/SignupPage.js';
 import Router from '../../utils/router/Router.js';
 import Path from '../../constants/Path.js';
 import HTTPExecutor from '../../utils/httpExecutor/httpExecutor.js';
 import Url, { ApiPath } from '../../constants/Url.js';
+import { handleErrorResponse } from '../../utils/utils.js';
 /* global HTMLFormElement, HTMLInputElement */
 const postInput = new FormInput({
     type: 'text',
@@ -82,7 +83,7 @@ form.addValidator((formData) => {
     })
         .catch((error) => {
         const errorData = JSON.parse(error);
-        window.alert(errorData.responseText);
+        handleErrorResponse(errorData);
     });
 });
 export const signup = new SignupPage({

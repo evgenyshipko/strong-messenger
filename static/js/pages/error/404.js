@@ -1,4 +1,4 @@
-import { ErrorPage } from './ErrorPage.js';
+import { ErrorPage } from '../../components/pages/ErrorPage.js';
 import Button from '../../components/Button.js';
 import Path from '../../constants/Path.js';
 import Router from '../../utils/router/Router.js';

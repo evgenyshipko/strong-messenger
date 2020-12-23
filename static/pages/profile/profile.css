@@ -193,8 +193,16 @@
   margin-bottom: 10%;
 }
 
-.upload-avatar-modal-browse-btn{
+.upload-avatar-modal-browse-label{
   font-size: 12px;
   font-weight: 600;
   text-decoration: underline;
+  font-family: 'Open Sans', sans-serif;
+  color: #CEA100;
+  cursor: pointer;
 }
+
+.upload-avatar-modal-browse-input{
+  display: none;
+}
+

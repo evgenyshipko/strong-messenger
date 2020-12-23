@@ -6,10 +6,12 @@ class Route {
         this._block = _block;
     }
     leave() {
-        var _a;
         if (this._block) {
-            (_a = this._block.getContent()) === null || _a === void 0 ? void 0 : _a.forEach((element) => {
-                element.remove();
+            this._block.forEach((block) => {
+                var _a;
+                (_a = block.getContent()) === null || _a === void 0 ? void 0 : _a.forEach((element) => {
+                    element.remove();
+                });
             });
         }
     }

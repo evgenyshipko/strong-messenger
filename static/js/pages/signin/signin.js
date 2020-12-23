@@ -1,4 +1,4 @@
-import SigninPage from './SigninPage.js';
+import SigninPage from '../../components/pages/SigninPage.js';
 import Button from '../../components/Button.js';
 import { InputName } from '../../utils/validator/InputValidator.js';
 import FormInput from '../../components/FormInput.js';
@@ -7,6 +7,7 @@ import Router from '../../utils/router/Router.js';
 import Path from '../../constants/Path.js';
 import HTTPExecutor from '../../utils/httpExecutor/httpExecutor.js';
 import Url, { ApiPath } from '../../constants/Url.js';
+import { handleErrorResponse, updateUserData } from '../../utils/utils.js';
 /* global HTMLFormElement, HTMLInputElement */
 const form = new Form({
     class: 'signin-form',
@@ -37,11 +38,13 @@ form.addValidator((formData) => {
         headers: { 'Content-Type': 'application/json' }
     })
         .then((_res) => {
-        new Router('.app').go(Path.CHATS);
+        updateUserData().then(() => {
+            new Router('.app').go(Path.CHATS);
+        });
     })
         .catch((error) => {
         const errorData = JSON.parse(error);
-        window.alert(errorData.responseText);
+        handleErrorResponse(errorData);
     });
 });
 export const signin = new SigninPage({

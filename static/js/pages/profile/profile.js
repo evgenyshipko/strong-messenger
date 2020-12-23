@@ -1,19 +1,17 @@
 import Button from '../../components/Button.js';
 import Form from '../../components/Form.js';
 import { InputName } from '../../utils/validator/InputValidator.js';
-import ProfilePage from './ProfilePage.js';
-import render from '../../utils/renderDom.js';
+import ProfilePage from '../../components/pages/ProfilePage.js';
 import FormInputLabeled from '../../components/FormInputLabeled.js';
-import Modal from '../../components/Modal.js';
-import Header from '../../components/Header.js';
 import Avatar from '../../components/Avatar.js';
 import Path from '../../constants/Path.js';
 import Router from '../../utils/router/Router.js';
 import HTTPExecutor from '../../utils/httpExecutor/httpExecutor.js';
 import Url, { ApiPath } from '../../constants/Url.js';
 import Store from '../../utils/Store.js';
-import Input from "../../components/Input.js";
-/* global FormData */
+import { uploadAvatarModal } from './uploadAvatarModal.js';
+import { handleErrorResponse } from '../../utils/utils.js';
+/* global FormData, HTMLInputElement */
 const formId = 'profile-form';
 const inputClass = 'profile-form-item__input';
 const inputWrapperClass = 'profile-form-item';
@@ -48,6 +46,10 @@ const buttonListMain = [
                     .post(Url.generate(ApiPath.AUTH_LOGOUT), { credentials: true })
                     .then((_res) => {
                     store.setState({ isLogged: false });
+                })
+                    .catch((error) => {
+                    const errorData = JSON.parse(error);
+                    handleErrorResponse(errorData);
                 });
             }
         }
@@ -151,49 +153,16 @@ const formChangePassword = new Form({
         })
     ]
 });
-const modalWindow = new Modal({
-    backgroundClass: 'upload-avatar-modal-shadow',
-    modalClass: 'upload-avatar-modal',
-    content: [
-        new Header({
-            text: 'Загрузите файл',
-            class: 'upload-avatar-modal-header'
-        }),
-        new Input({
-            inputName: 'uploadAvatar',
-            placeholder: 'Выбрать файл на компьютере',
-            class: 'upload-avatar-modal-browse-btn messenger-button_no-background',
-            type: 'file',
-            eventData: {
-                name: 'change',
-                callback: () => {
-                    console.log('INPUT FILE CALLBACK', this);
-                }
-            }
-        }),
-        new Button({
-            text: 'Изменить',
-            class: 'messenger-button upload-avatar-modal-change-btn',
-            eventData: {
-                name: 'click',
-                callback: () => {
-                    profile.show('flex');
-                    modalWindow.hide();
-                }
-            }
-        })
-    ]
-});
 export const profile = new ProfilePage({
     avatar: new Avatar({
         eventData: {
             name: 'click',
             callback: () => {
                 profile.hide();
-                modalWindow.show('flex');
+                uploadAvatarModal.show('flex');
             }
         },
-        imageLink: 'https://ya-praktikum.tech/api/v2/uploads/1be8ee35-4bdd-48b7-ab9d-c5fb586198d1/arrow1.png'
+        imageLink: ''
     }),
     backButton: new Button({
         class: 'profile-back-btn',
@@ -205,27 +174,33 @@ export const profile = new ProfilePage({
             }
         }
     }),
-    userName: '',
+    userName: (() => {
+        const userProps = new Store().content.userProps;
+        if (userProps && userProps.avatar) {
+            return Url.getHostUrl() + userProps.avatar;
+        }
+        return '';
+    })(),
     form: formMain,
     buttonList: buttonListMain
 });
-// скрыли и вставили в dom модальное окно
-modalWindow.hide();
-render(modalWindow);
 const sendFormData = (url) => {
     return (formData) => {
         new HTTPExecutor()
             .put(url, {
             data: JSON.stringify(Object.fromEntries(formData)),
             credentials: true,
-            headers: { 'Content-Type': 'application/json' }
+            headers: {
+                'Content-Type': 'application/json',
+                'Set-Cookie': 'expires=0'
+            }
         })
             .then((_res) => {
             window.alert('Данные изменены успешно!');
         })
             .catch((error) => {
             const errorData = JSON.parse(error);
-            window.alert(errorData.responseText);
+            handleErrorResponse(errorData);
         });
     };
 };
@@ -254,7 +229,7 @@ store.subscribe('userProps', (state) => {
 });
 store.subscribe('userProps', (state) => {
     if (state.userProps.avatar) {
-        profile.props.avatar.setProps({ imageLink: state.userProps.avatar });
+        profile.props.avatar.setProps({ imageLink: Url.getHostUrl() + state.userProps.avatar });
     }
 });
 //# sourceMappingURL=profile.js.map

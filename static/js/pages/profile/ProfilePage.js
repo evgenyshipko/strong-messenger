@@ -1,4 +1,4 @@
-import Component from '../../utils/Component.js';
+import Component from '../../utils/Component.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js';
 class ProfilePage extends Component {
     template() {
         return `

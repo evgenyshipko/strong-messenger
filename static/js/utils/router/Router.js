@@ -18,7 +18,6 @@ class Router {
         return this;
     }
     start(path) {
-        console.log('window.location.pathname', window.location.pathname);
         window.onpopstate = (event) => {
             this._onRoute(event.currentTarget.location.pathname);
         };
@@ -30,11 +29,9 @@ class Router {
         }
     }
     _onRoute(pathname) {
-        console.log('_onRoute', pathname);
         let route = this.getRoute(pathname);
-        console.log('route', route);
         if (!route) {
-            route = new Route('', notFoundPage, this._rootQuery);
+            route = new Route('', [notFoundPage], this._rootQuery);
         }
         if (this._currentRoute && this._currentRoute !== route) {
             this._currentRoute.leave();

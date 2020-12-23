@@ -1,10 +1,10 @@
 import Component from '../../utils/Component'
-import Input from '../../components/Input'
-import Button from '../../components/Button'
-import ChatList from '../../components/chats/ChatList'
-import ChatHeader from '../../components/chats/ChatHeader'
-import MessageList from '../../components/chats/MessageList'
-import Block from '../../components/Block'
+import Input from '../Input'
+import Button from '../Button'
+import ChatList from '../chats/ChatList'
+import ChatHeader from '../chats/ChatHeader'
+import MessageList from '../chats/MessageList'
+import Block from '../Block'
 
 interface ChatsPageProps {
     functionsBlockComponents: (Button | Input)[]

@@ -15,15 +15,17 @@ export default function renderDom(block: Component<Context>): void {
     document.body.appendChild(root)
 }
 
-export function render(query: string, block: Component<Context>): void {
+export function render(query: string, blockArr: Component<Context>[]): void {
     const root = document.querySelector(query)
-    const content = block.getContent()
-    if (root !== null && content !== null) {
-        content.forEach((node) => {
-            if (node) {
-                root.appendChild(node)
-            }
-        })
-        document.body.appendChild(root)
-    }
+    blockArr.forEach((block) => {
+        const content = block.getContent()
+        if (root !== null && content !== null) {
+            content.forEach((node) => {
+                if (node) {
+                    root.appendChild(node)
+                }
+            })
+            document.body.appendChild(root)
+        }
+    })
 }

@@ -33,10 +33,21 @@
   position: relative;
 }
 
+
+.chats-buttons-block{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chats-add-chat-btn{
+  font-size: 12px;
+  margin-left: 5%;
+}
+
 .chats-profile-btn{
-  display: inline-flex;
   width: 80px;
-  align-self: flex-end;
 
   margin: 0;
   padding: 0;
@@ -52,17 +63,6 @@
 
 .chats-profile-btn:focus{
   outline-width: 0;
-}
-
-.chats-profile-btn__icon{
-  background-image: url("../../images/arrow.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-
-  width: 12px;
-  height: 12px;
-  margin-left: 2px;
-  margin-top: 4px;
 }
 
 .chats-search-input{

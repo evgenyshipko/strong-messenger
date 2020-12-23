@@ -11,16 +11,18 @@ export default function renderDom(block) {
     }
     document.body.appendChild(root);
 }
-export function render(query, block) {
+export function render(query, blockArr) {
     const root = document.querySelector(query);
-    const content = block.getContent();
-    if (root !== null && content !== null) {
-        content.forEach((node) => {
-            if (node) {
-                root.appendChild(node);
-            }
-        });
-        document.body.appendChild(root);
-    }
+    blockArr.forEach((block) => {
+        const content = block.getContent();
+        if (root !== null && content !== null) {
+            content.forEach((node) => {
+                if (node) {
+                    root.appendChild(node);
+                }
+            });
+            document.body.appendChild(root);
+        }
+    });
 }
 //# sourceMappingURL=renderDom.js.map

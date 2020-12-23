@@ -7,15 +7,17 @@ export enum ApiPath{
     USER_PROFILE='/user/profile',
     USER_AVATAR='/user/profile/avatar',
     USER_PASSWORD='/user/password',
+    CHATS='/chats',
+    CHATS_USERS='/chats/users'
 }
 
 class Url {
-    private getApiUrl() {
-        return 'https://ya-praktikum.tech/api/v2'
+    static getHostUrl() {
+        return 'https://ya-praktikum.tech'
     }
 
     static generate(path: ApiPath) {
-        return new Url().getApiUrl() + path
+        return Url.getHostUrl() + '/api/v2' + path
     }
 }
 

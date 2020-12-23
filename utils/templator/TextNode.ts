@@ -65,7 +65,7 @@ class TextNode {
     }
 
     _addEventListener(target: HTMLElement, context: Context): void {
-        const availableEvents = ['click', 'focus', 'submit',
+        const availableEvents = ['click', 'focus', 'submit', 'keyup',
             'mousemove', 'mouseup', 'mousedown', 'mouseout', 'mouseover', 'contextmenu', 'change']
         const EVENT_REGEXP = /@event=\{\{(\w+)}}/gi
         const eventObj = EVENT_REGEXP.exec(this.openingTag!)
@@ -123,7 +123,7 @@ class TextNode {
     }
 
     _setAttributes(target: HTMLElement, context: Context): void {
-        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form', 'value', 'src']
+        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form', 'value', 'src', 'for']
         const ATTRIBUTES_REGEXP = /(\w+)=\{\{(.*?)}}/gi
         let result = null
         while ((result = ATTRIBUTES_REGEXP.exec(this.openingTag!))) {

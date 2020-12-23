@@ -1,7 +1,8 @@
-import render from '../../utils/renderDom.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js';
-import { ErrorPage } from './ErrorPage.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js';
-import Button from '../../components/Button.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js';
-render(new ErrorPage({
+import { ErrorPage } from '../../components/pages/ErrorPage.js';
+import Button from '../../components/Button.js';
+import Path from '../../constants/Path.js';
+import Router from '../../utils/router/Router.js';
+export const internalServerErrorPage = new ErrorPage({
     errorNumber: '500',
     pageText: 'Ошибка сервера',
     button: new Button({
@@ -10,9 +11,9 @@ render(new ErrorPage({
         eventData: {
             name: 'click',
             callback: () => {
-                document.location.assign('../chats/chats.html');
+                new Router('.app').go(Path.CHATS);
             }
         }
     })
-}));
+});
 //# sourceMappingURL=500.js.map
