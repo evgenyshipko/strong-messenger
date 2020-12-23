@@ -28,6 +28,7 @@ export interface ChatData {
 }
 
 export interface MessengerStore extends Record<string, unknown>{
+    currentChatId?: number,
     userProps: UserProps,
     isLogged: boolean,
     chatList: ChatData[]

@@ -86,12 +86,17 @@ class Component<T> {
         const newElements = this._templator.compile(this.props)
         this._elements?.forEach((oldNode, index) => {
             if (oldNode) {
-                const parent = oldNode.parentNode
-                oldNode.remove()
-                if (parent != null) {
+                const newNode = newElements[index]
+                const parentNode = oldNode.parentNode
+                const nextNode = oldNode.nextSibling
+                if (parentNode) {
                     oldNode.remove()
-                    const newNode = newElements[index]
-                    parent.appendChild(newNode)
+                    // если есть следующая нода того же уровня, то инсертим не в конец родителя, а к этой ноде
+                    if (nextNode) {
+                        parentNode.insertBefore(newNode, nextNode)
+                    } else {
+                        parentNode.appendChild(newNode)
+                    }
                 }
             }
         })

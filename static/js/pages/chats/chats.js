@@ -11,7 +11,7 @@ import Path from '../../constants/Path.js';
 import Store from '../../utils/Store.js';
 import { attachPopup } from './attachPopup.js';
 import { actionsPopup } from './actionsPopup.js';
-import { addChatModal } from "./addChatModal.js";
+import { addChatModal } from './addChatModal.js';
 // создаем внутренние компоненты для компоненты-страницы CreatePage
 const functionsBlockComponents = [
     new Block({
@@ -113,11 +113,13 @@ const store = new Store();
 const generateChatItemList = () => {
     return store.content.chatList.map((chatData) => {
         return new Chat({
+            id: chatData.id,
             chatName: chatData.title,
             messageList: [],
             eventData: {
                 name: 'click',
                 callback: () => {
+                    store.setState({ currentChatId: chatData.id });
                     messageList.setProps({
                         messageItemList: []
                     });

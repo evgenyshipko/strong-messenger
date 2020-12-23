@@ -113,7 +113,7 @@ class TextNode {
         return null;
     }
     _setAttributes(target, context) {
-        const availableAttributes = ['type', 'name', 'placeholder', 'id', 'form', 'value', 'src', 'for'];
+        const availableAttributes = ['autocomplete', 'type', 'name', 'placeholder', 'id', 'form', 'value', 'src', 'for', 'list'];
         const ATTRIBUTES_REGEXP = /(\w+)=\{\{(.*?)}}/gi;
         let result = null;
         while ((result = ATTRIBUTES_REGEXP.exec(this.openingTag))) {

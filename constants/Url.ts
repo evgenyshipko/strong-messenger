@@ -7,6 +7,7 @@ export enum ApiPath{
     USER_PROFILE='/user/profile',
     USER_AVATAR='/user/profile/avatar',
     USER_PASSWORD='/user/password',
+    USER_SEARCH='/user/search',
     CHATS='/chats',
     CHATS_USERS='/chats/users'
 }

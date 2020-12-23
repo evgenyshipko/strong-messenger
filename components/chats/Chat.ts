@@ -3,6 +3,7 @@ import Message from './Message'
 import { EventData } from '../../types/Types'
 
 interface ChatItemProps {
+    id: number,
     checked?: boolean,
     chatName: string,
     messageList: Message[],

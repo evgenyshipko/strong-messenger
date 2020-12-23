@@ -12,7 +12,7 @@ import Store from '../../utils/Store'
 import { MessengerStore } from '../../types/Types'
 import { attachPopup } from './attachPopup'
 import { actionsPopup } from './actionsPopup'
-import {addChatModal} from "./addChatModal";
+import { addChatModal } from './addChatModal'
 
 // создаем внутренние компоненты для компоненты-страницы CreatePage
 const functionsBlockComponents = [
@@ -119,11 +119,13 @@ const store = new Store<MessengerStore>()
 const generateChatItemList = () => {
     return store.content.chatList.map((chatData) => {
         return new Chat({
+            id: chatData.id,
             chatName: chatData.title,
             messageList: [],
             eventData: {
                 name: 'click',
                 callback: () => {
+                    store.setState({ currentChatId: chatData.id })
                     messageList.setProps({
                         messageItemList: []
                     })

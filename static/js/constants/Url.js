@@ -7,6 +7,7 @@ export var ApiPath;
     ApiPath["USER_PROFILE"] = "/user/profile";
     ApiPath["USER_AVATAR"] = "/user/profile/avatar";
     ApiPath["USER_PASSWORD"] = "/user/password";
+    ApiPath["USER_SEARCH"] = "/user/search";
     ApiPath["CHATS"] = "/chats";
     ApiPath["CHATS_USERS"] = "/chats/users";
 })(ApiPath || (ApiPath = {}));
