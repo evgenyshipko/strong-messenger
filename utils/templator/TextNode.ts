@@ -25,6 +25,7 @@ class TextNode {
         return element
     }
 
+    // шаблонизатор не умеет вставлять ноду в innerHtml (XSS санитайзинг)
     _handleTextContentParsing(target: HTMLElement, context: Context) {
         if (this.textContent) {
             if (this._isParsable(this.textContent)) {
@@ -35,7 +36,6 @@ class TextNode {
                     const path = pathObj[PATH_INDEX]
                     const data = this._getDataFromContext(context, path)
                     if (data === undefined) {
-                        console.log(this, path, context)
                         throw new Error(`${path} attribute is undefined in context`)
                     }
                     if (Array.isArray(data) && data[0] instanceof Component) {
@@ -65,7 +65,7 @@ class TextNode {
     }
 
     _addEventListener(target: HTMLElement, context: Context): void {
-        const availableEvents = ['click', 'focus', 'submit', 'keyup',
+        const availableEvents = ['DOMContentLoaded', 'click', 'focus', 'submit', 'keyup',
             'mousemove', 'mouseup', 'mousedown', 'mouseout', 'mouseover', 'contextmenu', 'change']
         const EVENT_REGEXP = /@event=\{\{(\w+)}}/gi
         const eventObj = EVENT_REGEXP.exec(this.openingTag!)
@@ -123,6 +123,7 @@ class TextNode {
     }
 
     _setAttributes(target: HTMLElement, context: Context): void {
+        // запрещены onclick, onerror и прочие ивент-атрибуты (санитайзинг XSS)
         const availableAttributes = ['autocomplete', 'type', 'name', 'placeholder', 'id', 'form', 'value', 'src', 'for', 'list']
         const ATTRIBUTES_REGEXP = /(\w+)=\{\{(.*?)}}/gi
         let result = null

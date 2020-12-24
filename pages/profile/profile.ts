@@ -1,17 +1,16 @@
 import Button from '../../components/Button'
 import Form from '../../components/Form'
-import { InputName } from '../../utils/validator/InputValidator'
+import {InputName} from '../../utils/validator/InputValidator'
 import ProfilePage from '../../components/pages/ProfilePage'
 import FormInputLabeled from '../../components/FormInputLabeled'
 import Avatar from '../../components/Avatar'
 import Path from '../../constants/Path'
 import Router from '../../utils/router/Router'
-import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
-import Url, { ApiPath } from '../../constants/Url'
+import Url from '../../constants/Url'
 import Store from '../../utils/Store'
-import { MessengerStore, UserProps } from '../../types/Types'
-import { uploadAvatarModal } from './uploadAvatarModal'
-import { handleErrorResponse } from '../../utils/utils'
+import {MessengerStore, UserProps} from '../../types/Types'
+import {uploadAvatarModal} from './uploadAvatarModal'
+import ProfileApi from './profile.api'
 
 /* global FormData, HTMLInputElement */
 
@@ -46,15 +45,7 @@ const buttonListMain = [
         eventData: {
             name: 'click',
             callback: () => {
-                new HTTPExecutor()
-                    .post(Url.generate(ApiPath.AUTH_LOGOUT), { credentials: true })
-                    .then((_res) => {
-                        store.setState({ isLogged: false })
-                    })
-                    .catch((error) => {
-                        const errorData = JSON.parse(error) as ErrorResponse
-                        handleErrorResponse(errorData)
-                    })
+                new ProfileApi().logout()
             }
         }
     })
@@ -193,33 +184,13 @@ export const profile = new ProfilePage({
     buttonList: buttonListMain
 })
 
-const sendFormData = (url: string) => {
-    return (formData: FormData) => {
-        new HTTPExecutor()
-            .put(
-                url,
-                {
-                    data: JSON.stringify(Object.fromEntries(formData)),
-                    credentials: true,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Set-Cookie': 'expires=0'
-                    }
-                })
-            .then((_res) => {
-                window.alert('Данные изменены успешно!')
-            })
-            .catch((error) => {
-                const errorData = JSON.parse(error) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
-    }
-}
-
 // вешаем валидацию на формы
-formChangePassword.addValidator(sendFormData(Url.generate(ApiPath.USER_PASSWORD)))
-formMain.addValidator(sendFormData(Url.generate(ApiPath.USER_PROFILE)))
-
+formChangePassword.addValidator((formData) => {
+    new ProfileApi().changeProfilePassword(formData)
+})
+formMain.addValidator((formData) => {
+    new ProfileApi().changeProfileData(formData)
+})
 const updateFormValues = (_state: MessengerStore) => {
     const elemList = formMain.getContent()
     if (elemList && elemList.length > 0) {

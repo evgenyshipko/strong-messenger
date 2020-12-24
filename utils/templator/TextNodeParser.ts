@@ -14,6 +14,10 @@ class TextNodeParser {
     }
 
     findAllTextNodes(): TextNode[] {
+        // запрещены script, style теги (санитайзинг XSS)
+        const availableTagNames = ['div', 'button', 'input', 'span',
+            'img', 'label', 'h1', 'h2', 'h3', 'h4',
+            'h5', 'h6', 'i', 'form', 'datalist', 'option', 'li', 'ul', 'p']
         let template = this._template
         const commonArr = []
         let endIndex: Nullable<Number> = 0
@@ -25,7 +29,7 @@ class TextNodeParser {
             const executionResult = this._findTextNode(template)
             endIndex = executionResult.endIndex
             previousResult = executionResult.result
-            if (executionResult.result !== null) {
+            if (executionResult.result !== null && availableTagNames.includes(executionResult.result.tagName)) {
                 commonArr.push(executionResult.result)
             }
         }

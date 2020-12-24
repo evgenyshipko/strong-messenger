@@ -1,4 +1,10 @@
 
+/*
+ Глобальный стор для управления состоянием приложения
+ Позволяет подписывать функции на изменение определенных ключей стейта
+ При самом изменении пропсов функции происходит вызов функций-подписчиков
+*/
+
 class Store<T extends Record<string, unknown>> {
     private subscribers: Record<string | number, ((state: T) => unknown)[]>
     private state: T
@@ -17,10 +23,8 @@ class Store<T extends Record<string, unknown>> {
         const self = this
         return new Proxy((state), {
             set: function(state, propertyName, value) {
-                console.log('SET FUNC')
                 if (typeof propertyName !== 'symbol') {
                     state[propertyName] = value
-                    console.log(`stateChange: ${String(propertyName)}: ${value}`)
                     self.dispatch(propertyName, state)
                 }
                 return true

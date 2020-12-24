@@ -5,9 +5,7 @@ import FormInput from '../../components/FormInput'
 import Form from '../../components/Form'
 import Router from '../../utils/router/Router'
 import Path from '../../constants/Path'
-import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
-import Url, { ApiPath } from '../../constants/Url'
-import {handleErrorResponse, updateUserData} from '../../utils/utils'
+import SigninApi from './signin.api'
 
 /* global HTMLFormElement, HTMLInputElement */
 
@@ -33,23 +31,7 @@ const form = new Form({
 })
 
 form.addValidator((formData) => {
-    new HTTPExecutor()
-        .post(
-            Url.generate(ApiPath.AUTH_SIGNIN),
-            {
-                data: JSON.stringify(Object.fromEntries(formData)),
-                credentials: true,
-                headers: { 'Content-Type': 'application/json' }
-            })
-        .then((_res) => {
-            updateUserData().then(() => {
-                new Router('.app').go(Path.CHATS)
-            })
-        })
-        .catch((error) => {
-            const errorData = JSON.parse(error) as ErrorResponse
-            handleErrorResponse(errorData)
-        })
+    new SigninApi(formData).request()
 })
 
 export const signin = new SigninPage({

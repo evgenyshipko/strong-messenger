@@ -20,6 +20,10 @@ class Url {
     static generate(path: ApiPath) {
         return Url.getHostUrl() + '/api/v2' + path
     }
+
+    static getChatUsersUrl(chatId: number) {
+        return `${Url.getHostUrl()}/api/v2/chats/${chatId}/users`
+    }
 }
 
 export default Url

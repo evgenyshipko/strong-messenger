@@ -5,9 +5,7 @@ import Form from '../../components/Form.js';
 import SignupPage from '../../components/pages/SignupPage.js';
 import Router from '../../utils/router/Router.js';
 import Path from '../../constants/Path.js';
-import HTTPExecutor from '../../utils/httpExecutor/httpExecutor.js';
-import Url, { ApiPath } from '../../constants/Url.js';
-import { handleErrorResponse } from '../../utils/utils.js';
+import SignupApi from "./signup.api.js";
 /* global HTMLFormElement, HTMLInputElement */
 const postInput = new FormInput({
     type: 'text',
@@ -71,20 +69,7 @@ const form = new Form({
 form.addValidator((formData) => {
     const data = Object.fromEntries(formData);
     delete data[InputName.SECOND_PASSWORD];
-    console.log('data', JSON.stringify(data));
-    new HTTPExecutor()
-        .post(Url.generate(ApiPath.AUTH_SIGNUP), {
-        data: JSON.stringify(data),
-        credentials: true,
-        headers: { 'Content-Type': 'application/json' }
-    })
-        .then((_res) => {
-        new Router('.app').go(Path.CHATS);
-    })
-        .catch((error) => {
-        const errorData = JSON.parse(error);
-        handleErrorResponse(errorData);
-    });
+    new SignupApi(data).request();
 });
 export const signup = new SignupPage({
     form: form,

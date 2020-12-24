@@ -26,7 +26,6 @@ class TextNode {
                     const path = pathObj[PATH_INDEX];
                     const data = this._getDataFromContext(context, path);
                     if (data === undefined) {
-                        console.log(this, path, context);
                         throw new Error(`${path} attribute is undefined in context`);
                     }
                     if (Array.isArray(data) && data[0] instanceof Component) {
@@ -60,7 +59,7 @@ class TextNode {
         }
     }
     _addEventListener(target, context) {
-        const availableEvents = ['click', 'focus', 'submit', 'keyup',
+        const availableEvents = ['DOMContentLoaded', 'click', 'focus', 'submit', 'keyup',
             'mousemove', 'mouseup', 'mousedown', 'mouseout', 'mouseover', 'contextmenu', 'change'];
         const EVENT_REGEXP = /@event=\{\{(\w+)}}/gi;
         const eventObj = EVENT_REGEXP.exec(this.openingTag);
@@ -113,6 +112,7 @@ class TextNode {
         return null;
     }
     _setAttributes(target, context) {
+        // запрещены onclick, onerror и прочие ивент-атрибуты (санитайзинг XSS)
         const availableAttributes = ['autocomplete', 'type', 'name', 'placeholder', 'id', 'form', 'value', 'src', 'for', 'list'];
         const ATTRIBUTES_REGEXP = /(\w+)=\{\{(.*?)}}/gi;
         let result = null;

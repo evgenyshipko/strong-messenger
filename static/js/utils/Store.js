@@ -1,3 +1,8 @@
+/*
+ Глобальный стор для управления состоянием приложения
+ Позволяет подписывать функции на изменение определенных ключей стейта
+ При самом изменении пропсов функции происходит вызов функций-подписчиков
+*/
 class Store {
     constructor(initialState = {}) {
         if (Store.__instance) {
@@ -11,10 +16,8 @@ class Store {
         const self = this;
         return new Proxy((state), {
             set: function (state, propertyName, value) {
-                console.log('SET FUNC');
                 if (typeof propertyName !== 'symbol') {
                     state[propertyName] = value;
-                    console.log(`stateChange: ${String(propertyName)}: ${value}`);
                     self.dispatch(propertyName, state);
                 }
                 return true;

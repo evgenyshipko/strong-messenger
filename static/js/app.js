@@ -7,11 +7,11 @@ import { signup } from './pages/signup/signup.js';
 import Store from './utils/Store.js';
 import { internalServerErrorPage } from './pages/error/500.js';
 import { uploadAvatarModal } from './pages/profile/uploadAvatarModal.js';
-import { updateUserData } from './utils/utils.js';
 import { deleteUserModal } from './pages/chats/deleteUserModal.js';
 import { deleteChatModal } from './pages/chats/deleteChatModal.js';
 import { addUserModal } from './pages/chats/addUserModal.js';
 import { addChatModal } from './pages/chats/addChatModal.js';
+import AuthApi from './api/auth.api.js';
 const router = new Router('.app')
     .use(Path.CHATS, [chats, deleteUserModal, deleteChatModal, addUserModal, addChatModal])
     .use(Path.PROFILE, [profile, uploadAvatarModal])
@@ -28,6 +28,6 @@ store.subscribe('isLogged', (state) => {
         router.start();
     }
 });
-// при первой загрузке страницы проверяем - авторизованы ли мы в системе и если да - то обновлякем данные пользователя
-updateUserData();
+// при первой загрузке страницы проверяем - авторизованы ли мы в системе и если да - то обновляем данные пользователя
+new AuthApi().updateUserData();
 //# sourceMappingURL=app.js.map

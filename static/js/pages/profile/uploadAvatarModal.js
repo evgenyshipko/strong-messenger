@@ -1,11 +1,8 @@
 import Modal from '../../components/Modal.js';
 import Header from '../../components/Header.js';
-import HTTPExecutor from '../../utils/httpExecutor/httpExecutor.js';
-import Url, { ApiPath } from '../../constants/Url.js';
 import Button from '../../components/Button.js';
-import Store from '../../utils/Store.js';
-import { handleErrorResponse } from '../../utils/utils.js';
 import InputLabeled from '../../components/InputLabeled.js';
+import ProfileApi from './profile.api.js';
 /* global FormData, HTMLInputElement, Event */
 const inputClass = 'upload-avatar-modal-browse-input';
 const uploadAvatar = (_e) => {
@@ -14,20 +11,7 @@ const uploadAvatar = (_e) => {
         const formData = new FormData();
         formData.append('avatar', input.files[0]);
         formData.append('type', 'image/png');
-        new HTTPExecutor()
-            .put(Url.generate(ApiPath.USER_AVATAR), {
-            data: formData,
-            credentials: true
-        })
-            .then((res) => {
-            new Store().setState({ userProps: JSON.parse(res.response) });
-            window.alert('Аватар изменен успешно!');
-            uploadAvatarModal.hide();
-        })
-            .catch((error) => {
-            const errorData = JSON.parse(error);
-            handleErrorResponse(errorData);
-        });
+        new ProfileApi().changeUserAvatar(formData);
     }
     else {
         window.alert('Выберите файл!');

@@ -2,40 +2,18 @@ import Modal from '../../components/Modal.js';
 import Header from '../../components/Header.js';
 import { InputName } from '../../utils/validator/InputValidator.js';
 import Button from '../../components/Button.js';
-import { chats } from './chats.js';
 import DropdownInput from '../../components/dropdown/DropdownInput.js';
-import HTTPExecutor from '../../utils/httpExecutor/httpExecutor.js';
-import Url, { ApiPath } from '../../constants/Url.js';
-import { handleErrorResponse } from '../../utils/utils.js';
-import Option from '../../components/dropdown/Option.js';
 import Store from '../../utils/Store.js';
+import ChatsApi from './chats.api.js';
 /* global HTMLInputElement, Event */
+// опции апдейтятся с задержкой, чтобы при каждом нажатии не отправлялся запрос на сервер
+let delayTimer;
 const updateDropdownOptions = (e) => {
-    const login = e.target.value;
-    new HTTPExecutor()
-        .post(Url.generate(ApiPath.USER_SEARCH), {
-        credentials: true,
-        data: JSON.stringify({ login: login }),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then((res) => {
-        const userPropsList = JSON.parse(res.response);
-        if (userPropsList && userPropsList.length > 0) {
-            const optionList = userPropsList.map((userProp) => {
-                return new Option({
-                    label: userProp.login,
-                    value: userProp
-                });
-            });
-            dropdownInput.setProps({ options: optionList, value: login });
-        }
-    })
-        .catch((err) => {
-        const errorData = JSON.parse(err);
-        handleErrorResponse(errorData);
-    });
+    clearTimeout(delayTimer);
+    delayTimer = setTimeout(function () {
+        const login = e.target.value;
+        new ChatsApi().updateSearchUserDropdownInput(login, dropdownInput);
+    }, 1000);
 };
 const addUserToChat = (_e) => {
     var _a;
@@ -43,27 +21,8 @@ const addUserToChat = (_e) => {
         return option.props.value.login === dropdownInput.props.value;
     })) === null || _a === void 0 ? void 0 : _a.props.value;
     if (userProp) {
-        const login = userProp.login;
-        const userId = userProp.id;
         const chatId = new Store().content.currentChatId;
-        new HTTPExecutor()
-            .put(Url.generate(ApiPath.CHATS_USERS), {
-            credentials: true,
-            data: JSON.stringify({ users: [userId], chatId: chatId }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then((_res) => {
-            console.log('ADD USER RESPONSE', _res);
-            window.alert(`Пользователь ${login} добавлен успешно!`);
-            addUserModal.hide();
-            chats.show('flex');
-        })
-            .catch((err) => {
-            const errorData = JSON.parse(err);
-            handleErrorResponse(errorData);
-        });
+        new ChatsApi().addUser(userProp.id, chatId);
     }
 };
 const dropdownInput = new DropdownInput({

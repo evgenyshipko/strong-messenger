@@ -40,7 +40,6 @@ class HTTPExecutor {
                     });
                 }
                 const rejectFunc = function (_ev) {
-                    console.log('rejectFunc', this);
                     reject(JSON.stringify({
                         status: this.status,
                         response: this.response,

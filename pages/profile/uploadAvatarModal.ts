@@ -1,12 +1,8 @@
 import Modal from '../../components/Modal'
 import Header from '../../components/Header'
-import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
-import Url, { ApiPath } from '../../constants/Url'
-import { UserProps } from '../../types/Types'
 import Button from '../../components/Button'
-import Store from '../../utils/Store'
-import { handleErrorResponse } from '../../utils/utils'
 import InputLabeled from '../../components/InputLabeled'
+import ProfileApi from './profile.api'
 
 /* global FormData, HTMLInputElement, Event */
 
@@ -18,22 +14,7 @@ const uploadAvatar = (_e: Event) => {
         const formData = new FormData()
         formData.append('avatar', input.files[0])
         formData.append('type', 'image/png')
-        new HTTPExecutor()
-            .put(
-                Url.generate(ApiPath.USER_AVATAR),
-                {
-                    data: formData,
-                    credentials: true
-                })
-            .then((res) => {
-                new Store().setState({ userProps: JSON.parse(res.response) as UserProps })
-                window.alert('Аватар изменен успешно!')
-                uploadAvatarModal.hide()
-            })
-            .catch((error) => {
-                const errorData = JSON.parse(error) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+        new ProfileApi().changeUserAvatar(formData)
     } else {
         window.alert('Выберите файл!')
     }
@@ -66,4 +47,3 @@ export const uploadAvatarModal = new Modal({
     ]
 })
 uploadAvatarModal.hide()
-

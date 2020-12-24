@@ -18,6 +18,9 @@ class Url {
     static generate(path) {
         return Url.getHostUrl() + '/api/v2' + path;
     }
+    static getChatUsersUrl(chatId) {
+        return `${Url.getHostUrl()}/api/v2/chats/${chatId}/users`;
+    }
 }
 export default Url;
 //# sourceMappingURL=Url.js.map

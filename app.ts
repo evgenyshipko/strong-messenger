@@ -8,11 +8,11 @@ import Store from './utils/Store'
 import { MessengerStore } from './types/Types'
 import { internalServerErrorPage } from './pages/error/500'
 import { uploadAvatarModal } from './pages/profile/uploadAvatarModal'
-import { updateUserData } from './utils/utils'
 import { deleteUserModal } from './pages/chats/deleteUserModal'
 import { deleteChatModal } from './pages/chats/deleteChatModal'
 import { addUserModal } from './pages/chats/addUserModal'
 import { addChatModal } from './pages/chats/addChatModal'
+import AuthApi from './api/auth.api'
 
 const router = new Router('.app')
     .use(Path.CHATS, [chats, deleteUserModal, deleteChatModal, addUserModal, addChatModal])
@@ -30,5 +30,5 @@ store.subscribe('isLogged', (state) => {
         router.start()
     }
 })
-// при первой загрузке страницы проверяем - авторизованы ли мы в системе и если да - то обновлякем данные пользователя
-updateUserData()
+// при первой загрузке страницы проверяем - авторизованы ли мы в системе и если да - то обновляем данные пользователя
+new AuthApi().updateUserData()

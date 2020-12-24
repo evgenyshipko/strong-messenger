@@ -6,11 +6,10 @@ import FormInputLabeled from '../../components/FormInputLabeled.js';
 import Avatar from '../../components/Avatar.js';
 import Path from '../../constants/Path.js';
 import Router from '../../utils/router/Router.js';
-import HTTPExecutor from '../../utils/httpExecutor/httpExecutor.js';
-import Url, { ApiPath } from '../../constants/Url.js';
+import Url from '../../constants/Url.js';
 import Store from '../../utils/Store.js';
 import { uploadAvatarModal } from './uploadAvatarModal.js';
-import { handleErrorResponse } from '../../utils/utils.js';
+import ProfileApi from './profile.api.js';
 /* global FormData, HTMLInputElement */
 const formId = 'profile-form';
 const inputClass = 'profile-form-item__input';
@@ -42,15 +41,7 @@ const buttonListMain = [
         eventData: {
             name: 'click',
             callback: () => {
-                new HTTPExecutor()
-                    .post(Url.generate(ApiPath.AUTH_LOGOUT), { credentials: true })
-                    .then((_res) => {
-                    store.setState({ isLogged: false });
-                })
-                    .catch((error) => {
-                    const errorData = JSON.parse(error);
-                    handleErrorResponse(errorData);
-                });
+                new ProfileApi().logout();
             }
         }
     })
@@ -184,29 +175,13 @@ export const profile = new ProfilePage({
     form: formMain,
     buttonList: buttonListMain
 });
-const sendFormData = (url) => {
-    return (formData) => {
-        new HTTPExecutor()
-            .put(url, {
-            data: JSON.stringify(Object.fromEntries(formData)),
-            credentials: true,
-            headers: {
-                'Content-Type': 'application/json',
-                'Set-Cookie': 'expires=0'
-            }
-        })
-            .then((_res) => {
-            window.alert('Данные изменены успешно!');
-        })
-            .catch((error) => {
-            const errorData = JSON.parse(error);
-            handleErrorResponse(errorData);
-        });
-    };
-};
 // вешаем валидацию на формы
-formChangePassword.addValidator(sendFormData(Url.generate(ApiPath.USER_PASSWORD)));
-formMain.addValidator(sendFormData(Url.generate(ApiPath.USER_PROFILE)));
+formChangePassword.addValidator((formData) => {
+    new ProfileApi().changeProfilePassword(formData);
+});
+formMain.addValidator((formData) => {
+    new ProfileApi().changeProfileData(formData);
+});
 const updateFormValues = (_state) => {
     const elemList = formMain.getContent();
     if (elemList && elemList.length > 0) {
