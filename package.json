@@ -8,7 +8,7 @@
   "scripts": {
     "start": "node ./static/js/server.js",
     "build": "tsc && ts-node utils/addJsExtentionToFiles.ts",
-    "test": "./node_modules/.bin/mocha"
+    "test": "mocha 'test/**/*.test.ts'"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -19,6 +19,7 @@
     "@babel/register": "^7.12.1",
     "@types/chai": "^4.2.14",
     "@types/express": "^4.17.9",
+    "@types/jsdom": "^16.2.5",
     "@types/mocha": "^8.2.0",
     "@types/node": "^14.14.14",
     "@typescript-eslint/eslint-plugin": "4.9.0",
@@ -29,6 +30,8 @@
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
+    "jsdom": "^16.4.0",
+    "jsdom-global": "^3.0.2",
     "mocha": "^8.2.1"
   },
   "dependencies": {

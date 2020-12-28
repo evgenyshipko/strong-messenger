@@ -149,7 +149,6 @@ export const profile = new ProfilePage({
         eventData: {
             name: 'click',
             callback: () => {
-                profile.hide();
                 uploadAvatarModal.show('flex');
             }
         },
@@ -173,7 +172,8 @@ export const profile = new ProfilePage({
         return '';
     })(),
     form: formMain,
-    buttonList: buttonListMain
+    buttonList: buttonListMain,
+    uploadAvatarModal: uploadAvatarModal
 });
 // вешаем валидацию на формы
 formChangePassword.addValidator((formData) => {

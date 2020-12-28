@@ -45,6 +45,9 @@ const deleteUserFromChat = (_e: Event) => {
         const chatId = store.content.currentChatId
         if (chatId) {
             new ChatsApi().deleteUser(userProp.id, chatId)
+                .then(() => {
+                    deleteUserModal.hide()
+                })
         }
     } else {
         window.alert('Сначала выберите пользователя')

@@ -1,5 +1,4 @@
 import Route from './Route.js';
-import { notFoundPage } from '../../pages/error/404.js';
 /* global History, Event, Window */
 class Router {
     constructor(rootQuery) {
@@ -17,21 +16,26 @@ class Router {
         this.routes.push(route);
         return this;
     }
-    start(path) {
+    useNotFound(notFoundPage) {
+        this._notFoundPage = notFoundPage;
+        return this;
+    }
+    start() {
         window.onpopstate = (event) => {
-            this._onRoute(event.currentTarget.location.pathname);
+            console.log('ONPOPSTATE EVENT', this.history);
+            this.go(event.currentTarget.location.pathname);
         };
-        if (path) {
-            this._onRoute(path);
-        }
-        else {
-            this._onRoute(window.location.pathname);
-        }
+        this.go(window.location.pathname);
     }
     _onRoute(pathname) {
-        let route = this.getRoute(pathname);
+        let route = this._getRoute(pathname);
         if (!route) {
-            route = new Route('', [notFoundPage], this._rootQuery);
+            if (this._notFoundPage) {
+                route = new Route(pathname, this._notFoundPage, this._rootQuery);
+            }
+            else {
+                return;
+            }
         }
         if (this._currentRoute && this._currentRoute !== route) {
             this._currentRoute.leave();
@@ -49,8 +53,11 @@ class Router {
     forward() {
         this.history.forward();
     }
-    getRoute(pathname) {
+    _getRoute(pathname) {
         return this.routes.find(route => route.match(pathname));
+    }
+    destruct() {
+        Router.__instance = null;
     }
 }
 export default Router;

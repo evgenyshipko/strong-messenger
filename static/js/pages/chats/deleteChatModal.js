@@ -1,14 +1,13 @@
 import Modal from '../../components/Modal.js';
 import Header from '../../components/Header.js';
 import Button from '../../components/Button.js';
-import { chats } from './chats.js';
 export const deleteChatModal = new Modal({
-    modalClass: 'delete-chat-modal',
-    backgroundClass: 'delete-chat-modal-shadow',
+    modalClass: 'add-user-modal',
+    backgroundClass: 'add-user-modal-shadow',
     content: [
         new Header({
             text: 'Вы действительно хотите удалить чат?',
-            class: 'delete-chat-modal-header'
+            class: 'add-user-modal-header'
         }),
         new Button({
             class: 'messenger-button delete-chat-modal-delete-btn',
@@ -21,7 +20,6 @@ export const deleteChatModal = new Modal({
                 name: 'click',
                 callback: () => {
                     deleteChatModal.hide();
-                    chats.show('flex');
                 }
             }
         })

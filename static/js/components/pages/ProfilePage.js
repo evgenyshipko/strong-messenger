@@ -22,6 +22,7 @@ class ProfilePage extends Component {
             </div>
             <div class="profile-right-empty-block"></div>
           </div>
+          <div>{{uploadAvatarModal}}</div>
         `;
     }
 }

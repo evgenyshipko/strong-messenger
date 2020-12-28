@@ -13,6 +13,9 @@ import { MessengerStore } from '../../types/Types'
 import { attachPopup } from './attachPopup'
 import { actionsPopup } from './actionsPopup'
 import { addChatModal } from './addChatModal'
+import {deleteChatModal} from "./deleteChatModal";
+import {addUserModal} from "./addUserModal";
+import {deleteUserModal} from "./deleteUserModal";
 
 // создаем внутренние компоненты для компоненты-страницы CreatePage
 const functionsBlockComponents = [
@@ -25,7 +28,6 @@ const functionsBlockComponents = [
                 eventData: {
                     name: 'click',
                     callback: () => {
-                        chats.hide()
                         addChatModal.show('flex')
                     }
                 }
@@ -111,7 +113,11 @@ export const chats = new ChatsPage({
         chatItemList: []
     }),
     messageBlockComponents: [attachPopup, actionsPopup, messageList],
-    chatHeader: new Block({ class: '', content: '' })
+    chatHeader: new Block({ class: '', content: '' }),
+    addChatModal: addChatModal,
+    deleteChatModal: deleteChatModal,
+    addUserModal: addUserModal,
+    deleteUserModal: deleteUserModal
 })
 
 const store = new Store<MessengerStore>()

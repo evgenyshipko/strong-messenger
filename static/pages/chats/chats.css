@@ -192,6 +192,7 @@
 .chats-navigation{
   border-right: 1px solid #C4C4C4;
   height: 100vh;
+  overflow-y: auto;
 }
 
 .chats-list{

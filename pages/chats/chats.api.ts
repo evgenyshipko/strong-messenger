@@ -1,18 +1,14 @@
-import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
-import Url, { ApiPath } from '../../constants/Url'
+import HTTPExecutor, {ErrorResponse} from '../../utils/httpExecutor/httpExecutor'
+import Url, {ApiPath} from '../../constants/Url'
 import Store from '../../utils/Store'
-import { ChatData, MessengerStore, UserProps } from '../../types/Types'
-import { chats } from './chats'
-import { handleErrorResponse } from '../../utils/utils'
-import { addChatModal } from './addChatModal'
-import { addUserModal } from './addUserModal'
+import {ChatData, MessengerStore, UserProps} from '../../types/Types'
+import {handleErrorResponse} from '../../utils/utils'
 import Option from '../../components/dropdown/Option'
 import DropdownInput from '../../components/dropdown/DropdownInput'
-import { deleteUserModal } from './deleteUserModal'
 
 class ChatsApi {
     create(title: string) {
-        new HTTPExecutor()
+        return new HTTPExecutor()
             .post(
                 Url.generate(ApiPath.CHATS),
                 {
@@ -28,8 +24,6 @@ class ChatsApi {
                 const chatList = store.content.chatList
                 chatList.push({ id: response.id, title: title, avatar: '' })
                 store.setState({ chatList: chatList })
-                addChatModal.hide()
-                chats.show('flex')
             })
             .catch((error) => {
                 const errorData = JSON.parse(error) as ErrorResponse
@@ -51,7 +45,7 @@ class ChatsApi {
     }
 
     addUser(userId: number, chatId: number) {
-        new HTTPExecutor()
+        return new HTTPExecutor()
             .put(Url.generate(ApiPath.CHATS_USERS), {
                 credentials: true,
                 data: JSON.stringify({ users: [userId], chatId: chatId }),
@@ -61,8 +55,6 @@ class ChatsApi {
             })
             .then((_res) => {
                 window.alert('Пользователь добавлен успешно!')
-                addUserModal.hide()
-                chats.show('flex')
                 this.updateChatUsers(chatId)
             })
             .catch((err) => {
@@ -72,7 +64,7 @@ class ChatsApi {
     }
 
     deleteUser(userId: number, chatId: number) {
-        new HTTPExecutor()
+        return new HTTPExecutor()
             .delete(Url.generate(ApiPath.CHATS_USERS), {
                 credentials: true,
                 data: JSON.stringify({ users: [userId], chatId: chatId }),
@@ -82,8 +74,6 @@ class ChatsApi {
             })
             .then((_res) => {
                 window.alert('Пользователь удален успешно!')
-                deleteUserModal.hide()
-                chats.show('flex')
                 this.updateChatUsers(chatId)
             })
             .catch((err) => {

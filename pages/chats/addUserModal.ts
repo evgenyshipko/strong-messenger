@@ -27,6 +27,9 @@ const addUserToChat = (_e: Event) => {
     if (userProp) {
         const chatId = new Store<MessengerStore>().content.currentChatId
         new ChatsApi().addUser(userProp.id, chatId!)
+            .then(() => {
+                addUserModal.hide()
+            })
     }
 }
 

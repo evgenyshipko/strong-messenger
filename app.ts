@@ -7,24 +7,21 @@ import { signup } from './pages/signup/signup'
 import Store from './utils/Store'
 import { MessengerStore } from './types/Types'
 import { internalServerErrorPage } from './pages/error/500'
-import { uploadAvatarModal } from './pages/profile/uploadAvatarModal'
-import { deleteUserModal } from './pages/chats/deleteUserModal'
-import { deleteChatModal } from './pages/chats/deleteChatModal'
-import { addUserModal } from './pages/chats/addUserModal'
-import { addChatModal } from './pages/chats/addChatModal'
 import AuthApi from './api/auth.api'
+import { notFoundPage } from './pages/error/404'
 
 const router = new Router('.app')
-    .use(Path.CHATS, [chats, deleteUserModal, deleteChatModal, addUserModal, addChatModal])
-    .use(Path.PROFILE, [profile, uploadAvatarModal])
-    .use(Path.SIGNIN, [signin])
-    .use(Path.SIGNUP, [signup])
-    .use(Path.INTERNAL_SERVER_ERROR, [internalServerErrorPage])
+    .useNotFound(notFoundPage)
+    .use(Path.CHATS, chats)
+    .use(Path.PROFILE, profile)
+    .use(Path.SIGNIN, signin)
+    .use(Path.SIGNUP, signup)
+    .use(Path.INTERNAL_SERVER_ERROR, internalServerErrorPage)
 
 const store = new Store<MessengerStore>()
 // подписываем показ страницы в зависимости от изменения isLogged
 store.subscribe('isLogged', (state) => {
-    if (!state.isLogged) {
+    if (state.isLogged === false) {
         router.go(Path.SIGNIN)
     } else {
         router.start()

@@ -12,7 +12,11 @@ const createChat = (_e: Event) => {
     const input = document.getElementsByClassName(inputClass)[0] as HTMLInputElement
     const title = input.value
     if (title && title !== '') {
-        new ChatsApi().create(title)
+        new ChatsApi()
+            .create(title)
+            .then(() => {
+                addChatModal.hide()
+            })
     } else {
         window.alert('Заполните имя чата!')
     }

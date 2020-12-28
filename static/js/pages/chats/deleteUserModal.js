@@ -40,7 +40,10 @@ const deleteUserFromChat = (_e) => {
     if (userProp) {
         const chatId = store.content.currentChatId;
         if (chatId) {
-            new ChatsApi().deleteUser(userProp.id, chatId);
+            new ChatsApi().deleteUser(userProp.id, chatId)
+                .then(() => {
+                deleteUserModal.hide();
+            });
         }
     }
     else {

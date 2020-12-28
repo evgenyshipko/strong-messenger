@@ -3,7 +3,6 @@ import Button from '../../components/Button'
 import { addUserModal } from './addUserModal'
 import { deleteUserModal } from './deleteUserModal'
 import { deleteChatModal } from './deleteChatModal'
-import { chats } from './chats'
 
 export const actionsPopup = new Block({
     class: 'actions-popup',
@@ -16,7 +15,6 @@ export const actionsPopup = new Block({
                 name: 'click',
                 callback: () => {
                     addUserModal.show('flex')
-                    chats.hide()
                 }
             }
         }),
@@ -28,7 +26,6 @@ export const actionsPopup = new Block({
                 name: 'click',
                 callback: () => {
                     deleteUserModal.show('flex')
-                    chats.hide()
                 }
             }
         }),
@@ -40,7 +37,6 @@ export const actionsPopup = new Block({
                 name: 'click',
                 callback: () => {
                     deleteChatModal.show('flex')
-                    chats.hide()
                 }
             }
         })

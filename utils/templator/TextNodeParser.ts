@@ -14,12 +14,8 @@ class TextNodeParser {
     }
 
     findAllTextNodes(): TextNode[] {
-        // запрещены script, style теги (санитайзинг XSS)
-        const availableTagNames = ['div', 'button', 'input', 'span',
-            'img', 'label', 'h1', 'h2', 'h3', 'h4',
-            'h5', 'h6', 'i', 'form', 'datalist', 'option', 'li', 'ul', 'p']
         let template = this._template
-        const commonArr = []
+        const textNodeArr = []
         let endIndex: Nullable<Number> = 0
         let previousResult: Nullable<TextNode> = new TextNode('', '', undefined, undefined)
         while (previousResult !== null) {
@@ -29,14 +25,22 @@ class TextNodeParser {
             const executionResult = this._findTextNode(template)
             endIndex = executionResult.endIndex
             previousResult = executionResult.result
-            if (executionResult.result !== null && availableTagNames.includes(executionResult.result.tagName)) {
-                commonArr.push(executionResult.result)
+            if (executionResult.result !== null && this._isAvailableTag(executionResult.result.tagName)) {
+                textNodeArr.push(executionResult.result)
             }
         }
-        if (commonArr.length === 0) {
+        if (textNodeArr.length === 0) {
             throw new Error('text todes not found, check your template')
         }
-        return commonArr
+        return textNodeArr
+    }
+
+    _isAvailableTag(tagName: string) {
+        // запрещены script, style теги (санитайзинг XSS)
+        const availableTagNames = ['div', 'button', 'input', 'span',
+            'img', 'label', 'h1', 'h2', 'h3', 'h4',
+            'h5', 'h6', 'i', 'form', 'datalist', 'option', 'li', 'ul', 'p']
+        return availableTagNames.includes(tagName)
     }
 
     _findTextNode(template: string): TextNodeData {
@@ -49,7 +53,7 @@ class TextNodeParser {
 
     // генерируем TextNode по самозакрывающемуся тэгу (например, <input />)
     _findTextNodeInSelfClosingTag(template: string): TextNodeData {
-        const SELF_CLOSING_TAG_REGEXP = /<(\w+)\b[^>]*\/?>/g
+        const SELF_CLOSING_TAG_REGEXP = /<(\w+)\b[^>]*\/>/g
         const selfClosingTagObject = SELF_CLOSING_TAG_REGEXP.exec(template)
         if (selfClosingTagObject !== null) {
             const TAG_INDEX = 0

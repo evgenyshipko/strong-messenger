@@ -2,13 +2,15 @@ import Component from '../../utils/Component'
 import Button from '../Button'
 import Form from '../Form'
 import Avatar from '../Avatar'
+import Modal from "../Modal";
 
 interface ProfilePageProps {
     avatar: Avatar,
     backButton: Button,
     userName: string,
     form: Form,
-    buttonList: Button[]
+    buttonList: Button[],
+    uploadAvatarModal: Modal
 }
 
 class ProfilePage extends Component<ProfilePageProps> {
@@ -34,6 +36,7 @@ class ProfilePage extends Component<ProfilePageProps> {
             </div>
             <div class="profile-right-empty-block"></div>
           </div>
+          <div>{{uploadAvatarModal}}</div>
         `
     }
 }

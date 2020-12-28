@@ -3,10 +3,10 @@ import { render } from '../renderDom'
 
 class Route {
     _pathname: string
-    _block: Component<any>[]
+    _block: Component<any>
     _rootQuery: string
 
-    constructor(pathname: string, _block: Component<any>[], _rootQuery: string) {
+    constructor(pathname: string, _block: Component<any>, _rootQuery: string) {
         this._pathname = pathname
         this._rootQuery = _rootQuery
         this._block = _block
@@ -14,10 +14,8 @@ class Route {
 
     leave() {
         if (this._block) {
-            this._block.forEach((block) => {
-                block.getContent()?.forEach((element) => {
-                    element.remove()
-                })
+            this._block.getContent()?.forEach((element) => {
+                element.remove()
             })
         }
     }

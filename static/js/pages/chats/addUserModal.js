@@ -22,7 +22,10 @@ const addUserToChat = (_e) => {
     })) === null || _a === void 0 ? void 0 : _a.props.value;
     if (userProp) {
         const chatId = new Store().content.currentChatId;
-        new ChatsApi().addUser(userProp.id, chatId);
+        new ChatsApi().addUser(userProp.id, chatId)
+            .then(() => {
+            addUserModal.hide();
+        });
     }
 };
 const dropdownInput = new DropdownInput({

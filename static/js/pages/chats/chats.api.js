@@ -1,15 +1,11 @@
 import HTTPExecutor from '../../utils/httpExecutor/httpExecutor.js';
 import Url, { ApiPath } from '../../constants/Url.js';
 import Store from '../../utils/Store.js';
-import { chats } from './chats.js';
 import { handleErrorResponse } from '../../utils/utils.js';
-import { addChatModal } from './addChatModal.js';
-import { addUserModal } from './addUserModal.js';
 import Option from '../../components/dropdown/Option.js';
-import { deleteUserModal } from './deleteUserModal.js';
 class ChatsApi {
     create(title) {
-        new HTTPExecutor()
+        return new HTTPExecutor()
             .post(Url.generate(ApiPath.CHATS), {
             data: JSON.stringify({ title: title }),
             credentials: true,
@@ -23,8 +19,6 @@ class ChatsApi {
             const chatList = store.content.chatList;
             chatList.push({ id: response.id, title: title, avatar: '' });
             store.setState({ chatList: chatList });
-            addChatModal.hide();
-            chats.show('flex');
         })
             .catch((error) => {
             const errorData = JSON.parse(error);
@@ -44,7 +38,7 @@ class ChatsApi {
         });
     }
     addUser(userId, chatId) {
-        new HTTPExecutor()
+        return new HTTPExecutor()
             .put(Url.generate(ApiPath.CHATS_USERS), {
             credentials: true,
             data: JSON.stringify({ users: [userId], chatId: chatId }),
@@ -54,8 +48,6 @@ class ChatsApi {
         })
             .then((_res) => {
             window.alert('Пользователь добавлен успешно!');
-            addUserModal.hide();
-            chats.show('flex');
             this.updateChatUsers(chatId);
         })
             .catch((err) => {
@@ -64,7 +56,7 @@ class ChatsApi {
         });
     }
     deleteUser(userId, chatId) {
-        new HTTPExecutor()
+        return new HTTPExecutor()
             .delete(Url.generate(ApiPath.CHATS_USERS), {
             credentials: true,
             data: JSON.stringify({ users: [userId], chatId: chatId }),
@@ -74,8 +66,6 @@ class ChatsApi {
         })
             .then((_res) => {
             window.alert('Пользователь удален успешно!');
-            deleteUserModal.hide();
-            chats.show('flex');
             this.updateChatUsers(chatId);
         })
             .catch((err) => {

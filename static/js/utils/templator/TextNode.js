@@ -16,6 +16,7 @@ class TextNode {
         this._handleTextContentParsing(element, context);
         return element;
     }
+    // шаблонизатор не умеет работать с innerHTML (XSS санитайзинг)
     _handleTextContentParsing(target, context) {
         if (this.textContent) {
             if (this._isParsable(this.textContent)) {
@@ -73,23 +74,25 @@ class TextNode {
         }
     }
     _appendChildren(target, context) {
-        if (this.children) {
-            this.children.forEach((textNode) => {
-                target.appendChild(textNode.toHTMLElement(context));
-            });
-        }
+        var _a;
+        (_a = this.children) === null || _a === void 0 ? void 0 : _a.forEach((textNode) => {
+            target.appendChild(textNode.toHTMLElement(context));
+        });
     }
     _isParsable(str) {
         const TEMPLATOR_ATTRIBUTE_REGEXP = /\{\{(.*?)}}/gi;
         return !!TEMPLATOR_ATTRIBUTE_REGEXP.exec(str);
     }
     _setClassName(target, context) {
-        const classNameArr = this._getClassName(context);
+        let classNameArr = this._getClassNameFromContext(context);
+        if (!classNameArr) {
+            classNameArr = this._getClassNameFromOpeningTag();
+        }
         if (classNameArr) {
             target.classList.add(...classNameArr);
         }
     }
-    _getClassName(context) {
+    _getClassNameFromContext(context) {
         const CLASS_AS_TEMPLATOR_ATTRIBUTE_REGEXP = /class=\{\{(.*?)}}/gi;
         const classNameObj = CLASS_AS_TEMPLATOR_ATTRIBUTE_REGEXP.exec(this.openingTag);
         if (classNameObj) {
@@ -100,6 +103,9 @@ class TextNode {
                 return classNameStr.split(' ');
             }
         }
+        return null;
+    }
+    _getClassNameFromOpeningTag() {
         const CLASS_AS_STRING_REGEXP = /class=["'](.*?)["']/g;
         const simpleStringClassNameObj = CLASS_AS_STRING_REGEXP.exec(this.openingTag);
         if (simpleStringClassNameObj) {
@@ -112,8 +118,6 @@ class TextNode {
         return null;
     }
     _setAttributes(target, context) {
-        // запрещены onclick, onerror и прочие ивент-атрибуты (санитайзинг XSS)
-        const availableAttributes = ['autocomplete', 'type', 'name', 'placeholder', 'id', 'form', 'value', 'src', 'for', 'list'];
         const ATTRIBUTES_REGEXP = /(\w+)=\{\{(.*?)}}/gi;
         let result = null;
         while ((result = ATTRIBUTES_REGEXP.exec(this.openingTag))) {
@@ -121,13 +125,18 @@ class TextNode {
             const PATH_INDEX = 2;
             const attrName = result[ATTR_INDEX];
             const attrPath = result[PATH_INDEX];
-            if (availableAttributes.includes(attrName)) {
+            if (this._isAttributeAvailable(attrName)) {
                 const attrValue = this._getDataFromContext(context, attrPath);
                 if (attrValue) {
                     target.setAttribute(attrName, attrValue);
                 }
             }
         }
+    }
+    _isAttributeAvailable(attr) {
+        // запрещены onclick, onerror и прочие ивент-атрибуты (санитайзинг XSS)
+        const availableAttributes = ['autocomplete', 'type', 'name', 'placeholder', 'id', 'form', 'value', 'src', 'for', 'list'];
+        return availableAttributes.includes(attr);
     }
     _getDataFromContext(context, path) {
         const keys = path.split('.');

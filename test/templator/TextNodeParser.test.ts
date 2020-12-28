@@ -4,13 +4,13 @@ import TextNodeParser from '../../utils/templator/TextNodeParser'
 import TextNode from '../../utils/templator/TextNode'
 
 describe('TextNodeParser', function() {
-    function getInstance(template: string) {
+    function getTextNodeParser(template: string) {
         return new TextNodeParser(template)
     }
 
     describe('Функции, которые смотрят есть ли в строке тег и возвращают boolean', function () {
         describe('_isOpeningTag', function() {
-            const emptyTextNodeParser = getInstance('')
+            const emptyTextNodeParser = getTextNodeParser('')
             it('Простой открывающий тег', function() {
                 assert.equal(emptyTextNodeParser._isOpeningTag('<div>'), true)
             })
@@ -32,7 +32,7 @@ describe('TextNodeParser', function() {
         })
 
         describe('_isClosingTag', function() {
-            const emptyTextNodeParser = getInstance('')
+            const emptyTextNodeParser = getTextNodeParser('')
             it('Простой открывающий тег', function() {
                 assert.equal(emptyTextNodeParser._isClosingTag('<div>'), false)
             })
@@ -54,7 +54,7 @@ describe('TextNodeParser', function() {
         })
 
         describe('_isStartsWithSelfClosingTag', function() {
-            const emptyTextNodeParser = getInstance('')
+            const emptyTextNodeParser = getTextNodeParser('')
             it('Простой открывающий тег', function() {
                 assert.equal(emptyTextNodeParser._isStartsWithSelfClosingTag('<div>'), false)
             })
@@ -79,7 +79,7 @@ describe('TextNodeParser', function() {
         })
 
         describe('_isParsable', function() {
-            const emptyTextNodeParser = getInstance('')
+            const emptyTextNodeParser = getTextNodeParser('')
             it('Простой открывающий тег', function() {
                 assert.equal(emptyTextNodeParser._isParsable('<div>'), true)
             })
@@ -105,7 +105,7 @@ describe('TextNodeParser', function() {
     })
 
     describe('_generateTextNode', function () {
-        const emptyTextNodeParser = getInstance('')
+        const emptyTextNodeParser = getTextNodeParser('')
         it('entrails - простой текст, возвращает TextNode без children', function() {
             const result = emptyTextNodeParser._generateTextNode('<div content >', 'div', 'some_text')
             assert.equal(result instanceof TextNode, true)
@@ -122,6 +122,121 @@ describe('TextNodeParser', function() {
             assert.equal(result.openingTag, '<div content >')
             assert.equal(Array.isArray(result.children), true)
             assert.equal(result.children![0] instanceof TextNode, true)
+        })
+    })
+
+    describe('_isAvailableTag', function () {
+        const emptyTextNodeParser = getTextNodeParser('')
+        it('script', function () {
+            const tagName = 'script'
+            assert.equal(emptyTextNodeParser._isAvailableTag(tagName), false)
+        })
+        it('style', function () {
+            const tagName = 'style'
+            assert.equal(emptyTextNodeParser._isAvailableTag(tagName), false)
+        })
+        it('div', function () {
+            const tagName = 'div'
+            assert.equal(emptyTextNodeParser._isAvailableTag(tagName), true)
+        })
+    })
+
+    describe('_findTextNodeInSelfClosingTag', function () {
+        const emptyTextNodeParser = getTextNodeParser('')
+        it('Пустой шаблон', function () {
+            const template = ''
+            assert.equal(emptyTextNodeParser._findTextNodeInSelfClosingTag(template).result, null)
+            assert.equal(emptyTextNodeParser._findTextNodeInSelfClosingTag(template).endIndex, null)
+        })
+        it('Рандомный текст', function () {
+            const template = 'bhdfkfkh'
+            assert.equal(emptyTextNodeParser._findTextNodeInSelfClosingTag(template).result, null)
+            assert.equal(emptyTextNodeParser._findTextNodeInSelfClosingTag(template).endIndex, null)
+        })
+        it('Обычный тег', function () {
+            const template = '<div>Hi</div>'
+            assert.equal(emptyTextNodeParser._findTextNodeInSelfClosingTag(template).result, null)
+            assert.equal(emptyTextNodeParser._findTextNodeInSelfClosingTag(template).endIndex, null)
+        })
+        it('Самозакрывающийся тег', function () {
+            const template = '<input />'
+            assert.equal(emptyTextNodeParser._findTextNodeInSelfClosingTag(template).result?.openingTag, template)
+            assert.equal(emptyTextNodeParser._findTextNodeInSelfClosingTag(template).result?.tagName, 'input')
+            assert.equal(emptyTextNodeParser._findTextNodeInSelfClosingTag(template).endIndex, template.length)
+        })
+    })
+
+    describe('_findTextNodeInUsualTag', function () {
+        const emptyTextNodeParser = getTextNodeParser('')
+        it('Пустой шаблон', function () {
+            const template = ''
+            assert.equal(emptyTextNodeParser._findTextNodeInUsualTag(template).result, null)
+            assert.equal(emptyTextNodeParser._findTextNodeInUsualTag(template).endIndex, null)
+        })
+        it('Рандомный текст', function () {
+            const template = 'bhdfkfkh'
+            assert.equal(emptyTextNodeParser._findTextNodeInUsualTag(template).result, null)
+            assert.equal(emptyTextNodeParser._findTextNodeInUsualTag(template).endIndex, null)
+        })
+        it('Самозакрывающийся тег', function () {
+            const template = '<input />'
+            assert.equal(emptyTextNodeParser._findTextNodeInUsualTag(template).result, null)
+            assert.equal(emptyTextNodeParser._findTextNodeInUsualTag(template).endIndex, null)
+        })
+        it('Обычный тег', function () {
+            const template = '<div>Hi</div>'
+            assert.equal(emptyTextNodeParser._findTextNodeInUsualTag(template).result?.textContent, 'Hi')
+            assert.equal(emptyTextNodeParser._findTextNodeInUsualTag(template).result?.openingTag, '<div>')
+            assert.equal(emptyTextNodeParser._findTextNodeInUsualTag(template).result?.tagName, 'div')
+            assert.equal(emptyTextNodeParser._findTextNodeInUsualTag(template).endIndex, template.length)
+        })
+    })
+
+    describe('findAllTextNodes', function () {
+        it('Пустой шаблон не парсится', function () {
+            const template = ''
+            const textNodeParser = getTextNodeParser(template)
+            assert.throws(textNodeParser.findAllTextNodes, Error)
+        })
+        it('Рандомный текст не парсится', function () {
+            const template = 'kdfhsfkdhdfb'
+            const textNodeParser = getTextNodeParser(template)
+            assert.throws(textNodeParser.findAllTextNodes, Error)
+        })
+        it('Тег style не парсится', function () {
+            const template = '<style>Привет</style>'
+            const textNodeParser = getTextNodeParser(template)
+            assert.throws(textNodeParser.findAllTextNodes, Error)
+        })
+        it('Тег script не парсится', function () {
+            const template = '<script>Привет</script>'
+            const textNodeParser = getTextNodeParser(template)
+            assert.throws(textNodeParser.findAllTextNodes, Error)
+        })
+        it('Парсинг обычного шаблона', function () {
+            const template = `<div>Привет</div>
+                    <div>{{hi}}</div>
+                    <div>Привет</div>`
+            const textNodeParser = getTextNodeParser(template)
+            assert.equal(textNodeParser.findAllTextNodes().length, 3)
+        })
+        it('Все, что не завернуто в теги - не парсится', function () {
+            const template = `<div>Привет</div>
+                    {{hi}}
+                    sayHi
+                    {{hello}}}
+                    <div>Привет</div>`
+            const textNodeParser = getTextNodeParser(template)
+            assert.equal(textNodeParser.findAllTextNodes().length, 2)
+        })
+        it('Вложенные теги парсятся рекурсивно', function () {
+            const template = `<div>
+                            <div>Привет</div>
+                        </div>`
+            const textNodeParser = getTextNodeParser(template)
+            const textNodeList = textNodeParser.findAllTextNodes()
+            assert.equal(textNodeList.length, 1)
+            assert.equal(textNodeList[0].children?.length, 1)
         })
     })
 })

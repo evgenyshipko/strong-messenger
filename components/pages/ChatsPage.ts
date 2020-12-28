@@ -5,13 +5,18 @@ import ChatList from '../chats/ChatList'
 import ChatHeader from '../chats/ChatHeader'
 import MessageList from '../chats/MessageList'
 import Block from '../Block'
+import Modal from "../Modal";
 
 interface ChatsPageProps {
     functionsBlockComponents: (Button | Input)[]
     footerComponents: (Button | Input)[]
     chatList: ChatList,
     chatHeader: ChatHeader | Block,
-    messageBlockComponents: (MessageList | Block)[]
+    messageBlockComponents: (MessageList | Block)[],
+    addUserModal: Modal,
+    deleteChatModal: Modal,
+    addChatModal: Modal,
+    deleteUserModal: Modal
 }
 
 class ChatsPage extends Component<ChatsPageProps> {
@@ -38,7 +43,10 @@ class ChatsPage extends Component<ChatsPageProps> {
                 </div>
               </div>
             </div>
-        `
+            <div>{{addUserModal}}</div>
+            <div>{{addChatModal}}</div>
+            <div>{{deleteUserModal}}</div>
+            <div>{{deleteChatModal}}</div>`
     }
 }
 

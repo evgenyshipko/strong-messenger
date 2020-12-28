@@ -23,7 +23,10 @@ class ChatsPage extends Component {
                 </div>
               </div>
             </div>
-        `;
+            <div>{{addUserModal}}</div>
+            <div>{{addChatModal}}</div>
+            <div>{{deleteUserModal}}</div>
+            <div>{{deleteChatModal}}</div>`;
     }
 }
 export default ChatsPage;
