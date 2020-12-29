@@ -55,9 +55,9 @@ class HTTPExecutor {
         return new Promise<XMLHttpRequest>((resolve, reject) => {
             const xhr = new XMLHttpRequest()
 
-            xhr.open(method!, url)
-
             xhr.timeout = timeout
+
+            xhr.open(method!, url)
 
             if (options.credentials) {
                 xhr.withCredentials = true
@@ -70,12 +70,12 @@ class HTTPExecutor {
             }
 
             const rejectFunc = function(this: XMLHttpRequest, _ev?: ProgressEvent) {
-                reject(JSON.stringify({
+                reject({
                     status: this.status,
                     response: this.response,
                     responseText: this.responseText,
                     statusText: this.statusText
-                }))
+                } as ErrorResponse)
             }.bind(xhr)
 
             xhr.onload = function() {
@@ -88,7 +88,10 @@ class HTTPExecutor {
 
             xhr.onabort = rejectFunc
             xhr.onerror = rejectFunc
-            xhr.ontimeout = rejectFunc
+            xhr.ontimeout = () => {
+                console.log('ON TIMEOUT')
+                return rejectFunc()
+            }
 
             if (method === Method.GET || !data) {
                 xhr.send()

@@ -11,10 +11,7 @@ class AuthApi {
             new Store().setState({ userProps: JSON.parse(res.response), isLogged: true });
             new ChatsApi().updateChatsList();
         })
-            .catch((err) => {
-            const errorData = JSON.parse(err);
-            handleErrorResponse(errorData);
-        });
+            .catch(handleErrorResponse);
     }
 }
 export default AuthApi;

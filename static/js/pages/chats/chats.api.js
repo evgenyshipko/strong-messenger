@@ -20,10 +20,7 @@ class ChatsApi {
             chatList.push({ id: response.id, title: title, avatar: '' });
             store.setState({ chatList: chatList });
         })
-            .catch((error) => {
-            const errorData = JSON.parse(error);
-            handleErrorResponse(errorData);
-        });
+            .catch(handleErrorResponse);
     }
     updateChatsList() {
         new HTTPExecutor()
@@ -32,10 +29,7 @@ class ChatsApi {
             const chatList = JSON.parse(res.response);
             new Store().setState({ chatList: chatList });
         })
-            .catch((err) => {
-            const errorData = JSON.parse(err);
-            handleErrorResponse(errorData);
-        });
+            .catch(handleErrorResponse);
     }
     addUser(userId, chatId) {
         return new HTTPExecutor()
@@ -50,10 +44,7 @@ class ChatsApi {
             window.alert('Пользователь добавлен успешно!');
             this.updateChatUsers(chatId);
         })
-            .catch((err) => {
-            const errorData = JSON.parse(err);
-            handleErrorResponse(errorData);
-        });
+            .catch(handleErrorResponse);
     }
     deleteUser(userId, chatId) {
         return new HTTPExecutor()
@@ -68,10 +59,7 @@ class ChatsApi {
             window.alert('Пользователь удален успешно!');
             this.updateChatUsers(chatId);
         })
-            .catch((err) => {
-            const errorData = JSON.parse(err);
-            handleErrorResponse(errorData);
-        });
+            .catch(handleErrorResponse);
     }
     updateChatUsers(chatId) {
         new HTTPExecutor()
@@ -82,10 +70,7 @@ class ChatsApi {
                 new Store().setState({ currentChatUsers: userPropsList });
             }
         })
-            .catch((err) => {
-            const errorData = JSON.parse(err);
-            handleErrorResponse(errorData);
-        });
+            .catch(handleErrorResponse);
     }
     updateSearchUserDropdownInput(login, dropdownInput) {
         new HTTPExecutor()
@@ -108,10 +93,7 @@ class ChatsApi {
                 dropdownInput.setProps({ options: optionList, value: login });
             }
         })
-            .catch((err) => {
-            const errorData = JSON.parse(err);
-            handleErrorResponse(errorData);
-        });
+            .catch(handleErrorResponse);
     }
 }
 export default ChatsApi;

@@ -19,10 +19,7 @@ class ProfileApi {
                 .then((_res) => {
                 window.alert('Данные изменены успешно!');
             })
-                .catch((error) => {
-                const errorData = JSON.parse(error);
-                handleErrorResponse(errorData);
-            });
+                .catch(handleErrorResponse);
         };
     }
     logout() {
@@ -36,10 +33,7 @@ class ProfileApi {
             .then((_res) => {
             new Store().setState({ isLogged: false });
         })
-            .catch((error) => {
-            const errorData = JSON.parse(error);
-            handleErrorResponse(errorData);
-        });
+            .catch(handleErrorResponse);
     }
     changeUserAvatar(formData) {
         new HTTPExecutor()
@@ -52,10 +46,7 @@ class ProfileApi {
             window.alert('Аватар изменен успешно!');
             uploadAvatarModal.hide();
         })
-            .catch((error) => {
-            const errorData = JSON.parse(error);
-            handleErrorResponse(errorData);
-        });
+            .catch(handleErrorResponse);
     }
     changeProfileData(formData) {
         this.sendFormData(Url.generate(ApiPath.USER_PROFILE), formData);

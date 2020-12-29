@@ -1,8 +1,8 @@
-import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
-import Url, { ApiPath } from '../../constants/Url'
+import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
+import Url, {ApiPath} from '../../constants/Url'
 import Router from '../../utils/router/Router'
 import Path from '../../constants/Path'
-import { handleErrorResponse } from '../../utils/utils'
+import {handleErrorResponse} from '../../utils/utils'
 
 class SignupApi {
     data: Record<string, unknown>
@@ -23,10 +23,7 @@ class SignupApi {
             .then((_res) => {
                 new Router('.app').go(Path.CHATS)
             })
-            .catch((error) => {
-                const errorData = JSON.parse(error) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+            .catch(handleErrorResponse)
     }
 }
 

@@ -5,6 +5,15 @@ import Router from '../../utils/router/Router'
 
 const defaultPath = '/'
 
+const delayAction = (fn: Function, time = 1000) => {
+    return new Promise<void>((resolve) => {
+        fn()
+        setTimeout(() => {
+            resolve()
+        }, time)
+    })
+}
+
 const getRouter = () => {
     const router = new Router('.app')
         .use('/', getEmptyComponent())
@@ -45,14 +54,14 @@ describe('Router', function () {
         assert.equal(router._currentRoute?._pathname, pathName)
         assert.equal(window.location.pathname, pathName)
     })
-    it('При переходе по неизвеcтному пути с неопределенным notFoundPage', function () {
+    it('Переход по незарегистрированному пути при неопределенном notFoundPage', function () {
         const pathName = '/path1frfrfr'
         const router = getRouter()
         router.go(pathName)
         assert.equal(router._notFoundPage, undefined)
         assert.equal(router._currentRoute?._pathname, defaultPath)
     })
-    it('При переходе по неизвеcтному пути попадаем на notFoundPage, если он определен', function () {
+    it('Переход по незарегистрированному пути при определенном notFoundPage', function () {
         const pathName = '/path1frfrfr'
         const router = getRouter()
         const notFoundPage = getEmptyComponent()
@@ -62,14 +71,17 @@ describe('Router', function () {
         assert.equal(router._currentRoute?._block, notFoundPage)
         assert.equal(window.location.pathname, pathName)
     })
-    it('onpopstate event', function () {
+    it('Слушаем onpopstate event (например по переходу back()) ', function () {
         const router = getRouter()
-        console.log('window.location.pathname',window.location.pathname)
-        router.go('/path1')
-        console.log('window.location.pathname',window.location.pathname)
-        router.back() // вызывает onpopstate
-        console.log('window.location.pathname',window.location.pathname)
-        assert.equal(router._currentRoute?._pathname, defaultPath)
         assert.equal(window.location.pathname, defaultPath)
+        const path = '/path1'
+        router.go(path)
+        assert.equal(window.location.pathname, path)
+        /* window.history.back нужно тестировать с задержкой
+        источник: https://stackoverflow.com/questions/54522889/window-history-back-not-being-called-jest-enzyme */
+        return delayAction(router.back.bind(router)).then(() => {
+            assert.equal(router._currentRoute?._pathname, defaultPath)
+            assert.equal(window.location.pathname, defaultPath)
+        })
     })
 })

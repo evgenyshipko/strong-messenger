@@ -1,4 +1,4 @@
-import HTTPExecutor, {ErrorResponse} from '../../utils/httpExecutor/httpExecutor'
+import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
 import Url, {ApiPath} from '../../constants/Url'
 import Store from '../../utils/Store'
 import {ChatData, MessengerStore, UserProps} from '../../types/Types'
@@ -25,10 +25,7 @@ class ChatsApi {
                 chatList.push({ id: response.id, title: title, avatar: '' })
                 store.setState({ chatList: chatList })
             })
-            .catch((error) => {
-                const errorData = JSON.parse(error) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+            .catch(handleErrorResponse)
     }
 
     updateChatsList() {
@@ -38,10 +35,7 @@ class ChatsApi {
                 const chatList = JSON.parse(res.response) as ChatData[]
                 new Store<MessengerStore>().setState({ chatList: chatList })
             })
-            .catch((err) => {
-                const errorData = JSON.parse(err) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+            .catch(handleErrorResponse)
     }
 
     addUser(userId: number, chatId: number) {
@@ -57,10 +51,7 @@ class ChatsApi {
                 window.alert('Пользователь добавлен успешно!')
                 this.updateChatUsers(chatId)
             })
-            .catch((err) => {
-                const errorData = JSON.parse(err) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+            .catch(handleErrorResponse)
     }
 
     deleteUser(userId: number, chatId: number) {
@@ -76,10 +67,7 @@ class ChatsApi {
                 window.alert('Пользователь удален успешно!')
                 this.updateChatUsers(chatId)
             })
-            .catch((err) => {
-                const errorData = JSON.parse(err) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+            .catch(handleErrorResponse)
     }
 
     updateChatUsers(chatId: number) {
@@ -91,10 +79,7 @@ class ChatsApi {
                     new Store<MessengerStore>().setState({ currentChatUsers: userPropsList })
                 }
             })
-            .catch((err) => {
-                const errorData = JSON.parse(err) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+            .catch(handleErrorResponse)
     }
 
     updateSearchUserDropdownInput(login: string, dropdownInput: DropdownInput<UserProps>) {
@@ -119,10 +104,7 @@ class ChatsApi {
                     dropdownInput.setProps({ options: optionList, value: login })
                 }
             })
-            .catch((err) => {
-                const errorData = JSON.parse(err) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+            .catch(handleErrorResponse)
     }
 }
 export default ChatsApi

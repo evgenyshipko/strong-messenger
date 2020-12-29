@@ -1,5 +1,6 @@
 import { EventManager } from './EventManager.js';
 import Templator from './templator/Templator.js';
+import { isEqual, isObject } from './utils.js';
 /* global HTMLElement, EventListenerOrEventListenerObject */
 var Event;
 (function (Event) {
@@ -54,8 +55,10 @@ class Component {
         }
     }
     componentDidUpdate(oldProps, newProps) {
-        // TODO: заменить на isEqual из тренажера практикума
-        return JSON.stringify(oldProps) !== JSON.stringify(newProps);
+        if (isObject(oldProps) && isObject(newProps)) {
+            return !isEqual(oldProps, newProps);
+        }
+        return false;
     }
     _render() {
         var _a;

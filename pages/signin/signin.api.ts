@@ -1,6 +1,6 @@
-import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
-import Url, { ApiPath } from '../../constants/Url'
-import { handleErrorResponse } from '../../utils/utils'
+import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
+import Url, {ApiPath} from '../../constants/Url'
+import {handleErrorResponse} from '../../utils/utils'
 import Router from '../../utils/router/Router'
 import Path from '../../constants/Path'
 import AuthApi from '../../api/auth.api'
@@ -28,10 +28,7 @@ class SigninApi {
                     new Router('.app').go(Path.CHATS)
                 })
             })
-            .catch((error) => {
-                const errorData = JSON.parse(error) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+            .catch(handleErrorResponse)
     }
 }
 

@@ -21,10 +21,7 @@ class SigninApi {
                 new Router('.app').go(Path.CHATS);
             });
         })
-            .catch((error) => {
-            const errorData = JSON.parse(error);
-            handleErrorResponse(errorData);
-        });
+            .catch(handleErrorResponse);
     }
 }
 export default SigninApi;

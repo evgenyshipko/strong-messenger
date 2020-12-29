@@ -22,10 +22,9 @@ class Router {
     }
     start() {
         window.onpopstate = (event) => {
-            console.log('ONPOPSTATE EVENT', this.history);
-            this.go(event.currentTarget.location.pathname);
+            this._onRoute(event.currentTarget.location.pathname);
         };
-        this.go(window.location.pathname);
+        this._onRoute(window.location.pathname);
     }
     _onRoute(pathname) {
         let route = this._getRoute(pathname);

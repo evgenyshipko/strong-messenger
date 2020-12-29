@@ -1,9 +1,9 @@
-import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
-import Url, { ApiPath } from '../../constants/Url'
-import { handleErrorResponse } from '../../utils/utils'
-import { MessengerStore, UserProps } from '../../types/Types'
+import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
+import Url, {ApiPath} from '../../constants/Url'
+import {handleErrorResponse} from '../../utils/utils'
+import {MessengerStore, UserProps} from '../../types/Types'
 import Store from '../../utils/Store'
-import { uploadAvatarModal } from './uploadAvatarModal'
+import {uploadAvatarModal} from './uploadAvatarModal'
 
 /* global FormData */
 
@@ -19,10 +19,7 @@ class ProfileApi {
             .then((_res) => {
                 new Store<MessengerStore>().setState({ isLogged: false })
             })
-            .catch((error) => {
-                const errorData = JSON.parse(error) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+            .catch(handleErrorResponse)
     }
 
     changeUserAvatar(formData: FormData) {
@@ -38,10 +35,7 @@ class ProfileApi {
                 window.alert('Аватар изменен успешно!')
                 uploadAvatarModal.hide()
             })
-            .catch((error) => {
-                const errorData = JSON.parse(error) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+            .catch(handleErrorResponse)
     }
 
     changeProfileData(formData: FormData) {
@@ -67,10 +61,7 @@ class ProfileApi {
             .then((_res) => {
                 window.alert('Данные изменены успешно!')
             })
-            .catch((error) => {
-                const errorData = JSON.parse(error) as ErrorResponse
-                handleErrorResponse(errorData)
-            })
+            .catch(handleErrorResponse)
     }
 }
 

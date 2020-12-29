@@ -1,6 +1,7 @@
-import { EventManager } from './EventManager'
-import { Nullable } from '../types/Types'
+import {EventManager} from './EventManager'
+import {Nullable} from '../types/Types'
 import Templator from './templator/Templator'
+import {isEqual, isObject} from './utils'
 
 /* global HTMLElement, EventListenerOrEventListenerObject */
 
@@ -64,8 +65,10 @@ class Component<T> {
     }
 
     componentDidUpdate(oldProps: T, newProps: T) {
-        // TODO: заменить на isEqual из тренажера практикума
-        return JSON.stringify(oldProps) !== JSON.stringify(newProps)
+        if (isObject(oldProps) && isObject(newProps)) {
+            return !isEqual(oldProps, newProps)
+        }
+        return false
     }
 
     setProps = (nextProps: Partial<T>) => {

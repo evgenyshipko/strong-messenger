@@ -40,12 +40,12 @@ class HTTPExecutor {
                     });
                 }
                 const rejectFunc = function (_ev) {
-                    reject(JSON.stringify({
+                    reject({
                         status: this.status,
                         response: this.response,
                         responseText: this.responseText,
                         statusText: this.statusText
-                    }));
+                    });
                 }.bind(xhr);
                 xhr.onload = function () {
                     if (xhr.status >= 200 && xhr.status < 300) {
