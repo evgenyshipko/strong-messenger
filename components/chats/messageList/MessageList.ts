@@ -1,5 +1,5 @@
-import Component from '../../utils/Component'
-import Message from './Message'
+import Component from '../../../utils/Component'
+import Message from '../message/Message'
 
 interface MessageListProps {
     messageItemList: Message[]
@@ -7,7 +7,7 @@ interface MessageListProps {
 
 class MessageList extends Component<MessageListProps> {
     template(): string {
-        return `<ul class="chats-message-list">{{messageItemList}}</ul>`
+        return `<ul class="message-list">{{messageItemList}}</ul>`
     }
 }
 

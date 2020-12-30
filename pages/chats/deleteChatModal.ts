@@ -1,10 +1,8 @@
-import Modal from '../../components/Modal'
+import Modal from '../../components/modal/Modal'
 import Header from '../../components/Header'
 import Button from '../../components/Button'
 
 export const deleteChatModal = new Modal({
-    modalClass: 'add-user-modal',
-    backgroundClass: 'add-user-modal-shadow',
     content: [
         new Header({
             text: 'Вы действительно хотите удалить чат?',

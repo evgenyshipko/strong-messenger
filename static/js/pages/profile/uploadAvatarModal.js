@@ -1,4 +1,4 @@
-import Modal from '../../components/Modal.js';
+import Modal from '../../components/modal/Modal.js';
 import Header from '../../components/Header.js';
 import Button from '../../components/Button.js';
 import InputLabeled from '../../components/InputLabeled.js';
@@ -18,8 +18,6 @@ const uploadAvatar = (_e) => {
     }
 };
 export const uploadAvatarModal = new Modal({
-    backgroundClass: 'upload-avatar-modal-shadow',
-    modalClass: 'upload-avatar-modal',
     content: [
         new Header({
             text: 'Загрузите файл',

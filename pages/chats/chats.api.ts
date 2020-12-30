@@ -48,7 +48,6 @@ class ChatsApi {
                 }
             })
             .then((_res) => {
-                window.alert('Пользователь добавлен успешно!')
                 this.updateChatUsers(chatId)
             })
             .catch(handleErrorResponse)
@@ -64,7 +63,6 @@ class ChatsApi {
                 }
             })
             .then((_res) => {
-                window.alert('Пользователь удален успешно!')
                 this.updateChatUsers(chatId)
             })
             .catch(handleErrorResponse)

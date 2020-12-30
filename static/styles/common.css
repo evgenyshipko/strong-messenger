@@ -48,25 +48,25 @@ body{
   background-color: #F0F0F0;
 }
 
-.icon-trash{
-  background-image: url("../images/trash.svg");
-}
+/*.icon-trash{*/
+/*  background-image: url("../images/trash.svg");*/
+/*}*/
 
-.icon-minus{
-  background-image: url("../images/minus.svg");
-}
+/*.icon-minus{*/
+/*  background-image: url("../images/minus.svg");*/
+/*}*/
 
-.icon-plus{
-  background-image: url("../images/plus.svg");
-}
+/*.icon-plus{*/
+/*  background-image: url("../images/plus.svg");*/
+/*}*/
 
-.icon-photo{
-  background-image: url("../images/camera.svg");
-}
+/*.icon-photo{*/
+/*  background-image: url("../images/camera.svg");*/
+/*}*/
 
-.icon-file{
-  background-image: url("../images/file.svg");
-}
+/*.icon-file{*/
+/*  background-image: url("../images/file.svg");*/
+/*}*/
 
 .form-item-block-validated{
   display: flex;

@@ -1,0 +1,40 @@
+@import "../../../styles/common";
+
+.attach-popup{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+
+  width: 149px;
+  height: 70px;
+  background-color: @popup-color;
+  border-radius: 10px;
+
+  bottom: 0;
+  position: absolute;
+  margin-left: 3px;
+  margin-bottom: 3px;
+}
+
+.attach-popup-btn{
+  background-color: transparent;
+  font-family: @font-family;
+  font-size: 12px;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+}
+
+.attach-popup-btn:focus{
+  outline-width: 0;
+}
+
+.attach-popup-btn__icon{
+  float: left;
+  width: 25px;
+  height: 25px;
+}
+
+.attach-popup-btn__text{
+  margin-left: 3%;
+}

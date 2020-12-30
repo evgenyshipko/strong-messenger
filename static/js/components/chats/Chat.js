@@ -1,4 +1,4 @@
-import Component from '../../utils/Component.js';
+import Component from '../../utils/Component.js.js.js.js.js.js.js.js.js.js.js';
 class Chat extends Component {
     getMessage() {
         const lastMessage = this.props.messageList[this.props.messageList.length - 1];

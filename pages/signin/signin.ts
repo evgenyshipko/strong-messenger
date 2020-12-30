@@ -1,4 +1,4 @@
-import SigninPage from '../../components/pages/SigninPage'
+import SigninPage from '../../components/pages/signinPage/SigninPage'
 import Button from '../../components/Button'
 import { InputName } from '../../utils/validator/InputValidator'
 import FormInput from '../../components/FormInput'

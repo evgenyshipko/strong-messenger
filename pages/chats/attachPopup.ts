@@ -7,12 +7,12 @@ export const attachPopup = new Block({
         new Button({
             class: 'attach-popup-btn',
             text: 'Файл',
-            iconClass: 'attach-popup-btn__icon icon-file'
+            iconClass: 'attach-popup-btn__icon file-icon'
         }),
         new Button({
             class: 'attach-popup-btn',
             text: 'Фото или видео',
-            iconClass: 'attach-popup-btn__icon icon-photo'
+            iconClass: 'attach-popup-btn__icon camera-icon'
         })
     ]
 })

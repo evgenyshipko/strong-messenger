@@ -1,4 +1,4 @@
-import Component from '../../utils/Component.js';
+import Component from '../../utils/Component.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js.js';
 export class ErrorPage extends Component {
     template() {
         return `

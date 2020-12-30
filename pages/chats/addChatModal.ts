@@ -1,4 +1,4 @@
-import Modal from '../../components/Modal'
+import Modal from '../../components/modal/Modal'
 import Header from '../../components/Header'
 import Input from '../../components/Input'
 import Button from '../../components/Button'
@@ -23,8 +23,6 @@ const createChat = (_e: Event) => {
 }
 
 export const addChatModal = new Modal({
-    modalClass: 'add-user-modal',
-    backgroundClass: 'add-user-modal-shadow',
     content: [
         new Header({
             text: 'Добавить чат',

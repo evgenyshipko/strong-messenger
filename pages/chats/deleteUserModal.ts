@@ -1,4 +1,4 @@
-import Modal from '../../components/Modal'
+import Modal from '../../components/modal/Modal'
 import Header from '../../components/Header'
 import { InputName } from '../../utils/validator/InputValidator'
 import Button from '../../components/Button'
@@ -41,14 +41,13 @@ const deleteUserFromChat = (_e: Event) => {
     const userProp = dropdownInput.props.options.find((option: Option<UserProps>) => {
         return option.props.value.login === (dropdownInput.getContent()![0] as HTMLInputElement).value
     })?.props.value
-    if (userProp) {
-        const chatId = store.content.currentChatId
-        if (chatId) {
-            new ChatsApi().deleteUser(userProp.id, chatId)
-                .then(() => {
-                    deleteUserModal.hide()
-                })
-        }
+    const chatId = store.content.currentChatId
+    if (userProp && chatId) {
+        new ChatsApi().deleteUser(userProp.id, chatId)
+            .then(() => {
+                window.alert('Пользователь удален успешно!')
+                deleteUserModal.hide()
+            })
     } else {
         window.alert('Сначала выберите пользователя')
     }
@@ -64,8 +63,6 @@ const dropdownInput = new DropdownInput<UserProps>({
 })
 
 export const deleteUserModal = new Modal({
-    modalClass: 'add-user-modal',
-    backgroundClass: 'add-user-modal-shadow',
     content: [
         new Header({
             text: 'Удалить пользователя',

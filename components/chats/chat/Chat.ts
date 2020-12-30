@@ -1,6 +1,6 @@
-import Component from '../../utils/Component'
-import Message from './Message'
-import { EventData } from '../../types/Types'
+import Component from '../../../utils/Component'
+import Message from '../message/Message'
+import { EventData } from '../../../types/Types'
 
 interface ChatItemProps {
     id: number,
@@ -23,7 +23,7 @@ class Chat extends Component<ChatItemProps> {
 
     private getUnreadQuantity() {
         if (this.props.unreadQuantity) {
-            return `<span class="chat-item-indicators__unread-quantity">${this.props.unreadQuantity}</span>`
+            return `<span class="chat-indicators__unread-quantity">${this.props.unreadQuantity}</span>`
         }
         return ''
     }
@@ -37,17 +37,17 @@ class Chat extends Component<ChatItemProps> {
     }
 
     template(): string {
-        return `<li class="chats-list-item" @event={{eventData}}>
-              <div class="chat-item">
-                <div class="chat-item-avatar-wrapper">
-                  <div class="chat-item-avatar"></div>
+        return `<li class="chat-list-item" @event={{eventData}}>
+              <div class="chat">
+                <div class="chat-avatar-wrapper">
+                  <div class="chat-avatar"></div>
                 </div>
-                <div class="chat-item-info">
-                  <span class="chat-item-info__chat-name">{{chatName}}</span><br />
-                  <span class="chat-item-info__message">${this.getMessage()}</span>
+                <div class="chat-info">
+                  <span class="chat-info__chat-name">{{chatName}}</span><br />
+                  <span class="chat-info__message">${this.getMessage()}</span>
                 </div>
-                <div class="chat-item-indicators">
-                  <span class="chat-item-indicators__time">${this.getTime()}</span>
+                <div class="chat-indicators">
+                  <span class="chat-indicators__time">${this.getTime()}</span>
                   ${this.getUnreadQuantity()}
                 </div>
               </div>

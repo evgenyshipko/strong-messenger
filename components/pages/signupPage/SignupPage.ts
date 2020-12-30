@@ -1,6 +1,6 @@
-import Component from '../../utils/Component'
-import Form from "../Form";
-import Button from "../Button";
+import Component from '../../../utils/Component'
+import Form from "../../Form";
+import Button from "../../Button";
 
 interface SignupPageProps {
     form: Form,

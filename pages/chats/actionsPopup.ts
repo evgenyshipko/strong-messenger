@@ -10,7 +10,7 @@ export const actionsPopup = new Block({
         new Button({
             class: 'actions-popup-btn',
             text: 'Добавить пользователя',
-            iconClass: 'actions-popup-btn__icon icon-plus',
+            iconClass: 'actions-popup-btn__icon plus-icon',
             eventData: {
                 name: 'click',
                 callback: () => {
@@ -21,7 +21,7 @@ export const actionsPopup = new Block({
         new Button({
             class: 'actions-popup-btn',
             text: 'Удалить пользователя',
-            iconClass: 'actions-popup-btn__icon icon-minus',
+            iconClass: 'actions-popup-btn__icon minus-icon',
             eventData: {
                 name: 'click',
                 callback: () => {
@@ -32,7 +32,7 @@ export const actionsPopup = new Block({
         new Button({
             class: 'actions-popup-btn',
             text: 'Удалить чат',
-            iconClass: 'actions-popup-btn__icon icon-trash',
+            iconClass: 'actions-popup-btn__icon trash-icon',
             eventData: {
                 name: 'click',
                 callback: () => {

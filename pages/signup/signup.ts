@@ -2,7 +2,7 @@ import Button from '../../components/Button'
 import {InputName} from '../../utils/validator/InputValidator'
 import FormInput from '../../components/FormInput'
 import Form from '../../components/Form'
-import SignupPage from '../../components/pages/SignupPage'
+import SignupPage from '../../components/pages/signupPage/SignupPage'
 import Router from '../../utils/router/Router'
 import Path from '../../constants/Path'
 import SignupApi from "./signup.api";

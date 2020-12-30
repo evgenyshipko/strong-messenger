@@ -1,7 +1,7 @@
 import Button from '../../components/Button.js';
 import Form from '../../components/Form.js';
 import { InputName } from '../../utils/validator/InputValidator.js';
-import ProfilePage from '../../components/pages/ProfilePage.js';
+import ProfilePage from '../../components/pages/profilePage/ProfilePage.js';
 import FormInputLabeled from '../../components/FormInputLabeled.js';
 import Avatar from '../../components/Avatar.js';
 import Path from '../../constants/Path.js';

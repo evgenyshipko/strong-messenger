@@ -1,4 +1,4 @@
-import { ErrorPage } from '../../components/pages/ErrorPage'
+import { ErrorPage } from '../../components/pages/errorPage/ErrorPage'
 import Button from '../../components/Button'
 import Path from '../../constants/Path'
 import Router from '../../utils/router/Router'

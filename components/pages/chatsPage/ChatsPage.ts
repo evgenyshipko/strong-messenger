@@ -1,11 +1,11 @@
-import Component from '../../utils/Component'
-import Input from '../Input'
-import Button from '../Button'
-import ChatList from '../chats/ChatList'
-import ChatHeader from '../chats/ChatHeader'
-import MessageList from '../chats/MessageList'
-import Block from '../Block'
-import Modal from "../Modal";
+import Component from '../../../utils/Component'
+import Input from '../../Input'
+import Button from '../../Button'
+import ChatList from '../../chats/chatList/ChatList'
+import ChatHeader from '../../chats/chatHeader/ChatHeader'
+import MessageList from '../../chats/messageList/MessageList'
+import Block from '../../Block'
+import Modal from '../../modal/Modal'
 
 interface ChatsPageProps {
     functionsBlockComponents: (Button | Input)[]
@@ -32,9 +32,7 @@ class ChatsPage extends Component<ChatsPageProps> {
                 </div>
               </div>
               <div class="chats-right-block">
-                <div class="chats-head">
-                  {{chatHeader}}
-                </div>
+                <div class="chats-header-wrapper">{{chatHeader}}</div>
                 <div class="chats-message-block">
                   {{messageBlockComponents}}
                 </div>

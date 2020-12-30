@@ -1,4 +1,4 @@
-import SigninPage from '../../components/pages/SigninPage.js';
+import SigninPage from '../../components/pages/signinPage/SigninPage.js';
 import Button from '../../components/Button.js';
 import { InputName } from '../../utils/validator/InputValidator.js';
 import FormInput from '../../components/FormInput.js';

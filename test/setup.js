@@ -7,3 +7,4 @@ global.window = window
 global.HTMLElement = window.HTMLElement
 global.XMLHttpRequest = window.XMLHttpRequest
 global.console = console
+global.Event = window.Event

@@ -30,7 +30,7 @@ class TextNodeParser {
             }
         }
         if (textNodeArr.length === 0) {
-            throw new Error('text todes not found, check your template')
+            throw new Error('text nodes not found, check your template')
         }
         return textNodeArr
     }

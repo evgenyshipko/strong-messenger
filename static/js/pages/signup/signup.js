@@ -2,7 +2,7 @@ import Button from '../../components/Button.js';
 import { InputName } from '../../utils/validator/InputValidator.js';
 import FormInput from '../../components/FormInput.js';
 import Form from '../../components/Form.js';
-import SignupPage from '../../components/pages/SignupPage.js';
+import SignupPage from '../../components/pages/signupPage/SignupPage.js';
 import Router from '../../utils/router/Router.js';
 import Path from '../../constants/Path.js';
 import SignupApi from "./signup.api.js";

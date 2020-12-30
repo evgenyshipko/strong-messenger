@@ -1,29 +1,29 @@
 
-.add-user-modal-shadow{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/*.add-user-modal-shadow{*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
 
-  position:absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow-y: scroll;
-  background: rgba(160, 160, 160, 0.5);
-}
+/*  position:absolute;*/
+/*  top: 0;*/
+/*  right: 0;*/
+/*  bottom: 0;*/
+/*  left: 0;*/
+/*  overflow-y: scroll;*/
+/*  background: rgba(160, 160, 160, 0.5);*/
+/*}*/
 
-.add-user-modal{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+/*.add-user-modal{*/
+/*  display: flex;*/
+/*  flex-direction: column;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
 
-  height: 300px;
-  width: 450px;
-  background-color: white;
-  border-radius: 10px;
-}
+/*  height: 300px;*/
+/*  width: 450px;*/
+/*  background-color: white;*/
+/*  border-radius: 10px;*/
+/*}*/
 
 .add-user-modal-header{
   font-family: 'Open Sans', sans-serif;

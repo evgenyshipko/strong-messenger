@@ -29,8 +29,8 @@ class HTTPExecutor {
             const { method, data } = options;
             return new Promise((resolve, reject) => {
                 const xhr = new XMLHttpRequest();
-                xhr.open(method, url);
                 xhr.timeout = timeout;
+                xhr.open(method, url);
                 if (options.credentials) {
                     xhr.withCredentials = true;
                 }
@@ -57,7 +57,10 @@ class HTTPExecutor {
                 };
                 xhr.onabort = rejectFunc;
                 xhr.onerror = rejectFunc;
-                xhr.ontimeout = rejectFunc;
+                xhr.ontimeout = () => {
+                    console.log('ON TIMEOUT');
+                    return rejectFunc();
+                };
                 if (method === Method.GET || !data) {
                     xhr.send();
                 }

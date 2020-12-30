@@ -20,45 +20,47 @@ class Component {
             if (!nextProps) {
                 return;
             }
-            this.eventManager.emit(Event.FLOW_CDU, this.props, nextProps);
+            this.eventManager.emit(Event.FLOW_CDU, this.props, { ...this.props, ...nextProps });
         };
         this.props = this._makePropsProxy(props);
-        this._templator = new Templator(this.template());
+        this._templator = new Templator(this._template());
         this.eventManager = new EventManager();
         this._registerEvents(this.eventManager);
         this.eventManager.emit(Event.INIT);
     }
     _registerEvents(eventManager) {
-        eventManager.on(Event.INIT, this.init.bind(this));
+        eventManager.on(Event.INIT, this._init.bind(this));
         eventManager.on(Event.FLOW_CDM, this._componentDidMount.bind(this));
         eventManager.on(Event.FLOW_RENDER, this._render.bind(this));
         eventManager.on(Event.FLOW_CDU, this._componentDidUpdate.bind(this));
     }
-    template() {
-        return '';
-    }
     _createResources() {
         this._elements = this._templator.compile(this.props);
     }
-    init() {
+    _init() {
         this._createResources();
         this.eventManager.emit(Event.FLOW_CDM);
     }
     _componentDidMount() {
         this.componentDidMount(this.props);
     }
-    componentDidMount(_oldProps) { }
-    _componentDidUpdate(oldProps, newProps) {
-        const isEnabled = this.componentDidUpdate(oldProps, newProps);
-        if (isEnabled) {
-            this.props = Object.assign(oldProps, newProps);
-        }
-    }
-    componentDidUpdate(oldProps, newProps) {
+    _isUpdateEnable(oldProps, newProps) {
         if (isObject(oldProps) && isObject(newProps)) {
             return !isEqual(oldProps, newProps);
         }
         return false;
+    }
+    _componentDidUpdate(oldProps, newProps) {
+        let isUpdateEnabled;
+        if (this.componentDidUpdate(oldProps, newProps) !== undefined) {
+            isUpdateEnabled = this.componentDidUpdate(oldProps, newProps);
+        }
+        else {
+            isUpdateEnabled = this._isUpdateEnable(oldProps, newProps);
+        }
+        if (isUpdateEnabled) {
+            this.props = Object.assign(oldProps, newProps);
+        }
     }
     _render() {
         var _a;
@@ -82,9 +84,6 @@ class Component {
         });
         this._elements = newElements;
     }
-    getContent() {
-        return this._elements;
-    }
     _makePropsProxy(props) {
         const self = this;
         return new Proxy(props, {
@@ -97,6 +96,17 @@ class Component {
                 throw new Error('Нет доступа');
             }
         });
+    }
+    _template() {
+        return this.template();
+    }
+    componentDidMount(_oldProps) { }
+    componentDidUpdate(_oldProps, _newProps) { }
+    template() {
+        return '';
+    }
+    getContent() {
+        return this._elements;
     }
     addEventListener(listenerName, callback) {
         const contentArr = this.getContent();

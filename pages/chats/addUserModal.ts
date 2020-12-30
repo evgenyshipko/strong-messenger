@@ -1,4 +1,4 @@
-import Modal from '../../components/Modal'
+import Modal from '../../components/modal/Modal'
 import Header from '../../components/Header'
 import { InputName } from '../../utils/validator/InputValidator'
 import Button from '../../components/Button'
@@ -24,10 +24,11 @@ const addUserToChat = (_e: Event) => {
     const userProp = dropdownInput.props.options.find((option: Option<UserProps>) => {
         return option.props.value.login === dropdownInput.props.value
     })?.props.value
-    if (userProp) {
-        const chatId = new Store<MessengerStore>().content.currentChatId
-        new ChatsApi().addUser(userProp.id, chatId!)
+    const chatId = new Store<MessengerStore>().content.currentChatId
+    if (userProp && chatId) {
+        new ChatsApi().addUser(userProp.id, chatId)
             .then(() => {
+                window.alert('Пользователь добавлен успешно!')
                 addUserModal.hide()
             })
     }
@@ -47,8 +48,6 @@ const dropdownInput = new DropdownInput<UserProps>({
 })
 
 export const addUserModal = new Modal({
-    modalClass: 'add-user-modal',
-    backgroundClass: 'add-user-modal-shadow',
     content: [
         new Header({
             text: 'Добавить пользователя',

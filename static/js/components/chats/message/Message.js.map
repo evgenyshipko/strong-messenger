@@ -1,0 +1,1 @@
+{"version":3,"file":"Message.js","sourceRoot":"","sources":["../../../../../components/chats/message/Message.ts"],"names":[],"mappings":"AAAA,OAAO,SAAS,MAAM,0BAA0B,CAAA;AAQhD,MAAM,OAAQ,SAAQ,SAA2B;IAC7C,QAAQ;QACJ,MAAM,SAAS,GAAG,IAAI,CAAC,KAAK,CAAC,UAAU,CAAC,CAAC,CAAC,UAAU,CAAC,CAAC,CAAC,WAAW,CAAA;QAClE,OAAO;oCACqB,SAAS;;;;;;;;;kBAS3B,CAAA;IACd,CAAC;CACJ;AAED,eAAe,OAAO,CAAA"}

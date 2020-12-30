@@ -1,8 +1,8 @@
-import Component from '../../utils/Component'
-import Button from '../Button'
-import Form from '../Form'
-import Avatar from '../Avatar'
-import Modal from "../Modal";
+import Component from '../../../utils/Component'
+import Button from '../../Button'
+import Form from '../../Form'
+import Avatar from '../../Avatar'
+import Modal from '../../modal/Modal'
 
 interface ProfilePageProps {
     avatar: Avatar,
