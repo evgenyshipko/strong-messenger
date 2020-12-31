@@ -7,7 +7,7 @@
   "author": "Evgeny Shipko",
   "scripts": {
     "start": "node ./static/js/server.js",
-    "build": "tsc && ts-node utils/addJsExtentionToFiles.ts && lessc styles/index.less static/styles/index.css",
+    "build": "mkdir -p 'static' && cp -R images index.html static/ && tsc && ts-node utils/addJsExtentionToFiles.ts && lessc styles/index.less static/styles/index.css",
     "test": "mocha 'test/**/*.test.ts'"
   },
   "devDependencies": {
@@ -32,15 +32,13 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
     "jsdom": "^16.4.0",
-    "jsdom-global": "^3.0.2",
     "mocha": "^8.2.1",
-    "sinon": "^9.2.2",
-    "ts-sinon": "^2.0.1"
+    "sinon": "^9.2.2"
   },
   "dependencies": {
     "express": "4.17.1",
-    "filehound": "^1.17.4",
-    "less": "^4.0.0",
+    "filehound": "1.17.4",
+    "less": "4.0.0",
     "ts-node": "9.0.0",
     "typescript": "4.1.2"
   }

@@ -10,7 +10,7 @@ class Avatar extends Component<AvatarProps> {
     template(): string {
         return `<div class="profile-avatar__content" @event={{eventData}}>
             <img class="profile-avatar__image" src={{imageLink}} />
-            <span class="profile-avatar__text">Изменить аватар</span>
+            <span class="profile-avatar__text">Изменить</span>
         </div>`
     }
 }

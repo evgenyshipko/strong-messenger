@@ -1,12 +1,13 @@
 import Modal from '../../components/modal/Modal'
 import Header from '../../components/Header'
 import { InputName } from '../../utils/validator/InputValidator'
-import Button from '../../components/Button'
+import Button from '../../components/button/Button'
 import DropdownInput from '../../components/dropdown/DropdownInput'
 import { MessengerStore, UserProps } from '../../types/Types'
 import Option from '../../components/dropdown/Option'
 import Store from '../../utils/Store'
 import ChatsApi from './chats.api'
+import {actionsPopup} from "./actionsPopup";
 
 /* global HTMLInputElement, Event */
 
@@ -47,6 +48,7 @@ const deleteUserFromChat = (_e: Event) => {
             .then(() => {
                 window.alert('Пользователь удален успешно!')
                 deleteUserModal.hide()
+                actionsPopup.hide()
             })
     } else {
         window.alert('Сначала выберите пользователя')
@@ -75,6 +77,16 @@ export const deleteUserModal = new Modal({
             eventData: {
                 name: 'click',
                 callback: deleteUserFromChat
+            }
+        }),
+        new Button({
+            class: 'messenger-button_no-background',
+            text: 'Отмена',
+            eventData: {
+                name: 'click',
+                callback: () => {
+                    deleteUserModal.hide()
+                }
             }
         })
     ]

@@ -1,4 +1,5 @@
 export class EventManager {
+    // TODO: написать тесты
     listeners: Record<string, Function[]>
 
     constructor() {

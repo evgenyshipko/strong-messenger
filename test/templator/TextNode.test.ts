@@ -119,4 +119,6 @@ describe('TextNode', function () {
             assert.equal(textNode.toHTMLElement({}).textContent, 'test')
         })
     })
+
+    // TODO: дописать тесты
 })

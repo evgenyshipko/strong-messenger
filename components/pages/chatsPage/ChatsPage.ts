@@ -1,6 +1,6 @@
 import Component from '../../../utils/Component'
 import Input from '../../Input'
-import Button from '../../Button'
+import Button from '../../button/Button'
 import ChatList from '../../chats/chatList/ChatList'
 import ChatHeader from '../../chats/chatHeader/ChatHeader'
 import MessageList from '../../chats/messageList/MessageList'

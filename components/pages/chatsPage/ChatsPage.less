@@ -50,16 +50,11 @@
 }
 
 .chats-profile-btn{
+  .button-mixin();
   width: 80px;
-
   margin: 0;
   padding: 0;
-
   background-color: transparent;
-  border: none;
-  cursor: pointer;
-
-  font-family: @font-family;
   font-size: 12px;
   color: @grey-dark-color;
 }
@@ -132,11 +127,10 @@
 
 .chats-footer-attach-btn{
   .attach-icon();
-  border: none;
+  .button-mixin();
   float: left;
   width: 25px;
   height: 25px;
-  cursor: pointer;
 }
 
 .chats-footer-attach-btn:focus{
@@ -145,11 +139,10 @@
 
 .chats-footer-send-btn{
   .send-icon();
-  border: none;
+  .button-mixin();
   float: left;
   width: 35px;
   height: 35px;
-  cursor: pointer;
 }
 
 .chats-footer-send-btn:focus{

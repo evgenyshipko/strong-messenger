@@ -1,5 +1,5 @@
 import Component from '../../../utils/Component'
-import Button from '../../Button'
+import Button from '../../button/Button'
 import Form from '../../Form'
 import Avatar from '../../Avatar'
 import Modal from '../../modal/Modal'

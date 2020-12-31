@@ -50,6 +50,10 @@ describe('Component', function () {
         const node = content?.[0]
         assert.equal(node?.textContent, changedProps.text)
     })
+    /*
+         TODO: написать тест передачу пустых пропсов setProps({}).
+            Сходу не получилось обернуть _render() функцию с помощью sinon.spy(), надо рабираться почему
+         */
     it('hide (скрывает контент компонента)', function () {
         const testComponent = getTestComponent()
         testComponent.hide()

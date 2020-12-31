@@ -1,6 +1,8 @@
 import Modal from '../../components/modal/Modal'
 import Header from '../../components/Header'
-import Button from '../../components/Button'
+import Button from '../../components/button/Button'
+import ChatsApi from "./chats.api";
+import {actionsPopup} from "./actionsPopup";
 
 export const deleteChatModal = new Modal({
     content: [
@@ -10,7 +12,19 @@ export const deleteChatModal = new Modal({
         }),
         new Button({
             class: 'messenger-button delete-chat-modal-delete-btn',
-            text: 'Удалить'
+            text: 'Удалить',
+            eventData: {
+                name: 'click',
+                callback: () => {
+                    new ChatsApi()
+                        .delete()
+                        .then(() => {
+                            window.alert('Чат удален успешно!')
+                            deleteChatModal.hide()
+                            actionsPopup.hide()
+                        })
+                }
+            }
         }),
         new Button({
             class: 'messenger-button_no-background delete-chat-modal-reject-btn',

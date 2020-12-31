@@ -1,4 +1,4 @@
-import Button from '../../components/Button'
+import Button from '../../components/button/Button'
 import Form from '../../components/Form'
 import {InputName} from '../../utils/validator/InputValidator'
 import ProfilePage from '../../components/pages/profilePage/ProfilePage'

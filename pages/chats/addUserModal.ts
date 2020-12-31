@@ -1,12 +1,13 @@
 import Modal from '../../components/modal/Modal'
 import Header from '../../components/Header'
 import { InputName } from '../../utils/validator/InputValidator'
-import Button from '../../components/Button'
+import Button from '../../components/button/Button'
 import DropdownInput from '../../components/dropdown/DropdownInput'
 import { MessengerStore, UserProps } from '../../types/Types'
 import Option from '../../components/dropdown/Option'
 import Store from '../../utils/Store'
 import ChatsApi from './chats.api'
+import { actionsPopup } from './actionsPopup'
 
 /* global HTMLInputElement, Event */
 
@@ -30,6 +31,7 @@ const addUserToChat = (_e: Event) => {
             .then(() => {
                 window.alert('Пользователь добавлен успешно!')
                 addUserModal.hide()
+                actionsPopup.hide()
             })
     }
 }
@@ -60,6 +62,16 @@ export const addUserModal = new Modal({
             eventData: {
                 name: 'click',
                 callback: addUserToChat
+            }
+        }),
+        new Button({
+            class: 'messenger-button_no-background',
+            text: 'Отмена',
+            eventData: {
+                name: 'click',
+                callback: () => {
+                    addUserModal.hide()
+                }
             }
         })
     ]

@@ -1,8 +1,8 @@
 import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
-import Url, {ApiPath} from '../../constants/Url'
+import Url, { ApiPath } from '../../constants/Url'
 import Store from '../../utils/Store'
-import {ChatData, MessengerStore, UserProps} from '../../types/Types'
-import {handleErrorResponse} from '../../utils/utils'
+import { ChatData, MessengerStore, UserProps } from '../../types/Types'
+import { handleErrorResponse } from '../../utils/utils'
 import Option from '../../components/dropdown/Option'
 import DropdownInput from '../../components/dropdown/DropdownInput'
 
@@ -23,6 +23,28 @@ class ChatsApi {
                 const store = new Store<MessengerStore>()
                 const chatList = store.content.chatList
                 chatList.push({ id: response.id, title: title, avatar: '' })
+                store.setState({ chatList: chatList })
+            })
+            .catch(handleErrorResponse)
+    }
+
+    delete() {
+        const store = new Store<MessengerStore>()
+        const chatIdToDelete = store.content.currentChatId
+        return new HTTPExecutor()
+            .delete(
+                Url.generate(ApiPath.CHATS),
+                {
+                    data: JSON.stringify({ chatId: chatIdToDelete }),
+                    credentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+            .then((_res) => {
+                const chatList = store.content.chatList.filter((chat) => {
+                    return chat.id !== chatIdToDelete
+                })
                 store.setState({ chatList: chatList })
             })
             .catch(handleErrorResponse)

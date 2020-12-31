@@ -77,8 +77,10 @@ describe('Router', function () {
         const path = '/path1'
         router.go(path)
         assert.equal(window.location.pathname, path)
-        /* window.history.back нужно тестировать с задержкой
-        источник: https://stackoverflow.com/questions/54522889/window-history-back-not-being-called-jest-enzyme */
+        /* ?ВОПРОС?
+         window.history.back нужно тестировать с задержкой, не очень понял почему
+        источник: https://stackoverflow.com/questions/54522889/window-history-back-not-being-called-jest-enzyme
+        */
         return delayAction(router.back.bind(router)).then(() => {
             assert.equal(router._currentRoute?._pathname, defaultPath)
             assert.equal(window.location.pathname, defaultPath)

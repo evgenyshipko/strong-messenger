@@ -1,4 +1,4 @@
-import FormInput from './FormInput'
+import FormInput from './formInput/FormInput'
 import { InputProps } from './Input'
 
 interface FormInputLabeledProps extends InputProps{

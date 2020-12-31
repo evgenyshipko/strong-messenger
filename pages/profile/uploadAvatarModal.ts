@@ -1,6 +1,6 @@
 import Modal from '../../components/modal/Modal'
 import Header from '../../components/Header'
-import Button from '../../components/Button'
+import Button from '../../components/button/Button'
 import InputLabeled from '../../components/InputLabeled'
 import ProfileApi from './profile.api'
 
@@ -40,6 +40,16 @@ export const uploadAvatarModal = new Modal({
             eventData: {
                 name: 'click',
                 callback: uploadAvatar
+            }
+        }),
+        new Button({
+            class: 'messenger-button_no-background',
+            text: 'Отмена',
+            eventData: {
+                name: 'click',
+                callback: () => {
+                    uploadAvatarModal.hide()
+                }
             }
         })
     ]

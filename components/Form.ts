@@ -1,8 +1,8 @@
 import Component from '../utils/Component'
 import FormValidator from '../utils/validator/FormValidator'
 import InputValidator from '../utils/validator/InputValidator'
-import FormInput from './FormInput'
-import Button from './Button'
+import FormInput from './formInput/FormInput'
+import Button from './button/Button'
 
 /* global HTMLFormElement, HTMLInputElement, FormData, Event */
 

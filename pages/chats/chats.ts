@@ -1,4 +1,4 @@
-import Button from '../../components/Button'
+import Button from '../../components/button/Button'
 import Input from '../../components/Input'
 import Chat from '../../components/chats/chat/Chat'
 import ChatHeader from '../../components/chats/chatHeader/ChatHeader'

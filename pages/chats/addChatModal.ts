@@ -1,7 +1,7 @@
 import Modal from '../../components/modal/Modal'
 import Header from '../../components/Header'
 import Input from '../../components/Input'
-import Button from '../../components/Button'
+import Button from '../../components/button/Button'
 import ChatsApi from './chats.api'
 
 /* global FormData, HTMLInputElement, Event */
@@ -40,6 +40,16 @@ export const addChatModal = new Modal({
             eventData: {
                 name: 'click',
                 callback: createChat
+            }
+        }),
+        new Button({
+            class: 'messenger-button_no-background',
+            text: 'Отмена',
+            eventData: {
+                name: 'click',
+                callback: () => {
+                    addChatModal.hide()
+                }
             }
         })
     ]
