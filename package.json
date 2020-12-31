@@ -7,7 +7,7 @@
   "author": "Evgeny Shipko",
   "scripts": {
     "start": "node ./static/js/server.js",
-    "build": "mkdir -p 'static' && cp -R images index.html static/ && tsc && ts-node utils/addJsExtentionToFiles.ts && lessc styles/index.less static/styles/index.css",
+    "build": "mkdir -p 'static' && cp -R images index.html _redirects static/ && tsc && ts-node utils/addJsExtentionToFiles.ts && lessc styles/index.less static/styles/index.css",
     "test": "mocha 'test/**/*.test.ts'"
   },
   "devDependencies": {
