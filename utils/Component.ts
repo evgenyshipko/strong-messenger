@@ -1,6 +1,7 @@
-import { EventManager } from './EventManager.js'
+import { EventManager } from './EventManager'
 import { Nullable } from '../types/Types'
-import Templator from './templator/Templator.js'
+import Templator from './templator/Templator'
+import { isEqual, isObject } from './utils'
 
 /* global HTMLElement, EventListenerOrEventListenerObject */
 
@@ -18,105 +19,113 @@ enum Event {
 
 class Component<T> {
     props: T
-    eventManager: () => EventManager
+    eventManager: EventManager
     _elements: HTMLElement[] = []
     _templator: Templator
 
     constructor(props: T) {
-        const eventManager = new EventManager()
         this.props = this._makePropsProxy(props)
-        this._templator = new Templator(this.template())
-        this.eventManager = () => eventManager
-        this._registerEvents(eventManager)
-        eventManager.emit(Event.INIT)
+        this._templator = new Templator(this._template())
+        this.eventManager = new EventManager()
+        this._registerEvents(this.eventManager)
+        this.eventManager.emit(Event.INIT)
     }
 
     _registerEvents(eventManager: EventManager) {
-        // console.log('_registerEvents')
-        eventManager.on(Event.INIT, this.init.bind(this))
+        eventManager.on(Event.INIT, this._init.bind(this))
         eventManager.on(Event.FLOW_CDM, this._componentDidMount.bind(this))
         eventManager.on(Event.FLOW_RENDER, this._render.bind(this))
         eventManager.on(Event.FLOW_CDU, this._componentDidUpdate.bind(this))
     }
 
-    template(): string {
-        return ''
-    }
-
     _createResources() {
-        // console.log('_createResources')
         this._elements = this._templator.compile(this.props)
     }
 
-    init() {
+    _init() {
         this._createResources()
-        this.eventManager().emit(Event.FLOW_CDM)
-        // console.log('init', this.getContent())
+        this.eventManager.emit(Event.FLOW_CDM)
     }
 
     _componentDidMount() {
-        // console.log('_componentDidMount')
         this.componentDidMount(this.props)
     }
 
-    componentDidMount(_oldProps: T) {}
+    _isUpdateEnable(oldProps: T, newProps: T) {
+        if (isObject(oldProps) && isObject(newProps)) {
+            return !isEqual(oldProps, newProps)
+        }
+        return false
+    }
 
     _componentDidUpdate(oldProps: T, newProps: T) {
-        // console.log('_componentDidUpdate')
-        const isEnabled = this.componentDidUpdate(oldProps, newProps)
-        if (isEnabled) {
+        let isUpdateEnabled
+        if (this.componentDidUpdate(oldProps, newProps) !== undefined) {
+            isUpdateEnabled = this.componentDidUpdate(oldProps, newProps)
+        } else {
+            isUpdateEnabled = this._isUpdateEnable(oldProps, newProps)
+        }
+        if (isUpdateEnabled) {
             this.props = Object.assign(oldProps, newProps)
         }
     }
 
-    componentDidUpdate(oldProps: T, newProps: T) {
-        // знаю, что это очень топорно, но до этого я просто в любом случае изменения пропсов делал рендер
-        return JSON.stringify(oldProps) !== JSON.stringify(newProps)
-    }
-
-    setProps = (nextProps: Partial<T>) => {
-        // console.log('setProps')
-        if (!nextProps) {
-            return
-        }
-        this.eventManager().emit(Event.FLOW_CDU, this.props, nextProps)
-    };
-
     _render() {
-        // console.log('_render', this.props)
         const newElements = this._templator.compile(this.props)
         this._elements?.forEach((oldNode, index) => {
             if (oldNode) {
-                const parent = oldNode.parentNode
-                oldNode.remove()
-                if (parent != null) {
+                const newNode = newElements[index]
+                const parentNode = oldNode.parentNode
+                const nextNode = oldNode.nextSibling
+                if (parentNode) {
                     oldNode.remove()
-                    const newNode = newElements[index]
-                    parent.appendChild(newNode)
+                    // если есть следующая нода того же уровня, то инсертим не в конец родителя, а к этой ноде
+                    if (nextNode) {
+                        parentNode.insertBefore(newNode, nextNode)
+                    } else {
+                        parentNode.appendChild(newNode)
+                    }
                 }
             }
         })
         this._elements = newElements
     }
 
-    getContent(): Nullable<HTMLElement[]> {
-        // console.log('getContent')
-        return this._elements
-    }
-
     _makePropsProxy(props: any) {
-        // console.log('_makePropsProxy')
         const self = this
         return new Proxy(props, {
             set(target: any, prorerty: PropertyKey, value: any): boolean {
                 target[prorerty] = value
-                self.eventManager().emit(Event.FLOW_RENDER)
+                self.eventManager.emit(Event.FLOW_RENDER)
                 return true
             },
             deleteProperty(): boolean {
                 throw new Error('Нет доступа')
             }
         })
+    }
+
+    _template():string {
+        return this.template()
+    }
+
+    componentDidMount(_oldProps: T) {}
+
+    componentDidUpdate(_oldProps: T, _newProps: T) {}
+
+    template(): string {
+        return ''
+    }
+
+    setProps = (nextProps: Partial<T>) => {
+        if (!nextProps) {
+            return
+        }
+        this.eventManager.emit(Event.FLOW_CDU, this.props, { ...this.props, ...nextProps })
+    };
+
+    getContent(): Nullable<HTMLElement[]> {
+        return this._elements
     }
 
     addEventListener(listenerName: string, callback: EventListenerOrEventListenerObject): void {

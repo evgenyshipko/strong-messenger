@@ -1,5 +1,5 @@
-import FormInput from './FormInput.js'
-import { InputProps } from './Input.js'
+import FormInput from './formInput/FormInput'
+import { InputProps } from './Input'
 
 interface FormInputLabeledProps extends InputProps{
     label: string,

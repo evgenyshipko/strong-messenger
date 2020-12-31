@@ -1,0 +1,161 @@
+@import "../../../styles/common";
+
+.chats-wrapper{
+  display: flex;
+  flex-direction: row;
+}
+
+.chats-left-block{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 30%;
+}
+
+.chats-right-block{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 70%;
+}
+
+.chats-header-wrapper{
+  display: flex;
+  height: 10%;
+}
+
+.chats-functions-block{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 22%;
+  border-bottom: 1px solid @grey-color;
+  border-right: 1px solid @grey-color;
+}
+
+.chats-message-block{
+  height: 77%;
+  position: relative;
+}
+
+.chats-buttons-block{
+  .centered-flex-container();
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.chats-add-chat-btn{
+  font-size: 12px;
+  margin-left: 5%;
+}
+
+.chats-profile-btn{
+  .button-mixin();
+  width: 80px;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  font-size: 12px;
+  color: @grey-dark-color;
+}
+
+.chats-profile-btn:focus{
+  outline-width: 0;
+}
+
+.chats-search-input{
+  width: 90%;
+  height: 35px;
+  align-self: center;
+  border-radius: 10px;
+  background-color: @gold-color-transparent;
+  border: none;
+}
+
+.chats-search-input:focus{
+  outline-width: 0;
+}
+
+.chats-search-input::placeholder{
+  .union-icon();
+  font-family: @font-family;
+  text-align: center;
+  background-position: 39% center;
+}
+
+.chats-head-btn{
+  border: none;
+  background-color: transparent;
+}
+
+.chats-head-btn:focus{
+  outline-width: 0;
+}
+
+.chats-head-btn__icon{
+  .more-vertical-icon();
+  float: left;
+  width: 20px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.chats-footer{
+  .centered-flex-container();
+  flex-direction: row;
+  justify-content: space-around;
+  height: 13%;
+  border-top: 1px solid @grey-color;
+}
+
+.chats-footer-input{
+  width: 84%;
+  height: 35px;
+  border-radius: 10px;
+  border: none;
+  background-color: @gold-color-transparent;
+  font-family: @font-family;
+}
+
+.chats-footer-input:focus{
+  outline-width: 0;
+}
+
+.chats-footer-input::placeholder{
+  padding-left: 1%;
+}
+
+.chats-footer-attach-btn{
+  .attach-icon();
+  .button-mixin();
+  float: left;
+  width: 25px;
+  height: 25px;
+}
+
+.chats-footer-attach-btn:focus{
+  outline-width: 0;
+}
+
+.chats-footer-send-btn{
+  .send-icon();
+  .button-mixin();
+  float: left;
+  width: 35px;
+  height: 35px;
+}
+
+.chats-footer-send-btn:focus{
+  outline-width: 0;
+}
+
+.chats-navigation{
+  border-right: 1px solid @grey-color;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+
+
+
+

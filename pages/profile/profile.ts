@@ -1,12 +1,18 @@
-import Button from '../../components/Button.js'
-import Form from '../../components/Form.js'
-import { InputName } from '../../utils/validator/InputValidator.js'
-import ProfilePage from './ProfilePage.js'
-import render from '../../utils/renderDom.js'
-import FormInputLabeled from '../../components/FormInputLabeled.js'
-import Modal from '../../components/Modal.js'
-import Header from '../../components/Header.js'
-import Avatar from '../../components/Avatar.js'
+import Button from '../../components/button/Button'
+import Form from '../../components/Form'
+import {InputName} from '../../utils/validator/InputValidator'
+import ProfilePage from '../../components/pages/profilePage/ProfilePage'
+import FormInputLabeled from '../../components/FormInputLabeled'
+import Avatar from '../../components/Avatar'
+import Path from '../../constants/Path'
+import Router from '../../utils/router/Router'
+import Url from '../../constants/Url'
+import Store from '../../utils/Store'
+import {MessengerStore, UserProps} from '../../types/Types'
+import {uploadAvatarModal} from './uploadAvatarModal'
+import ProfileApi from './profile.api'
+
+/* global FormData, HTMLInputElement */
 
 const formId = 'profile-form'
 const inputClass = 'profile-form-item__input'
@@ -26,7 +32,7 @@ const buttonListMain = [
             name: 'click',
             callback: () => {
                 // вешаем на кнопку отображение формы изменения пароля
-                profilePage.setProps({
+                profile.setProps({
                     form: formChangePassword,
                     buttonList: buttonListChangePassword
                 })
@@ -39,7 +45,7 @@ const buttonListMain = [
         eventData: {
             name: 'click',
             callback: () => {
-                location.assign( '../signin/signin.html')
+                new ProfileApi().logout()
             }
         }
     })
@@ -68,18 +74,20 @@ const formMain = new Form({
             inputName: InputName.FIRST_NAME,
             class: inputClass,
             label: 'Имя',
-            wrapperClass: inputWrapperClass
-        }),
-        new FormInputLabeled({
-            type: 'text',
-            inputName: InputName.LAST_NAME,
-            class: inputClass,
-            label: 'Фамилия',
-            wrapperClass: inputWrapperClass
+            wrapperClass: inputWrapperClass,
+            value: 'test'
         }),
         new FormInputLabeled({
             type: 'text',
             inputName: InputName.SECOND_NAME,
+            class: inputClass,
+            label: 'Фамилия',
+            wrapperClass: inputWrapperClass,
+            value: 'yryr'
+        }),
+        new FormInputLabeled({
+            type: 'text',
+            inputName: InputName.DISPLAY_NAME,
             class: inputClass,
             label: 'Имя для отображения',
             wrapperClass: inputWrapperClass
@@ -107,7 +115,7 @@ const buttonListChangePassword = [
         eventData: {
             name: 'click',
             callback: () => {
-                profilePage.setProps({
+                profile.setProps({
                     form: formMain,
                     buttonList: buttonListMain
                 })
@@ -144,41 +152,15 @@ const formChangePassword = new Form({
     ]
 })
 
-const modalWindow = new Modal({
-    backgroundClass: 'upload-avatar-modal-shadow',
-    modalClass: 'upload-avatar-modal',
-    content: [
-        new Header({
-            text: 'Загрузите файл',
-            class: 'upload-avatar-modal-header'
-        }),
-        new Button({
-            text: 'Выбрать файл на компьютере',
-            class: 'upload-avatar-modal-browse-btn messenger-button_no-background'
-        }),
-        new Button({
-            text: 'Изменить',
-            class: 'messenger-button upload-avatar-modal-change-btn',
-            eventData: {
-                name: 'click',
-                callback: () => {
-                    profilePage.show('flex')
-                    modalWindow.hide()
-                }
-            }
-        })
-    ]
-})
-
-const profilePage = new ProfilePage({
+export const profile = new ProfilePage({
     avatar: new Avatar({
         eventData: {
             name: 'click',
             callback: () => {
-                profilePage.hide()
-                modalWindow.show('flex')
+                uploadAvatarModal.show('flex')
             }
-        }
+        },
+        imageLink: ''
     }),
     backButton: new Button({
         class: 'profile-back-btn',
@@ -186,22 +168,52 @@ const profilePage = new ProfilePage({
         eventData: {
             name: 'click',
             callback: () => {
-                location.assign('../chats/chats.html')
+                new Router('.app').go(Path.CHATS)
             }
         }
     }),
-    userName: 'Evgeny',
+    userName: (() => {
+        const userProps = new Store<MessengerStore>().content.userProps
+        if (userProps && userProps.avatar) {
+            return Url.getHostUrl() + userProps.avatar
+        }
+        return ''
+    })(),
     form: formMain,
-    buttonList: buttonListMain
+    buttonList: buttonListMain,
+    uploadAvatarModal: uploadAvatarModal
 })
 
-// скрыли модальное окно
-modalWindow.hide()
-
 // вешаем валидацию на формы
-formMain.addValidator()
-formChangePassword.addValidator()
+formChangePassword.addValidator((formData) => {
+    new ProfileApi().changeProfilePassword(formData)
+})
+formMain.addValidator((formData) => {
+    new ProfileApi().changeProfileData(formData)
+})
+const updateFormValues = (_state: MessengerStore) => {
+    const elemList = formMain.getContent()
+    if (elemList && elemList.length > 0) {
+        const form = elemList[0]
+        const inputList = form.getElementsByTagName('input')
+        for (const input of inputList) {
+            const inputName = input.getAttribute('name') as keyof UserProps
+            const value = store.content.userProps[inputName] as string
+            if (inputName && value) {
+                input.setAttribute('value', value)
+            }
+        }
+    }
+}
 
-// рисуем страницу
-render(profilePage)
-render(modalWindow)
+// подписались на изменения стейта глобального стора
+const store = new Store<MessengerStore>()
+store.subscribe('userProps', updateFormValues)
+store.subscribe('userProps', (state) => {
+    profile.setProps({ userName: state.userProps.first_name })
+})
+store.subscribe('userProps', (state) => {
+    if (state.userProps.avatar) {
+        profile.props.avatar.setProps({ imageLink: Url.getHostUrl() + state.userProps.avatar })
+    }
+})

@@ -8,8 +8,8 @@ export enum InputName {
     LOGIN = 'login',
     EMAIL = 'email',
     FIRST_NAME = 'first_name',
-    LAST_NAME = 'last_name',
     SECOND_NAME = 'second_name',
+    DISPLAY_NAME = 'display_name',
     PHONE = 'phone',
     SECOND_PASSWORD = 'second-password',
     OLD_PASSWORD = 'oldPassword',
@@ -26,7 +26,7 @@ class InputValidator {
         this.input = input
     }
 
-    validate() {
+    validate(): boolean {
         const inputDisplayName = this._getInputDisplayName()
         const inputName = this.input.getAttribute('name') as InputName
         const value = this.input.value
@@ -34,8 +34,10 @@ class InputValidator {
             this._checkEmptiness(inputDisplayName, value)
             this._validate(inputName, inputDisplayName, value)
             this.disableMessage()
+            return true
         } catch (e) {
             this._showMessage(e.message)
+            return false
         }
     }
 
@@ -82,46 +84,49 @@ class InputValidator {
         }
     }
 
-    _validate(inputName: InputName, inputDisplayName: InputDisplayName, value: string) {
-        switch (inputName) {
-        case InputName.PASSWORD:
-        case InputName.SECOND_PASSWORD:
-        case InputName.NEW_PASSWORD_REPEAT:
-        case InputName.NEW_PASSWORD:
-        case InputName.OLD_PASSWORD:
-            return this._validateLength(inputDisplayName, value, 8)
-        case InputName.LOGIN:
-            return this._validateLength(inputDisplayName, value, 3)
-        case InputName.EMAIL:
-            return this._validateEmail(value)
-        case InputName.PHONE:
-            return this._validatePhone(value)
-        case InputName.FIRST_NAME:
-            return this._validateLength(inputDisplayName, value, 2)
-        case InputName.SECOND_NAME:
-            return this._validateLength(inputDisplayName, value, 2)
-        case InputName.LAST_NAME:
-            return this._validateLength(inputDisplayName, value, 2)
+    _validate(inputName: InputName, inputDisplayName: InputDisplayName, value: string): void {
+        const obj: Record<InputName, Function> = {
+            [InputName.PASSWORD]: this._validateLength(inputDisplayName, value, 8),
+            [InputName.SECOND_PASSWORD]: this._validateLength(inputDisplayName, value, 8),
+            [InputName.NEW_PASSWORD_REPEAT]: this._validateLength(inputDisplayName, value, 8),
+            [InputName.NEW_PASSWORD]: this._validateLength(inputDisplayName, value, 8),
+            [InputName.OLD_PASSWORD]: this._validateLength(inputDisplayName, value, 8),
+            [InputName.LOGIN]: this._validateLength(inputDisplayName, value, 3),
+            [InputName.FIRST_NAME]: this._validateLength(inputDisplayName, value, 2),
+            [InputName.DISPLAY_NAME]: this._validateLength(inputDisplayName, value, 2),
+            [InputName.SECOND_NAME]: this._validateLength(inputDisplayName, value, 2),
+            [InputName.EMAIL]: this._validateEmail(value),
+            [InputName.PHONE]: this._validatePhone(value)
+        }
+        return obj[inputName]()
+    }
+
+    _validateLength(inputDisplayName: InputDisplayName, value: string, length: number): Function {
+        return () => {
+            if (value.length < length) {
+                throw new Error(`Минимальная длина ввода поля "${inputDisplayName}": ${length}`)
+            }
         }
     }
 
-    _validateLength(inputDisplayName: InputDisplayName, value: string, length: number): void {
-        if (value.length < length) {
-            throw new Error(`Минимальная длина ввода поля "${inputDisplayName}": ${length}`)
+    _validateEmail(value: string): Function {
+        // источник: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+        const EMAIL_REGEXP = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        const matchingResult = EMAIL_REGEXP.exec(value)
+        return () => {
+            if (!matchingResult || matchingResult[0].length !== value.length) {
+                throw new Error('Невалидный адрес (шаблон: example@mail.com)')
+            }
         }
     }
 
-    _validateEmail(value: string):void {
-        const matchingResult = (/\w+@\w+.[a-z]{2,3}/).exec(value)
-        if (!matchingResult || matchingResult[0].length !== value.length) {
-            throw new Error('Невалидный адрес (шаблон: example@mail.com)')
-        }
-    }
-
-    _validatePhone(value: string):void {
-        const matchingResult = (/\+*(\d{1}-*\(*\)*){11,13}/).exec(value)
-        if (!matchingResult || matchingResult[0].length !== value.length) {
-            throw new Error('Невалидный телефон (шаблон: +7-999-999-99-99)')
+    _validatePhone(value: string): Function {
+        return () => {
+            const PHONE_REGEXP = /\+*(\d{1}-*\(*\)*){11,13}/
+            const matchingResult = PHONE_REGEXP.exec(value)
+            if (!matchingResult || matchingResult[0].length !== value.length) {
+                throw new Error('Невалидный телефон (шаблон: +7-999-999-99-99)')
+            }
         }
     }
 }

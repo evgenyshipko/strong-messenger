@@ -1,4 +1,4 @@
-import InputValidator from './InputValidator.js'
+import InputValidator from './InputValidator'
 
 /* global HTMLFormElement */
 
@@ -9,11 +9,14 @@ class FormValidator {
         this.form = form
     }
 
-    validate() {
+    validate(): boolean {
         const itemList = this.form.getElementsByTagName('input')
+        let result = true
         for (const input of itemList) {
-            new InputValidator(input).validate()
+            const validationResult = new InputValidator(input).validate()
+            result = result && validationResult
         }
+        return result
     }
 }
 

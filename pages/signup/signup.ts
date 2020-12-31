@@ -1,9 +1,11 @@
-import render from '../../utils/renderDom.js'
-import Button from '../../components/Button.js'
-import { InputName } from '../../utils/validator/InputValidator.js'
-import FormInput from '../../components/FormInput.js'
-import Form from '../../components/Form.js'
-import SignupPage from './SignupPage.js'
+import Button from '../../components/button/Button'
+import {InputName} from '../../utils/validator/InputValidator'
+import FormInput from '../../components/formInput/FormInput'
+import Form from '../../components/Form'
+import SignupPage from '../../components/pages/signupPage/SignupPage'
+import Router from '../../utils/router/Router'
+import Path from '../../constants/Path'
+import SignupApi from "./signup.api";
 
 /* global HTMLFormElement, HTMLInputElement */
 
@@ -30,7 +32,7 @@ const firstNameInput = new FormInput({
 
 const lastNameInput = new FormInput({
     type: 'text',
-    inputName: InputName.LAST_NAME,
+    inputName: InputName.SECOND_NAME,
     class: 'signup-form__lastname-input form-input',
     placeholder: 'Фамилия'
 })
@@ -75,9 +77,13 @@ const form = new Form({
     ]
 })
 
-form.addValidator()
+form.addValidator((formData) => {
+    const data: Record<string, unknown> = Object.fromEntries(formData)
+    delete data[InputName.SECOND_PASSWORD]
+    new SignupApi(data).request()
+})
 
-render(new SignupPage({
+export const signup = new SignupPage({
     form: form,
     entranceBtn: new Button({
         text: 'Войти',
@@ -85,8 +91,8 @@ render(new SignupPage({
         eventData: {
             name: 'click',
             callback: () => {
-                location.assign('../signin/signin.html')
+                new Router('.app').go(Path.SIGNIN)
             }
         }
     })
-}))
+})

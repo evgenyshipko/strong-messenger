@@ -1,9 +1,11 @@
-import SigninPage from './SigninPage.js'
-import render from '../../utils/renderDom.js'
-import Button from '../../components/Button.js'
-import { InputName } from '../../utils/validator/InputValidator.js'
-import FormInput from '../../components/FormInput.js'
-import Form from '../../components/Form.js'
+import SigninPage from '../../components/pages/signinPage/SigninPage'
+import Button from '../../components/button/Button'
+import { InputName } from '../../utils/validator/InputValidator'
+import FormInput from '../../components/formInput/FormInput'
+import Form from '../../components/Form'
+import Router from '../../utils/router/Router'
+import Path from '../../constants/Path'
+import SigninApi from './signin.api'
 
 /* global HTMLFormElement, HTMLInputElement */
 
@@ -28,9 +30,11 @@ const form = new Form({
         })]
 })
 
-form.addValidator()
+form.addValidator((formData) => {
+    new SigninApi(formData).request()
+})
 
-render(new SigninPage({
+export const signin = new SigninPage({
     form: form,
     registrationBtn: new Button({
         text: 'Регистрация',
@@ -38,8 +42,8 @@ render(new SigninPage({
         eventData: {
             name: 'click',
             callback: () => {
-                location.assign('../signup/signup.html')
+                new Router('.app').go(Path.SIGNUP)
             }
         }
     })
-}))
+})

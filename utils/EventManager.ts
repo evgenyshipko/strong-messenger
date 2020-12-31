@@ -1,5 +1,6 @@
 export class EventManager {
-    listeners: {[key: string]: Function[]}
+    // TODO: написать тесты
+    listeners: Record<string, Function[]>
 
     constructor() {
         this.listeners = {}

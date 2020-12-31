@@ -1,17 +1,17 @@
-import Component from '../utils/Component.js'
+import Component from '../utils/Component'
 import { EventData } from '../types/Types'
 
 interface AvatarProps {
     eventData: EventData
+    imageLink: string
 }
 
 class Avatar extends Component<AvatarProps> {
-    constructor(props: AvatarProps) {
-        super(props)
-    }
-
     template(): string {
-        return `<span class="profile-avatar__content" @event={{eventData}}>Изменить аватар</span>`
+        return `<div class="profile-avatar__content" @event={{eventData}}>
+            <img class="profile-avatar__image" src={{imageLink}} />
+            <span class="profile-avatar__text">Изменить</span>
+        </div>`
     }
 }
 
