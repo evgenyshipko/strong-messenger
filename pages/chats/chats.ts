@@ -1,215 +1,54 @@
-import Button from '../../components/Button.js'
-import Input from '../../components/Input.js'
-import Chat from '../../components/chats/Chat.js'
-import ChatHeader from '../../components/chats/ChatHeader.js'
-import MessageList from '../../components/chats/MessageList.js'
-import ChatsPage from './ChatsPage.js'
-import ChatList from '../../components/chats/ChatList.js'
-import render from '../../utils/renderDom.js'
-import { messageItemList1, messageItemList2 } from './MessageMock.js'
-import Modal from '../../components/Modal.js'
-import Header from '../../components/Header.js'
-import { InputName } from '../../utils/validator/InputValidator.js'
-import Block from '../../components/Block.js'
-
-// создаем модальные окна и попапы
-const addUserModal = new Modal({
-    modalClass: 'add-user-modal',
-    backgroundClass: 'add-user-modal-shadow',
-    content: [
-        new Header({
-            text: 'Добавить пользователя',
-            class: 'add-user-modal-header'
-        }),
-        new Input({
-            placeholder: 'Логин',
-            class: 'add-user-modal-input',
-            type: 'text',
-            inputName: InputName.LOGIN
-        }),
-        new Button({
-            class: 'messenger-button add-user-modal-change-btn',
-            text: 'Добавить',
-            eventData: {
-                name: 'click',
-                callback: () => {
-                    addUserModal.hide()
-                    chatsPage.show('flex')
-                }
-            }
-        })
-    ]
-})
-
-const deleteUserModal = new Modal({
-    modalClass: 'add-user-modal',
-    backgroundClass: 'add-user-modal-shadow',
-    content: [
-        new Header({
-            text: 'Удалить пользователя',
-            class: 'add-user-modal-header'
-        }),
-        new Input({
-            placeholder: 'Логин',
-            class: 'add-user-modal-input',
-            type: 'text',
-            inputName: InputName.LOGIN
-        }),
-        new Button({
-            class: 'messenger-button add-user-modal-change-btn',
-            text: 'Удалить',
-            eventData: {
-                name: 'click',
-                callback: () => {
-                    deleteUserModal.hide()
-                    chatsPage.show('flex')
-                }
-            }
-        })
-    ]
-})
-
-const attachPopup = new Block({
-    class: 'attach-popup',
-    content: [
-        new Button({
-            class: 'attach-popup-btn',
-            text: 'Файл',
-            iconClass: 'attach-popup-btn__icon icon-file'
-        }),
-        new Button({
-            class: 'attach-popup-btn',
-            text: 'Фото или видео',
-            iconClass: 'attach-popup-btn__icon icon-photo'
-        })
-    ]
-})
-
-const actionsPopup = new Block({
-    class: 'actions-popup',
-    content: [
-        new Button({
-            class: 'actions-popup-btn',
-            text: 'Добавить пользователя',
-            iconClass: 'actions-popup-btn__icon icon-plus',
-            eventData: {
-                name: 'click',
-                callback: () => {
-                    addUserModal.show('flex')
-                    chatsPage.hide()
-                }
-            }
-        }),
-        new Button({
-            class: 'actions-popup-btn',
-            text: 'Удалить пользователя',
-            iconClass: 'actions-popup-btn__icon icon-minus',
-            eventData: {
-                name: 'click',
-                callback: () => {
-                    deleteUserModal.show('flex')
-                    chatsPage.hide()
-                }
-            }
-        }),
-        new Button({
-            class: 'actions-popup-btn',
-            text: 'Удалить чат',
-            iconClass: 'actions-popup-btn__icon icon-trash',
-            eventData: {
-                name: 'click',
-                callback: () => {
-                    deleteChatModal.show('flex')
-                    chatsPage.hide()
-                }
-            }
-        })
-    ]
-})
-
-const deleteChatModal = new Modal({
-    modalClass: 'delete-chat-modal',
-    backgroundClass: 'delete-chat-modal-shadow',
-    content: [
-        new Header({
-            text: 'Вы действительно хотите удалить чат?',
-            class: 'delete-chat-modal-header'
-        }),
-        new Button({
-            class: 'messenger-button delete-chat-modal-delete-btn',
-            text: 'Удалить'
-        }),
-        new Button({
-            class: 'messenger-button_no-background delete-chat-modal-reject-btn',
-            text: 'Отмена',
-            eventData: {
-                name: 'click',
-                callback: () => {
-                    deleteChatModal.hide()
-                    chatsPage.show('flex')
-                }
-            }
-        })
-    ]
-})
+import Button from '../../components/button/Button'
+import Input from '../../components/Input'
+import Chat from '../../components/chats/chat/Chat'
+import ChatHeader from '../../components/chats/chatHeader/ChatHeader'
+import MessageList from '../../components/chats/messageList/MessageList'
+import ChatsPage from '../../components/pages/chatsPage/ChatsPage'
+import ChatList from '../../components/chats/chatList/ChatList'
+import Block from '../../components/Block'
+import Router from '../../utils/router/Router'
+import Path from '../../constants/Path'
+import Store from '../../utils/Store'
+import { MessengerStore } from '../../types/Types'
+import { attachPopup } from './attachPopup'
+import { actionsPopup } from './actionsPopup'
+import { addChatModal } from './addChatModal'
+import {deleteChatModal} from "./deleteChatModal";
+import {addUserModal} from "./addUserModal";
+import {deleteUserModal} from "./deleteUserModal";
 
 // создаем внутренние компоненты для компоненты-страницы CreatePage
 const functionsBlockComponents = [
-    new Button({
-        text: 'Профиль',
-        class: 'chats-profile-btn',
-        eventData: {
-            name: 'click',
-            callback: () => {
-                location.assign('../profile/profile.html')
-            }
-        }
+    new Block({
+        class: 'chats-buttons-block',
+        content: [
+            new Button({
+                class: 'messenger-button_no-background chats-add-chat-btn',
+                text: 'Добавить чат',
+                eventData: {
+                    name: 'click',
+                    callback: () => {
+                        addChatModal.show('flex')
+                    }
+                }
+            }),
+            new Button({
+                text: 'Профиль',
+                class: 'chats-profile-btn',
+                eventData: {
+                    name: 'click',
+                    callback: () => {
+                        new Router('.app').go(Path.PROFILE)
+                    }
+                }
+            })
+        ]
     }),
     new Input({
         inputName: 'search',
         placeholder: 'Поиск',
         type: 'text',
         class: 'chats-search-input'
-    })
-]
-
-const chatItemList = [
-    new Chat({
-        chatName: 'Вася',
-        messageList: messageItemList1,
-        eventData: {
-            name: 'click',
-            callback: () => {
-                messageList.setProps({
-                    messageItemList: messageItemList1
-                })
-                chatHeader.setProps({
-                    chatName: 'Вася'
-                })
-                chatsPage.setProps({
-                    chatHeader: chatHeader
-                })
-            }
-        }
-    }),
-    new Chat({
-        chatName: 'Анна',
-        unreadQuantity: 1,
-        messageList: messageItemList2,
-        eventData: {
-            name: 'click',
-            callback: () => {
-                messageList.setProps({
-                    messageItemList: messageItemList2
-                })
-                chatHeader.setProps({
-                    chatName: 'Анна'
-                })
-                chatsPage.setProps({
-                    chatHeader: chatHeader
-                })
-            }
-        }
     })
 ]
 
@@ -266,23 +105,51 @@ const footerComponents = [
     })
 ]
 
-const chatsPage = new ChatsPage({
+// сама страница чатов
+export const chats = new ChatsPage({
     functionsBlockComponents: functionsBlockComponents,
     footerComponents: footerComponents,
     chatList: new ChatList({
-        chatItemList: chatItemList
+        chatItemList: []
     }),
     messageBlockComponents: [attachPopup, actionsPopup, messageList],
-    chatHeader: new Block({ class: '', content: '' })
+    chatHeader: new Block({ class: '', content: '' }),
+    addChatModal: addChatModal,
+    deleteChatModal: deleteChatModal,
+    addUserModal: addUserModal,
+    deleteUserModal: deleteUserModal
 })
 
-attachPopup.hide()
-actionsPopup.hide()
-addUserModal.hide()
-deleteChatModal.hide()
-deleteUserModal.hide()
+const store = new Store<MessengerStore>()
 
-render(chatsPage)
-render(addUserModal)
-render(deleteChatModal)
-render(deleteUserModal)
+const generateChatItemList = () => {
+    return store.content.chatList.map((chatData) => {
+        return new Chat({
+            id: chatData.id,
+            chatName: chatData.title,
+            messageList: [],
+            eventData: {
+                name: 'click',
+                callback: () => {
+                    store.setState({ currentChatId: chatData.id })
+                    messageList.setProps({
+                        messageItemList: []
+                    })
+                    chatHeader.setProps({
+                        chatName: chatData.title
+                    })
+                    chats.setProps({
+                        chatHeader: chatHeader
+                    })
+                }
+            }
+        })
+    })
+}
+
+const updateChatItemList = (_state: MessengerStore) => {
+    chats.props.chatList.setProps({ chatItemList: generateChatItemList() })
+}
+
+// подписываем обновление списка чатов на изменение глобального стора
+store.subscribe('chatList', updateChatItemList)

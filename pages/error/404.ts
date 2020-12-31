@@ -1,8 +1,9 @@
-import render from '../../utils/renderDom.js'
-import { ErrorPage } from './ErrorPage.js'
-import Button from '../../components/Button.js'
+import { ErrorPage } from '../../components/pages/errorPage/ErrorPage'
+import Button from '../../components/button/Button'
+import Path from '../../constants/Path'
+import Router from '../../utils/router/Router'
 
-render(new ErrorPage({
+export const notFoundPage = new ErrorPage({
     errorNumber: '404',
     pageText: 'Страница не найдена',
     button: new Button(
@@ -12,9 +13,9 @@ render(new ErrorPage({
             eventData: {
                 name: 'click',
                 callback: () => {
-                    location.assign('../chats/chats.html')
+                    new Router('.app').go(Path.CHATS)
                 }
             }
         }
     )
-}))
+})

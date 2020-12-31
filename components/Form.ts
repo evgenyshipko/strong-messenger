@@ -1,10 +1,10 @@
-import Component from '../utils/Component.js'
-import FormValidator from '../utils/validator/FormValidator.js'
-import InputValidator from '../utils/validator/InputValidator.js'
-import FormInput from './FormInput.js'
-import Button from './Button.js'
+import Component from '../utils/Component'
+import FormValidator from '../utils/validator/FormValidator'
+import InputValidator from '../utils/validator/InputValidator'
+import FormInput from './formInput/FormInput'
+import Button from './button/Button'
 
-/* global HTMLFormElement, HTMLInputElement */
+/* global HTMLFormElement, HTMLInputElement, FormData, Event */
 
 interface FormProps {
     class: string,
@@ -13,20 +13,10 @@ interface FormProps {
 }
 
 class Form extends Component<FormProps> {
-    constructor(props: FormProps) {
-        super(props)
-    }
-
-    addValidator() {
+    addValidator(onValidationSuccess?: (formData: FormData) => any) {
         const nodeList = this.getContent()
         if (nodeList) {
             const form = nodeList[0] as HTMLFormElement
-            const handleFormValidation = (e: any) => {
-                e.preventDefault()
-                new FormValidator(form).validate()
-            }
-            form.addEventListener('submit', handleFormValidation)
-
             const inputList = form.getElementsByTagName('input')
             for (const input of inputList) {
                 const inputValidator = new InputValidator(input)
@@ -37,6 +27,13 @@ class Form extends Component<FormProps> {
                     inputValidator.disableMessage()
                 })
             }
+            const handleFormValidation = (e: Event) => {
+                e.preventDefault()
+                if (new FormValidator(form).validate() && onValidationSuccess) {
+                    onValidationSuccess(new FormData(form))
+                }
+            }
+            form.addEventListener('submit', handleFormValidation)
         }
     }
 

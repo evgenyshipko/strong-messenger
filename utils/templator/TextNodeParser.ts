@@ -1,4 +1,4 @@
-import TextNode from './TextNode.js'
+import TextNode from './TextNode'
 import { Nullable } from '../../types/Types'
 
 interface TextNodeData {
@@ -15,7 +15,7 @@ class TextNodeParser {
 
     findAllTextNodes(): TextNode[] {
         let template = this._template
-        const commonArr = []
+        const textNodeArr = []
         let endIndex: Nullable<Number> = 0
         let previousResult: Nullable<TextNode> = new TextNode('', '', undefined, undefined)
         while (previousResult !== null) {
@@ -25,14 +25,22 @@ class TextNodeParser {
             const executionResult = this._findTextNode(template)
             endIndex = executionResult.endIndex
             previousResult = executionResult.result
-            if (executionResult.result !== null) {
-                commonArr.push(executionResult.result)
+            if (executionResult.result !== null && this._isAvailableTag(executionResult.result.tagName)) {
+                textNodeArr.push(executionResult.result)
             }
         }
-        if (commonArr.length === 0) {
-            throw new Error('text todes not found, check your template')
+        if (textNodeArr.length === 0) {
+            throw new Error('text nodes not found, check your template')
         }
-        return commonArr
+        return textNodeArr
+    }
+
+    _isAvailableTag(tagName: string) {
+        // запрещены script, style теги (санитайзинг XSS)
+        const availableTagNames = ['div', 'button', 'input', 'span',
+            'img', 'label', 'h1', 'h2', 'h3', 'h4',
+            'h5', 'h6', 'i', 'form', 'datalist', 'option', 'li', 'ul', 'p']
+        return availableTagNames.includes(tagName)
     }
 
     _findTextNode(template: string): TextNodeData {
@@ -45,19 +53,21 @@ class TextNodeParser {
 
     // генерируем TextNode по самозакрывающемуся тэгу (например, <input />)
     _findTextNodeInSelfClosingTag(template: string): TextNodeData {
-        const openingTagObject = (/<(\w+)\b[^>]*\/?>/g).exec(template)
-        // console.log('=== _findTextNodeInSelfClosingTag ===')
-        if (openingTagObject !== null) {
-            const openingTag = openingTagObject[0]
-            const openingTagName = openingTagObject[1]
+        const SELF_CLOSING_TAG_REGEXP = /<(\w+)\b[^>]*\/>/g
+        const selfClosingTagObject = SELF_CLOSING_TAG_REGEXP.exec(template)
+        if (selfClosingTagObject !== null) {
+            const TAG_INDEX = 0
+            const TAG_NAME_INDEX = 1
+            const tag = selfClosingTagObject[TAG_INDEX]
+            const tagName = selfClosingTagObject[TAG_NAME_INDEX]
             return {
                 result: new TextNode(
-                    openingTag,
-                    openingTagName,
+                    tag,
+                    tagName,
                     undefined,
                     undefined
                 ),
-                endIndex: openingTag.length
+                endIndex: tag.length
             }
         }
         return { result: null, endIndex: null }
@@ -65,13 +75,16 @@ class TextNodeParser {
 
     // генерируем TextNode по тэгу, который закрывается и открывается (например, <div></div>)
     _findTextNodeInUsualTag(template: string): TextNodeData {
-        const openingTagObject = (/<(\w+)\b[^>]*>/g).exec(template)
+        const USUAL_TAG_REGEXP = /<(\w+)\b[^>]*>/g
+        const openingTagObject = USUAL_TAG_REGEXP.exec(template)
         if (openingTagObject == null) {
             return { result: null, endIndex: null }
         }
+        const TAG_INDEX = 0
+        const TAG_NAME_INDEX = 1
         const startIndex = openingTagObject.index
-        const openingTag = openingTagObject[0]
-        const openingTagName = openingTagObject[1]
+        const openingTag = openingTagObject[TAG_INDEX]
+        const openingTagName = openingTagObject[TAG_NAME_INDEX]
 
         const TAG_REGEXP = new RegExp(`<[/]?(${openingTagName})+\\b[^>]*>`, 'g')
 
@@ -82,7 +95,8 @@ class TextNodeParser {
 
         // поиск закрывающего тэга на том же уровне вложенности, что и открывающий
         while ((result = TAG_REGEXP.exec(template))) {
-            const tag = result[0]
+            const TAG_INDEX = 0
+            const tag = result[TAG_INDEX]
             if (this._isOpeningTag(tag)) {
                 counter++
             } else if (this._isClosingTag(tag) && counter > 0) {
@@ -101,7 +115,8 @@ class TextNodeParser {
     }
 
     _isStartsWithSelfClosingTag(template: string) {
-        const result = (/<(\w+)\b[^>]*\/>/g).exec(template.trim())
+        const SELF_CLOSING_TAG_REGEXP = /<(\w+)\b[^>]*\/>/g
+        const result = SELF_CLOSING_TAG_REGEXP.exec(template.trim())
         return !!result && result.index === 0
     }
 

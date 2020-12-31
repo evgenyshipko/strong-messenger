@@ -1,4 +1,4 @@
-import Component from '../utils/Component.js'
+import Component from '../utils/Component'
 
 interface BlockProps {
     class: string,
@@ -6,10 +6,6 @@ interface BlockProps {
 }
 
 class Block extends Component<BlockProps> {
-    constructor(props: BlockProps) {
-        super(props)
-    }
-
     template(): string {
         return `<div class={{class}}>{{content}}</div>`
     }
