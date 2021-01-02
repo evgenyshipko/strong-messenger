@@ -14,7 +14,7 @@ export const actionsPopup = new Block({
             eventData: {
                 name: 'click',
                 callback: () => {
-                    addUserModal.show('flex')
+                    addUserModal.show()
                 }
             }
         }),
@@ -25,7 +25,7 @@ export const actionsPopup = new Block({
             eventData: {
                 name: 'click',
                 callback: () => {
-                    deleteUserModal.show('flex')
+                    deleteUserModal.show()
                 }
             }
         }),
@@ -36,7 +36,7 @@ export const actionsPopup = new Block({
             eventData: {
                 name: 'click',
                 callback: () => {
-                    deleteChatModal.show('flex')
+                    deleteChatModal.show()
                 }
             }
         })

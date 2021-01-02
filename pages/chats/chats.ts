@@ -28,7 +28,7 @@ const functionsBlockComponents = [
                 eventData: {
                     name: 'click',
                     callback: () => {
-                        addChatModal.show('flex')
+                        addChatModal.show()
                     }
                 }
             }),
@@ -60,14 +60,7 @@ const chatHeader = new ChatHeader({
         eventData: {
             name: 'click',
             callback: () => {
-                const content = actionsPopup.getContent()
-                if (content && content[0]) {
-                    if (content[0].style.display === 'none') {
-                        actionsPopup.show('flex')
-                    } else {
-                        actionsPopup.hide()
-                    }
-                }
+                actionsPopup.toggle()
             }
         }
     })
@@ -83,14 +76,7 @@ const footerComponents = [
         eventData: {
             name: 'click',
             callback: () => {
-                const content = attachPopup.getContent()
-                if (content && content[0]) {
-                    if (content[0].style.display === 'none') {
-                        attachPopup.show('flex')
-                    } else {
-                        attachPopup.hide()
-                    }
-                }
+                attachPopup.toggle()
             }
         }
     }),

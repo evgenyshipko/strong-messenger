@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
-import Component from '../../utils/Component'
+import Component from '../../utils/component/Component'
 
 /* global Event */
 
@@ -61,18 +61,17 @@ describe('Component', function () {
         assert.notEqual(content, null)
         assert.notEqual(content, undefined)
         content?.forEach((element) => {
-            assert.equal(element.style.display, 'none')
+            assert.equal(element.classList.contains('hidden'), true)
         })
     })
     it('show (устанавливает property display)', function () {
         const testComponent = getTestComponent()
-        const display = 'flex'
-        testComponent.show(display)
+        testComponent.show()
         const content = testComponent.getContent()
         assert.notEqual(content, null)
         assert.notEqual(content, undefined)
         content?.forEach((element) => {
-            assert.equal(element.style.display, display)
+            assert.equal(element.classList.contains('hidden'), false)
         })
     })
     it('componentDidUpdate (можем переопределить в наследнике)', function () {

@@ -1,5 +1,5 @@
 import Route from './Route'
-import Component from '../Component'
+import Component from '../component/Component'
 import { Nullable } from '../../types/Types'
 
 /* global History, Event, Window */
@@ -44,11 +44,10 @@ class Router {
     _onRoute(pathname: string) {
         let route = this._getRoute(pathname)
         if (!route) {
-            if (this._notFoundPage) {
-                route = new Route(pathname, this._notFoundPage, this._rootQuery)
-            } else {
+            if (!this._notFoundPage) {
                 return
             }
+            route = new Route(pathname, this._notFoundPage, this._rootQuery)
         }
         if (this._currentRoute && this._currentRoute !== route) {
             this._currentRoute.leave()

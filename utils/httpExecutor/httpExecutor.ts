@@ -33,7 +33,7 @@ class HTTPExecutor {
         if (optionsGet.data) {
             url = url + queryStringify(optionsGet.data)
         }
-        const options = { ...optionsGet, data: undefined } as Options
+        const options = { ...optionsGet } as Options
         return this.request(url, { ...options, method: Method.GET }, options.timeout)
     };
 
@@ -69,14 +69,14 @@ class HTTPExecutor {
                 })
             }
 
-            const rejectFunc = function(this: XMLHttpRequest, _ev?: ProgressEvent) {
+            const rejectFunc = (_ev?: ProgressEvent) => {
                 reject({
-                    status: this.status,
-                    response: this.response,
-                    responseText: this.responseText,
-                    statusText: this.statusText
+                    status: xhr.status,
+                    response: xhr.response,
+                    responseText: xhr.responseText,
+                    statusText: xhr.statusText
                 } as ErrorResponse)
-            }.bind(xhr)
+            }
 
             xhr.onload = function() {
                 if (xhr.status >= 200 && xhr.status < 300) {

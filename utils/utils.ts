@@ -60,7 +60,7 @@ export function isEqual(lhs: PlainObject | unknown[], rhs: PlainObject | unknown
                 continue
             }
             return false
-        } else if (Number.isNaN(value) && Number.isNaN(rightValue)){
+        } else if (Number.isNaN(value) && Number.isNaN(rightValue)) {
             continue
         }
         if (value !== rightValue) {

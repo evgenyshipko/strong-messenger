@@ -1,7 +1,7 @@
-import { EventManager } from './EventManager'
-import { Nullable } from '../types/Types'
-import Templator from './templator/Templator'
-import { isEqual, isObject } from './utils'
+import {EventManager} from '../EventManager'
+import {Nullable} from '../../types/Types'
+import Templator from '../templator/Templator'
+import {isEqual, isObject} from '../utils'
 
 /* global HTMLElement, EventListenerOrEventListenerObject */
 
@@ -22,6 +22,8 @@ class Component<T> {
     eventManager: EventManager
     _elements: HTMLElement[] = []
     _templator: Templator
+
+    hiddenClass = 'hidden'
 
     constructor(props: T) {
         this.props = this._makePropsProxy(props)
@@ -135,18 +137,29 @@ class Component<T> {
         })
     }
 
-    show(display: 'flex' | 'block'): void {
+    show(): void {
         const contentArr = this.getContent()
         contentArr?.forEach((node) => {
-            node.style.display = display
+            node.classList.remove(this.hiddenClass)
         })
     }
 
     hide(): void {
         const contentArr = this.getContent()
         contentArr?.forEach((node) => {
-            node.style.display = 'none'
+            node.classList.add(this.hiddenClass)
         })
+    }
+
+    toggle(): void {
+        const content = this.getContent()
+        if (content && content[0]) {
+            if (content[0].classList.contains(this.hiddenClass)) {
+                this.show()
+            } else {
+                this.hide()
+            }
+        }
     }
 }
 
