@@ -1,4 +1,4 @@
-import Component from '../utils/Component'
+import Component from '../utils/component/Component'
 import { EventData } from '../types/Types'
 
 export interface InputProps {

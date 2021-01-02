@@ -12,9 +12,7 @@ class Templator {
 
     compile(context: Context): HTMLElement[] {
         const textNodes = new TextNodeParser(this._template).findAllTextNodes()
-        return textNodes.map((textNode) => {
-            return textNode.toHTMLElement(context)
-        })
+        return textNodes.map(textNode => textNode.toHTMLElement(context))
     }
 }
 

@@ -8,6 +8,7 @@ interface TextNodeData {
 
 class TextNodeParser {
     _template: string
+    static SELF_CLOSING_TAG_REGEXP = /<(\w+)\b[^>]*\/>/g
 
     constructor(template: string) {
         this._template = template
@@ -63,9 +64,7 @@ class TextNodeParser {
             return {
                 result: new TextNode(
                     tag,
-                    tagName,
-                    undefined,
-                    undefined
+                    tagName
                 ),
                 endIndex: tag.length
             }
@@ -139,17 +138,15 @@ class TextNodeParser {
             return new TextNode(
                 openingTag,
                 tagName,
-                new TextNodeParser(entrails).findAllTextNodes(),
-                undefined
-            )
-        } else {
-            return new TextNode(
-                openingTag,
-                tagName,
-                undefined,
-                entrails
+                new TextNodeParser(entrails).findAllTextNodes()
             )
         }
+        return new TextNode(
+            openingTag,
+            tagName,
+            undefined,
+            entrails
+        )
     }
 }
 
