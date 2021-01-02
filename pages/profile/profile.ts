@@ -157,7 +157,7 @@ export const profile = new ProfilePage({
         eventData: {
             name: 'click',
             callback: () => {
-                uploadAvatarModal.show('flex')
+                uploadAvatarModal.show()
             }
         },
         imageLink: ''

@@ -1,4 +1,4 @@
-import Component from '../utils/Component'
+import Component from '../utils/component/Component'
 import FormValidator from '../utils/validator/FormValidator'
 import InputValidator from '../utils/validator/InputValidator'
 import FormInput from './formInput/FormInput'

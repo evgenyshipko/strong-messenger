@@ -21,12 +21,11 @@ class Store<T extends Record<string, unknown>> {
     }
 
     private makeStateProxy(state: any) {
-        const self = this
         return new Proxy((state), {
-            set: function(state, propertyName, value) {
+            set: (state, propertyName, value) => {
                 if (typeof propertyName !== 'symbol') {
                     state[propertyName] = value
-                    self.dispatch(propertyName, state)
+                    this.dispatch(propertyName, state)
                 }
                 return true
             }
@@ -55,9 +54,7 @@ class Store<T extends Record<string, unknown>> {
 
     setState(value: Partial<T>) {
         Object.keys(value).forEach((key) => {
-            // ?ВОПРОС? я замучался с этим случаем, если подскажите - буду благодарен
-            // @ts-ignore
-            this.state[key] = value[key]
+            (this.state as Record<string, unknown>)[key] = value[key]
         })
     }
 }

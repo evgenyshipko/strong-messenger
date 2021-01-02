@@ -1,4 +1,4 @@
-import Component from '../../utils/Component'
+import Component from '../../utils/component/Component'
 import Option from './Option'
 import { EventData } from '../../types/Types'
 

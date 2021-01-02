@@ -1,4 +1,4 @@
-import Component from './Component'
+import Component from './component/Component'
 import { Context } from '../types/Types'
 /* global HTMLElement */
 
