@@ -13,9 +13,12 @@ import { MessengerStore } from '../../types/Types'
 import { attachPopup } from './attachPopup'
 import { actionsPopup } from './actionsPopup'
 import { addChatModal } from './addChatModal'
-import {deleteChatModal} from "./deleteChatModal";
-import {addUserModal} from "./addUserModal";
-import {deleteUserModal} from "./deleteUserModal";
+import { deleteChatModal } from './deleteChatModal'
+import { addUserModal } from './addUserModal'
+import { deleteUserModal } from './deleteUserModal'
+import MessageDriver from '../../utils/MessageDriver'
+
+/* global HTMLInputElement, KeyboardEvent */
 
 // создаем внутренние компоненты для компоненты-страницы CreatePage
 const functionsBlockComponents = [
@@ -70,6 +73,26 @@ const messageList = new MessageList({
     messageItemList: []
 })
 
+const chatsFooterInputClass = 'chats-footer-input'
+
+const sendMessage = () => {
+    const inputEntrails = footerComponents.find((component) => {
+        return component.props.class === chatsFooterInputClass
+    })?.getContent()
+    if (inputEntrails) {
+        const input = inputEntrails[0] as HTMLInputElement
+        const store = new Store<MessengerStore>()
+        const messageDriver = store.content.chatList.find((chatData) => {
+            return chatData.id === store.content.currentChatId
+        })?.messageDriver
+        if (messageDriver && input.value) {
+            messageDriver.send(input.value)
+            messageDriver.getMessages()
+            input.value = ''
+        }
+    }
+}
+
 const footerComponents = [
     new Button({
         class: 'chats-footer-attach-btn',
@@ -83,11 +106,25 @@ const footerComponents = [
     new Input({
         type: 'text',
         inputName: 'send-message',
-        class: 'chats-footer-input',
-        placeholder: 'Сообщение'
+        class: chatsFooterInputClass,
+        placeholder: 'Сообщение',
+        eventData: {
+            name: 'keyup',
+            callback: (e:KeyboardEvent) => {
+                if (e.code === 'Enter') {
+                    sendMessage()
+                }
+            }
+        }
     }),
     new Button({
-        class: 'chats-footer-send-btn'
+        class: 'chats-footer-send-btn',
+        eventData: {
+            name: 'click',
+            callback: () => {
+                sendMessage()
+            }
+        }
     })
 ]
 

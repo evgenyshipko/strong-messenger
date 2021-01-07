@@ -50,12 +50,11 @@ class ChatsApi {
             .catch(handleErrorResponse)
     }
 
-    updateChatsList() {
-        new HTTPExecutor()
+    getChatsList() {
+        return new HTTPExecutor()
             .get(Url.generate(ApiPath.CHATS), { credentials: true })
             .then((res) => {
-                const chatList = JSON.parse(res.response) as ChatData[]
-                new Store<MessengerStore>().setState({ chatList: chatList })
+                return JSON.parse(res.response) as ChatData[]
             })
             .catch(handleErrorResponse)
     }
@@ -86,6 +85,17 @@ class ChatsApi {
             })
             .then((_res) => {
                 this.updateChatUsers(chatId)
+            })
+            .catch(handleErrorResponse)
+    }
+
+    getToken(chatId: number) {
+        return new HTTPExecutor()
+            .post(`${Url.generate(ApiPath.CHATS_TOKEN)}/${chatId}`, {
+                credentials: true
+            })
+            .then((res) => {
+                return (JSON.parse(res.response) as {'token': string}).token
             })
             .catch(handleErrorResponse)
     }
