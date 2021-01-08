@@ -3,7 +3,7 @@ import Url, {ApiPath} from '../../constants/Url'
 import {handleErrorResponse} from '../../utils/utils'
 import Router from '../../utils/router/Router'
 import Path from '../../constants/Path'
-import AuthApi from '../../api/auth.api'
+import CommonApi from '../../api/common.api'
 
 /* global FormData */
 
@@ -24,9 +24,10 @@ class SigninApi {
                     headers: { 'Content-Type': 'application/json' }
                 })
             .then((_res) => {
-                new AuthApi().updateUserData().then(() => {
-                    new Router('.app').go(Path.CHATS)
-                })
+                new CommonApi().updateInitialData()
+                    .then(() => {
+                        new Router('.app').go(Path.CHATS)
+                    })
             })
             .catch(handleErrorResponse)
     }

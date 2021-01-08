@@ -1,6 +1,8 @@
 
 /* global EventListenerOrEventListenerObject */
 
+import MessageDriver from "../utils/MessageDriver";
+
 export type Nullable<T> = T | null
 
 export type Context = Record<string, any>
@@ -27,10 +29,24 @@ export interface ChatData {
     avatar: string
 }
 
+export interface ChatDataExtended extends ChatData{
+    messageDriver: MessageDriver,
+    userList: UserProps[]
+}
+
 export interface MessengerStore extends Record<string, unknown>{
     currentChatId?: number,
-    currentChatUsers?: UserProps[],
     userProps: UserProps,
     isLogged: boolean,
-    chatList: ChatData[]
+    chatList: ChatDataExtended[]
 }
+
+export type MessageData = {
+    id: number,
+    user_id: number,
+    chat_id: number,
+    time: string,
+    content: string
+}
+
+export type MessageDataExcluded = Exclude<MessageData & {userId: number}, 'chat_id' | 'user_id'>

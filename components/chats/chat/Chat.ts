@@ -15,8 +15,8 @@ class Chat extends Component<ChatItemProps> {
     private getMessage() {
         const lastMessage = this.props.messageList[this.props.messageList.length - 1]
         if (lastMessage) {
-            const youIndicator = lastMessage.props.isIncoming ? 'Вы: ' : ''
-            return `${youIndicator}${lastMessage.props.message}`
+            const youIndicator = lastMessage.isIncoming() ? 'Вы: ' : ''
+            return `${youIndicator}${lastMessage.props.content}`
         }
         return ''
     }

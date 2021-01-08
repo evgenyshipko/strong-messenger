@@ -6,6 +6,10 @@ interface MessageListProps {
 }
 
 class MessageList extends Component<MessageListProps> {
+    componentDidUpdate(_oldProps: MessageListProps, _newProps: MessageListProps) {
+        return true
+    }
+
     template(): string {
         return `<ul class="message-list">{{messageItemList}}</ul>`
     }

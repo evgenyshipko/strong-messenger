@@ -2,7 +2,6 @@ import HTTPExecutor from '../utils/httpExecutor/httpExecutor'
 import Url, {ApiPath} from '../constants/Url'
 import Store from '../utils/Store'
 import {MessengerStore, UserProps} from '../types/Types'
-import ChatsApi from '../pages/chats/chats.api'
 import {handleErrorResponse} from '../utils/utils'
 
 class AuthApi {
@@ -10,8 +9,8 @@ class AuthApi {
         return new HTTPExecutor()
             .get(Url.generate(ApiPath.AUTH_USER), { credentials: true })
             .then((res) => {
-                new Store<MessengerStore>().setState({ userProps: JSON.parse(res.response) as UserProps, isLogged: true })
-                new ChatsApi().updateChatsList()
+                const store = new Store<MessengerStore>()
+                store.setState({ userProps: JSON.parse(res.response) as UserProps, isLogged: true })
             })
             .catch(handleErrorResponse)
     }

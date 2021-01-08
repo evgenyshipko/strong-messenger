@@ -13,9 +13,11 @@ import { MessengerStore } from '../../types/Types'
 import { attachPopup } from './attachPopup'
 import { actionsPopup } from './actionsPopup'
 import { addChatModal } from './addChatModal'
-import {deleteChatModal} from "./deleteChatModal";
-import {addUserModal} from "./addUserModal";
-import {deleteUserModal} from "./deleteUserModal";
+import { deleteChatModal } from './deleteChatModal'
+import { addUserModal } from './addUserModal'
+import { deleteUserModal } from './deleteUserModal'
+
+/* global HTMLInputElement, KeyboardEvent */
 
 // создаем внутренние компоненты для компоненты-страницы CreatePage
 const functionsBlockComponents = [
@@ -66,9 +68,28 @@ const chatHeader = new ChatHeader({
     })
 })
 
-const messageList = new MessageList({
+export const messageListComponent = new MessageList({
     messageItemList: []
 })
+
+const chatsFooterInputClass = 'chats-footer-input'
+
+const sendMessage = () => {
+    const inputEntrails = footerComponents.find((component) => {
+        return component.props.class === chatsFooterInputClass
+    })?.getContent()
+    if (inputEntrails) {
+        const input = inputEntrails[0] as HTMLInputElement
+        const store = new Store<MessengerStore>()
+        const messageDriver = store.content.chatList.find((chatData) => {
+            return chatData.id === store.content.currentChatId
+        })?.messageDriver
+        if (messageDriver && input.value) {
+            messageDriver.send(input.value)
+            input.value = ''
+        }
+    }
+}
 
 const footerComponents = [
     new Button({
@@ -83,11 +104,25 @@ const footerComponents = [
     new Input({
         type: 'text',
         inputName: 'send-message',
-        class: 'chats-footer-input',
-        placeholder: 'Сообщение'
+        class: chatsFooterInputClass,
+        placeholder: 'Сообщение',
+        eventData: {
+            name: 'keyup',
+            callback: (e:KeyboardEvent) => {
+                if (e.code === 'Enter') {
+                    sendMessage()
+                }
+            }
+        }
     }),
     new Button({
-        class: 'chats-footer-send-btn'
+        class: 'chats-footer-send-btn',
+        eventData: {
+            name: 'click',
+            callback: () => {
+                sendMessage()
+            }
+        }
     })
 ]
 
@@ -98,7 +133,7 @@ export const chats = new ChatsPage({
     chatList: new ChatList({
         chatItemList: []
     }),
-    messageBlockComponents: [attachPopup, actionsPopup, messageList],
+    messageBlockComponents: [attachPopup, actionsPopup, messageListComponent],
     chatHeader: new Block({ class: '', content: '' }),
     addChatModal: addChatModal,
     deleteChatModal: deleteChatModal,
@@ -118,19 +153,28 @@ const generateChatItemList = () => {
                 name: 'click',
                 callback: () => {
                     store.setState({ currentChatId: chatData.id })
-                    messageList.setProps({
-                        messageItemList: []
-                    })
+                    chatData.messageDriver.getMessages()
+                    // messageListComponent.setProps({
+                    //     messageItemList: []
+                    // })
                     chatHeader.setProps({
                         chatName: chatData.title
                     })
                     chats.setProps({
                         chatHeader: chatHeader
                     })
+                    moveViewToBottom()
                 }
             }
         })
     })
+}
+
+export const moveViewToBottom = () => {
+    const messageBlock = chats.getContent()?.[0].getElementsByClassName('chats-message-block')?.[0]
+    if (messageBlock) {
+        messageBlock.scrollTop = messageBlock.scrollHeight
+    }
 }
 
 const updateChatItemList = (_state: MessengerStore) => {

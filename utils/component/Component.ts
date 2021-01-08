@@ -54,8 +54,8 @@ class Component<T> {
     }
 
     _isUpdateEnable(oldProps: T, newProps: T) {
-        if (isObject(oldProps) && isObject(newProps)) {
-            return !isEqual(oldProps, newProps)
+        if (isObject(oldProps) && isObject(newProps) && !isEqual(oldProps, newProps)) {
+            return true
         }
         return false
     }
@@ -65,6 +65,8 @@ class Component<T> {
         if (this.componentDidUpdate(oldProps, newProps) !== undefined) {
             isUpdateEnabled = this.componentDidUpdate(oldProps, newProps)
         } else {
+            console.log('_isUpdateEnabled')
+            console.log('this._isUpdateEnable(oldProps, newProps)', this._isUpdateEnable(oldProps, newProps))
             isUpdateEnabled = this._isUpdateEnable(oldProps, newProps)
         }
         if (isUpdateEnabled) {

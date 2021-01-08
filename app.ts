@@ -1,14 +1,14 @@
 import Router from './utils/router/Router'
-import { chats } from './pages/chats/chats'
-import { profile } from './pages/profile/profile'
+import {chats} from './pages/chats/chats'
+import {profile} from './pages/profile/profile'
 import Path from './constants/Path'
-import { signin } from './pages/signin/signin'
-import { signup } from './pages/signup/signup'
+import {signin} from './pages/signin/signin'
+import {signup} from './pages/signup/signup'
 import Store from './utils/Store'
-import { MessengerStore } from './types/Types'
-import { internalServerErrorPage } from './pages/error/500'
-import AuthApi from './api/auth.api'
-import { notFoundPage } from './pages/error/404'
+import {MessengerStore} from './types/Types'
+import {internalServerErrorPage} from './pages/error/500'
+import {notFoundPage} from './pages/error/404'
+import CommonApi from "./api/common.api";
 
 const router = new Router('.app')
     .useNotFound(notFoundPage)
@@ -28,4 +28,4 @@ store.subscribe('isLogged', (state) => {
     }
 })
 // при первой загрузке страницы проверяем - авторизованы ли мы в системе и если да - то обновляем данные пользователя
-new AuthApi().updateUserData()
+new CommonApi().updateInitialData()

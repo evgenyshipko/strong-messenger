@@ -1,10 +1,11 @@
 import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
 import Url, { ApiPath } from '../../constants/Url'
 import Store from '../../utils/Store'
-import { ChatData, MessengerStore, UserProps } from '../../types/Types'
+import { ChatData, ChatDataExtended, MessengerStore, UserProps } from '../../types/Types'
 import { handleErrorResponse } from '../../utils/utils'
 import Option from '../../components/dropdown/Option'
 import DropdownInput from '../../components/dropdown/DropdownInput'
+import MessageDriver from '../../utils/MessageDriver'
 
 class ChatsApi {
     create(title: string) {
@@ -18,11 +19,11 @@ class ChatsApi {
                         'Content-Type': 'application/json'
                     }
                 })
-            .then((res) => {
-                const response = JSON.parse(res.response)
+            .then(async (res) => {
+                const response = JSON.parse(res.response) as ChatData
                 const store = new Store<MessengerStore>()
                 const chatList = store.content.chatList
-                chatList.push({ id: response.id, title: title, avatar: '' })
+                chatList.push(await this.getExtendedChatParameters(response, store.content.userProps.id))
                 store.setState({ chatList: chatList })
             })
             .catch(handleErrorResponse)
@@ -50,14 +51,37 @@ class ChatsApi {
             .catch(handleErrorResponse)
     }
 
-    updateChatsList() {
-        new HTTPExecutor()
+    getChatsList() {
+        return new HTTPExecutor()
             .get(Url.generate(ApiPath.CHATS), { credentials: true })
             .then((res) => {
-                const chatList = JSON.parse(res.response) as ChatData[]
-                new Store<MessengerStore>().setState({ chatList: chatList })
+                return JSON.parse(res.response) as ChatData[]
             })
             .catch(handleErrorResponse)
+    }
+
+    private initExtendedChatParameters(chatList: ChatData[], currentUserId: number) {
+        return Promise.all(chatList.map(async (chatData) => {
+            return await this.getExtendedChatParameters(chatData, currentUserId)
+        }))
+    }
+
+    private async getExtendedChatParameters(chatData: ChatData, currentUserId: number) {
+        const chatId = chatData.id
+        return {
+            ...chatData,
+            messageDriver: await MessageDriver.build(currentUserId, chatId, chatData.title),
+            userList: await this.getChatUsers(chatId)
+        } as ChatDataExtended
+    }
+
+    async updateChatList() {
+        const store = new Store<MessengerStore>()
+        const chatList = await this.getChatsList()
+        if (chatList) {
+            const transformedChatList = await this.initExtendedChatParameters(chatList, store.content.userProps.id)
+            store.setState({ chatList: transformedChatList })
+        }
     }
 
     addUser(userId: number, chatId: number) {
@@ -90,16 +114,33 @@ class ChatsApi {
             .catch(handleErrorResponse)
     }
 
-    updateChatUsers(chatId: number) {
-        new HTTPExecutor()
+    token(chatId: number) {
+        return new HTTPExecutor()
+            .post(`${Url.generate(ApiPath.CHATS_TOKEN)}/${chatId}`, {
+                credentials: true
+            })
+            .then((res) => {
+                return (JSON.parse(res.response) as {'token': string}).token
+            })
+    }
+
+    getChatUsers(chatId: number) {
+        return new HTTPExecutor()
             .get(Url.getChatUsersUrl(chatId), { credentials: true })
             .then((res) => {
-                const userPropsList = JSON.parse(res.response) as UserProps[]
-                if (userPropsList && userPropsList.length > 0) {
-                    new Store<MessengerStore>().setState({ currentChatUsers: userPropsList })
-                }
+                return JSON.parse(res.response) as UserProps[]
             })
-            .catch(handleErrorResponse)
+    }
+
+    async updateChatUsers(chatId: number) {
+        const userList = await this.getChatUsers(chatId)
+        const store = new Store<MessengerStore>()
+        const chatData = store.content.chatList.find((chatData) => {
+            return chatData.id === store.content.currentChatId
+        })
+        if (chatData && userList && userList.length > 0){
+            chatData.userList = userList
+        }
     }
 
     updateSearchUserDropdownInput(login: string, dropdownInput: DropdownInput<UserProps>) {
