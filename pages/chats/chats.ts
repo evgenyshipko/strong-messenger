@@ -16,7 +16,6 @@ import { addChatModal } from './addChatModal'
 import { deleteChatModal } from './deleteChatModal'
 import { addUserModal } from './addUserModal'
 import { deleteUserModal } from './deleteUserModal'
-import MessageDriver from '../../utils/MessageDriver'
 
 /* global HTMLInputElement, KeyboardEvent */
 
@@ -69,7 +68,7 @@ const chatHeader = new ChatHeader({
     })
 })
 
-const messageList = new MessageList({
+export const messageListComponent = new MessageList({
     messageItemList: []
 })
 
@@ -87,7 +86,6 @@ const sendMessage = () => {
         })?.messageDriver
         if (messageDriver && input.value) {
             messageDriver.send(input.value)
-            messageDriver.getMessages()
             input.value = ''
         }
     }
@@ -135,7 +133,7 @@ export const chats = new ChatsPage({
     chatList: new ChatList({
         chatItemList: []
     }),
-    messageBlockComponents: [attachPopup, actionsPopup, messageList],
+    messageBlockComponents: [attachPopup, actionsPopup, messageListComponent],
     chatHeader: new Block({ class: '', content: '' }),
     addChatModal: addChatModal,
     deleteChatModal: deleteChatModal,
@@ -155,19 +153,28 @@ const generateChatItemList = () => {
                 name: 'click',
                 callback: () => {
                     store.setState({ currentChatId: chatData.id })
-                    messageList.setProps({
-                        messageItemList: []
-                    })
+                    chatData.messageDriver.getMessages()
+                    // messageListComponent.setProps({
+                    //     messageItemList: []
+                    // })
                     chatHeader.setProps({
                         chatName: chatData.title
                     })
                     chats.setProps({
                         chatHeader: chatHeader
                     })
+                    moveViewToBottom()
                 }
             }
         })
     })
+}
+
+export const moveViewToBottom = () => {
+    const messageBlock = chats.getContent()?.[0].getElementsByClassName('chats-message-block')?.[0]
+    if (messageBlock) {
+        messageBlock.scrollTop = messageBlock.scrollHeight
+    }
 }
 
 const updateChatItemList = (_state: MessengerStore) => {

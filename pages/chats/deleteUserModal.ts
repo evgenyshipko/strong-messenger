@@ -7,12 +7,14 @@ import { MessengerStore, UserProps } from '../../types/Types'
 import Option from '../../components/dropdown/Option'
 import Store from '../../utils/Store'
 import ChatsApi from './chats.api'
-import {actionsPopup} from "./actionsPopup";
+import { actionsPopup } from './actionsPopup'
 
 /* global HTMLInputElement, Event */
 
 const updateChatUsersDropdownInput = (state: MessengerStore) => {
-    const userPropsList = state.currentChatUsers
+    const userPropsList = state.chatList.find((chatData) => {
+        return chatData.id === state.currentChatId
+    })?.userList
     if (userPropsList && userPropsList.length > 0) {
         const optionList = userPropsList.filter((userProps) => {
             // отфильтровываем себя из списка юзеров на удаление
@@ -36,7 +38,7 @@ const updateChatUsers = (state: MessengerStore) => {
 const store = new Store<MessengerStore>()
 // список пользователей чата обновляем при каждом изменении currentChatId
 store.subscribe('currentChatId', updateChatUsers)
-store.subscribe('currentChatUsers', updateChatUsersDropdownInput)
+store.subscribe('currentChatId', updateChatUsersDropdownInput)
 
 const deleteUserFromChat = (_e: Event) => {
     const userProp = dropdownInput.props.options.find((option: Option<UserProps>) => {

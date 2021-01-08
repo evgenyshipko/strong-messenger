@@ -20,6 +20,7 @@ interface ChatsPageProps {
 }
 
 class ChatsPage extends Component<ChatsPageProps> {
+
     template(): string {
         return `
             <div class="chats-wrapper">
