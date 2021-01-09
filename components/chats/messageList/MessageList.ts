@@ -10,8 +10,17 @@ class MessageList extends Component<MessageListProps> {
         return true
     }
 
+    moveViewToBottom = () => {
+        const messageListWrapper = this.getContent()?.[0]
+        if (messageListWrapper) {
+            messageListWrapper.scrollTop = messageListWrapper.scrollHeight
+        }
+    }
+
     template(): string {
-        return `<ul class="message-list">{{messageItemList}}</ul>`
+        return `<div class="message-list-wrapper">
+                <ul class="message-list">{{messageItemList}}</ul>
+            </div>`
     }
 }
 

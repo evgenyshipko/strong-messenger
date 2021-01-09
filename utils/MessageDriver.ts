@@ -2,7 +2,7 @@ import ChatsApi from '../pages/chats/chats.api'
 import {isArray, isObject} from './utils'
 import {MessageData, MessageDataExcluded} from '../types/Types'
 import Message from '../components/chats/message/Message'
-import {messageListComponent, moveViewToBottom} from '../pages/chats/chats'
+import {messageListComponent } from '../pages/chats/chats'
 
 /* global WebSocket */
 
@@ -88,6 +88,7 @@ class MessageDriver {
                 })
             }).reverse()
         })
+        messageListComponent.moveViewToBottom()
     }
 
     private _addMessage(data: MessageDataExcluded) {
@@ -100,9 +101,9 @@ class MessageDriver {
             content: data.content,
             time: data.time
         }))
-        console.log('messageItemList',messageItemList)
+        console.log('messageItemList', messageItemList)
         messageListComponent.setProps({ messageItemList: messageItemList })
-        moveViewToBottom()
+        messageListComponent.moveViewToBottom()
     }
 
     private _isMessageData(obj: unknown): obj is MessageData {

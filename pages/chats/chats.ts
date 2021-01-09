@@ -154,27 +154,16 @@ const generateChatItemList = () => {
                 callback: () => {
                     store.setState({ currentChatId: chatData.id })
                     chatData.messageDriver.getMessages()
-                    // messageListComponent.setProps({
-                    //     messageItemList: []
-                    // })
                     chatHeader.setProps({
                         chatName: chatData.title
                     })
                     chats.setProps({
                         chatHeader: chatHeader
                     })
-                    moveViewToBottom()
                 }
             }
         })
     })
-}
-
-export const moveViewToBottom = () => {
-    const messageBlock = chats.getContent()?.[0].getElementsByClassName('chats-message-block')?.[0]
-    if (messageBlock) {
-        messageBlock.scrollTop = messageBlock.scrollHeight
-    }
 }
 
 const updateChatItemList = (_state: MessengerStore) => {
