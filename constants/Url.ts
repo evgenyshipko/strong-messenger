@@ -10,7 +10,8 @@ export enum ApiPath{
     USER_SEARCH='/user/search',
     CHATS='/chats',
     CHATS_USERS='/chats/users',
-    CHATS_TOKEN='/chats/token'
+    CHATS_TOKEN='/chats/token',
+    CHATS_UNREAD_MESSAGES='/chats/new'
 }
 
 class Url {

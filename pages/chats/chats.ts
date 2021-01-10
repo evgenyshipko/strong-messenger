@@ -16,6 +16,9 @@ import { addChatModal } from './addChatModal'
 import { deleteChatModal } from './deleteChatModal'
 import { addUserModal } from './addUserModal'
 import { deleteUserModal } from './deleteUserModal'
+import Message from '../../components/chats/message/Message'
+import EventController from '../../utils/EventController'
+import EventName from '../../constants/EventName'
 
 /* global HTMLInputElement, KeyboardEvent */
 
@@ -153,7 +156,8 @@ const generateChatItemList = () => {
                 name: 'click',
                 callback: () => {
                     store.setState({ currentChatId: chatData.id })
-                    chatData.messageDriver.getMessages()
+                    // апдейтим список сообщений на экране
+                    updateMessageList(chatData.id)
                     chatHeader.setProps({
                         chatName: chatData.title
                     })
@@ -172,3 +176,26 @@ const updateChatItemList = (_state: MessengerStore) => {
 
 // подписываем обновление списка чатов на изменение глобального стора
 store.subscribe('chatList', updateChatItemList)
+
+const updateMessageList = (chatId: number) => {
+    const chatData = store.content.chatList.find((chatData) => {
+        return chatData.id === chatId
+    })
+    if (chatData && chatData.messageList) {
+        messageListComponent.setProps({
+            messageItemList: chatData.messageList.map((messageData) => {
+                return new Message({
+                    id: messageData.id,
+                    userId: messageData.userId,
+                    chatId: chatId,
+                    content: messageData.content,
+                    time: messageData.time
+                })
+            }).reverse()
+        })
+        messageListComponent.moveViewToBottom()
+    }
+}
+
+const eventController = new EventController()
+eventController.subscribe(EventName.newMessageReceived, updateMessageList)

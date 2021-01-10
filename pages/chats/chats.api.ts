@@ -1,8 +1,8 @@
 import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
-import Url, { ApiPath } from '../../constants/Url'
+import Url, {ApiPath} from '../../constants/Url'
 import Store from '../../utils/Store'
-import { ChatData, ChatDataExtended, MessengerStore, UserProps } from '../../types/Types'
-import { handleErrorResponse } from '../../utils/utils'
+import {ChatData, ChatDataExtended, MessengerStore, UserProps} from '../../types/Types'
+import {handleErrorResponse} from '../../utils/utils'
 import Option from '../../components/dropdown/Option'
 import DropdownInput from '../../components/dropdown/DropdownInput'
 import MessageDriver from '../../utils/MessageDriver'
@@ -71,7 +71,8 @@ class ChatsApi {
         return {
             ...chatData,
             messageDriver: await MessageDriver.build(currentUserId, chatId, chatData.title),
-            userList: await this.getChatUsers(chatId)
+            userList: await this.getChatUsers(chatId),
+            unreadCount: await this.getUnreadMessagesCount(chatId)
         } as ChatDataExtended
     }
 
@@ -132,13 +133,22 @@ class ChatsApi {
             })
     }
 
+    getUnreadMessagesCount(chatId: number) {
+        const url = `${Url.generate(ApiPath.CHATS_UNREAD_MESSAGES)}/${chatId}`
+        return new HTTPExecutor()
+            .get(url, { credentials: true })
+            .then((res) => {
+                return (JSON.parse(res.response) as {'unread_count': number}).unread_count
+            })
+    }
+
     async updateChatUsers(chatId: number) {
         const userList = await this.getChatUsers(chatId)
         const store = new Store<MessengerStore>()
         const chatData = store.content.chatList.find((chatData) => {
             return chatData.id === store.content.currentChatId
         })
-        if (chatData && userList && userList.length > 0){
+        if (chatData && userList && userList.length > 0) {
             chatData.userList = userList
         }
     }

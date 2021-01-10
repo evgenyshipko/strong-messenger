@@ -1,8 +1,9 @@
 import ChatsApi from '../pages/chats/chats.api'
-import {isArray, isObject} from './utils'
-import {MessageData, MessageDataExcluded} from '../types/Types'
-import Message from '../components/chats/message/Message'
-import {messageListComponent } from '../pages/chats/chats'
+import { isArray, isObject } from './utils'
+import { MessageData, MessageDataExcluded, MessengerStore } from '../types/Types'
+import Store from './Store'
+import EventController from './EventController'
+import EventName from '../constants/EventName'
 
 /* global WebSocket */
 
@@ -50,6 +51,8 @@ class MessageDriver {
         const prefix = `${this.chatTitle}(${this.chatId}): `
         this.socket.addEventListener('open', () => {
             console.log(prefix + 'Соединение установлено')
+            // при открытии соединения запрашиваем последние сообщения
+            this.getMessages()
         })
         this.socket.addEventListener('close', event => {
             event.wasClean ? console.log(prefix + 'Соединение закрыто чисто') : console.log(prefix + 'Обрыв соединения')
@@ -63,6 +66,7 @@ class MessageDriver {
             const data = JSON.parse(event.data)
             if (data.type !== 'error') {
                 console.log(prefix + 'Получены данные', data)
+                // если приходит сообщение или массив сообщений, то записываем их в стор
                 if (isArray(data) && data.length > 0 && this._isMessageData(data[0])) {
                     this._updateMessageList(data as MessageData[])
                 } else if (this._isMessageDataExcluded(data)) {
@@ -76,34 +80,37 @@ class MessageDriver {
     }
 
     private _updateMessageList(data: MessageData[]) {
-        console.log('_updateMessageList')
-        messageListComponent.setProps({
-            messageItemList: data.map((messageData) => {
-                return new Message({
-                    id: messageData.id,
-                    userId: messageData.user_id,
-                    chatId: messageData.chat_id,
-                    content: messageData.content,
-                    time: messageData.time
-                })
-            }).reverse()
+        const store = new Store<MessengerStore>()
+        const chatData = store.content.chatList.find((chatData) => {
+            return chatData.id === this.chatId
         })
-        messageListComponent.moveViewToBottom()
+        if (chatData && data) {
+            chatData.messageList = data.map((chatData) => {
+                return {
+                    id: chatData.id,
+                    userId: chatData.user_id,
+                    time: chatData.time,
+                    content: chatData.content
+                } as MessageDataExcluded
+            })
+            console.log(this.chatTitle + ' _updateMessageList chatData.messageList', chatData.messageList)
+        }
     }
 
     private _addMessage(data: MessageDataExcluded) {
-        console.log('_addMessage')
-        const messageItemList = messageListComponent.props.messageItemList
-        messageItemList.push(new Message({
-            id: data.id,
-            userId: data.userId,
-            chatId: this.chatId,
-            content: data.content,
-            time: data.time
-        }))
-        console.log('messageItemList', messageItemList)
-        messageListComponent.setProps({ messageItemList: messageItemList })
-        messageListComponent.moveViewToBottom()
+        const store = new Store<MessengerStore>()
+        const chatData = store.content.chatList.find((chatData) => {
+            return chatData.id === this.chatId
+        })
+        if (chatData && data) {
+            chatData.messageList?.unshift(data)
+            console.log(this.chatTitle + '_addMessage chatData.messageList', chatData.messageList)
+        }
+        // если сообщение получено и открыт нужный чат - обновить контент окна чата
+        if (store.content.currentChatId === this.chatId) {
+            const eventController = new EventController()
+            eventController.emit(EventName.newMessageReceived, this.chatId)
+        }
     }
 
     private _isMessageData(obj: unknown): obj is MessageData {

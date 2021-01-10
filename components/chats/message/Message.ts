@@ -18,7 +18,15 @@ class Message extends Component<MessageItemProps> {
     private _getTime() {
         const timestamp = Date.parse(this.props.time)
         const date = new Date(timestamp)
-        return `${date.getHours()}:${date.getMinutes()}`
+        let hours = date.getHours().toString()
+        if (hours.length === 1) {
+            hours = `0${hours}`
+        }
+        let minutes = date.getMinutes().toString()
+        if (minutes.length === 1) {
+            minutes = `0${minutes}`
+        }
+        return `${hours}:${minutes}`
     }
 
     template(): string {

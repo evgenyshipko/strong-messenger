@@ -16,23 +16,23 @@ class Store<T extends Record<string, unknown>> {
             return Store.__instance as Store<T>
         }
         this.subscribers = {}
-        this.state = this.makeStateProxy(initialState)
+        this.state = this._makeStateProxy(initialState)
         Store.__instance = this
     }
 
-    private makeStateProxy(state: any) {
+    private _makeStateProxy(state: any) {
         return new Proxy((state), {
             set: (state, propertyName, value) => {
                 if (typeof propertyName !== 'symbol') {
                     state[propertyName] = value
-                    this.dispatch(propertyName, state)
+                    this._dispatch(propertyName, state)
                 }
                 return true
             }
         })
     }
 
-    private dispatch(propertyName: string | number, state: T) {
+    private _dispatch(propertyName: string | number, state: T) {
         if (this.subscribers[propertyName]) {
             this.subscribers[propertyName].forEach(subscriber => {
                 subscriber(state)

@@ -1,4 +1,4 @@
-import {EventManager} from '../EventManager'
+import {EventBus} from '../EventBus'
 import {Nullable} from '../../types/Types'
 import Templator from '../templator/Templator'
 import {isEqual, isObject} from '../utils'
@@ -19,7 +19,7 @@ enum Event {
 
 class Component<T> {
     props: T
-    eventManager: EventManager
+    eventManager: EventBus
     _elements: HTMLElement[] = []
     _templator: Templator
 
@@ -28,12 +28,12 @@ class Component<T> {
     constructor(props: T) {
         this.props = this._makePropsProxy(props)
         this._templator = new Templator(this._template())
-        this.eventManager = new EventManager()
+        this.eventManager = new EventBus()
         this._registerEvents(this.eventManager)
         this.eventManager.emit(Event.INIT)
     }
 
-    _registerEvents(eventManager: EventManager) {
+    _registerEvents(eventManager: EventBus) {
         eventManager.on(Event.INIT, this._init.bind(this))
         eventManager.on(Event.FLOW_CDM, this._componentDidMount.bind(this))
         eventManager.on(Event.FLOW_RENDER, this._render.bind(this))
@@ -65,8 +65,6 @@ class Component<T> {
         if (this.componentDidUpdate(oldProps, newProps) !== undefined) {
             isUpdateEnabled = this.componentDidUpdate(oldProps, newProps)
         } else {
-            console.log('_isUpdateEnabled')
-            console.log('this._isUpdateEnable(oldProps, newProps)', this._isUpdateEnable(oldProps, newProps))
             isUpdateEnabled = this._isUpdateEnable(oldProps, newProps)
         }
         if (isUpdateEnabled) {

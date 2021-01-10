@@ -29,9 +29,21 @@ export interface ChatData {
     avatar: string
 }
 
+export type MessageData = {
+    id: number,
+    'user_id': number,
+    'chat_id': number,
+    time: string,
+    content: string
+}
+
+export type MessageDataExcluded = Exclude<MessageData & {userId: number}, 'chat_id' | 'user_id'>
+
+
 export interface ChatDataExtended extends ChatData{
     messageDriver: MessageDriver,
-    userList: UserProps[]
+    userList: UserProps[],
+    messageList?: MessageDataExcluded[]
 }
 
 export interface MessengerStore extends Record<string, unknown>{
@@ -40,13 +52,3 @@ export interface MessengerStore extends Record<string, unknown>{
     isLogged: boolean,
     chatList: ChatDataExtended[]
 }
-
-export type MessageData = {
-    id: number,
-    user_id: number,
-    chat_id: number,
-    time: string,
-    content: string
-}
-
-export type MessageDataExcluded = Exclude<MessageData & {userId: number}, 'chat_id' | 'user_id'>

@@ -1,4 +1,4 @@
-export class EventManager {
+export class EventBus {
     // TODO: написать тесты
     listeners: Record<string, Function[]>
 

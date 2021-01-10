@@ -89,7 +89,6 @@ class HTTPExecutor {
             xhr.onabort = rejectFunc
             xhr.onerror = rejectFunc
             xhr.ontimeout = () => {
-                console.log('ON TIMEOUT')
                 return rejectFunc()
             }
 
