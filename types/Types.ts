@@ -43,7 +43,8 @@ export type MessageDataExcluded = Exclude<MessageData & {userId: number}, 'chat_
 export interface ChatDataExtended extends ChatData{
     messageDriver: MessageDriver,
     userList: UserProps[],
-    messageList?: MessageDataExcluded[]
+    messageList?: MessageDataExcluded[],
+    unreadCount: number
 }
 
 export interface MessengerStore extends Record<string, unknown>{

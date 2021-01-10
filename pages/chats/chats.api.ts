@@ -66,14 +66,14 @@ class ChatsApi {
         }))
     }
 
-    private async getExtendedChatParameters(chatData: ChatData, currentUserId: number) {
+    private async getExtendedChatParameters(chatData: ChatData, currentUserId: number): Promise<ChatDataExtended> {
         const chatId = chatData.id
         return {
             ...chatData,
             messageDriver: await MessageDriver.build(currentUserId, chatId, chatData.title),
             userList: await this.getChatUsers(chatId),
             unreadCount: await this.getUnreadMessagesCount(chatId)
-        } as ChatDataExtended
+        }
     }
 
     async updateChatList() {

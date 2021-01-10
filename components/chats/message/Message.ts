@@ -1,6 +1,7 @@
 import Component from '../../../utils/component/Component'
 import Store from '../../../utils/Store'
 import { MessengerStore } from '../../../types/Types'
+import { convertDateToTime } from '../../../utils/utils'
 
 interface MessageItemProps {
     id: number,
@@ -13,20 +14,6 @@ interface MessageItemProps {
 class Message extends Component<MessageItemProps> {
     isIncoming() {
         return new Store<MessengerStore>().content.userProps.id !== this.props.userId
-    }
-
-    private _getTime() {
-        const timestamp = Date.parse(this.props.time)
-        const date = new Date(timestamp)
-        let hours = date.getHours().toString()
-        if (hours.length === 1) {
-            hours = `0${hours}`
-        }
-        let minutes = date.getMinutes().toString()
-        if (minutes.length === 1) {
-            minutes = `0${minutes}`
-        }
-        return `${hours}:${minutes}`
     }
 
     template(): string {
@@ -48,7 +35,7 @@ class Message extends Component<MessageItemProps> {
                   {{content}}
                 </span>
                 <div class="message-transaction-info">
-                  <span class="message-time">${this._getTime()}</span>
+                  <span class="message-time">${convertDateToTime(this.props.time)}</span>
                 </div>
               </div>
             </li>`

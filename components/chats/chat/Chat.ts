@@ -1,37 +1,36 @@
 import Component from '../../../utils/component/Component'
-import Message from '../message/Message'
-import { EventData } from '../../../types/Types'
+import { EventData, MessageDataExcluded, MessengerStore } from '../../../types/Types'
+import Store from '../../../utils/Store'
+import { convertDateToTime } from '../../../utils/utils'
 
 interface ChatItemProps {
     id: number,
     checked?: boolean,
     chatName: string,
-    messageList: Message[],
-    unreadQuantity?: number,
+    lastMessage?: MessageDataExcluded,
+    unreadCount: number,
     eventData?: EventData
 }
 
 class Chat extends Component<ChatItemProps> {
     private getMessage() {
-        const lastMessage = this.props.messageList[this.props.messageList.length - 1]
-        if (lastMessage) {
-            const youIndicator = lastMessage.isIncoming() ? 'Вы: ' : ''
-            return `${youIndicator}${lastMessage.props.content}`
+        if (this.props.lastMessage) {
+            const youIndicator = this.props.lastMessage.userId === new Store<MessengerStore>().content.userProps.id ? 'Вы: ' : ''
+            return `${youIndicator}${this.props.lastMessage.content}`
         }
         return ''
     }
 
-    private getUnreadQuantity() {
-        if (this.props.unreadQuantity) {
-            return `<span class="chat-indicators__unread-quantity">${this.props.unreadQuantity}</span>`
+    private getUnreadCount() {
+        if (this.props.unreadCount > 0) {
+            return `<span class="chat-indicators__unread-quantity">${this.props.unreadCount}</span>`
         }
         return ''
     }
 
     private getTime() {
-        const lastMessage = this.props.messageList[this.props.messageList.length - 1]
-        if (lastMessage) {
-            return lastMessage.props.time
+        if (this.props.lastMessage) {
+            return convertDateToTime(this.props.lastMessage.time)
         }
         return ''
     }
@@ -48,7 +47,7 @@ class Chat extends Component<ChatItemProps> {
                 </div>
                 <div class="chat-indicators">
                   <span class="chat-indicators__time">${this.getTime()}</span>
-                  ${this.getUnreadQuantity()}
+                  ${this.getUnreadCount()}
                 </div>
               </div>
             </li>`

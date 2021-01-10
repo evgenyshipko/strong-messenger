@@ -150,8 +150,9 @@ const generateChatItemList = () => {
     return store.content.chatList.map((chatData) => {
         return new Chat({
             id: chatData.id,
+            unreadCount: chatData.unreadCount,
             chatName: chatData.title,
-            messageList: [],
+            lastMessage: chatData.messageList?.[0],
             eventData: {
                 name: 'click',
                 callback: () => {
@@ -171,7 +172,9 @@ const generateChatItemList = () => {
 }
 
 const updateChatItemList = (_state: MessengerStore) => {
-    chats.props.chatList.setProps({ chatItemList: generateChatItemList() })
+    const chatItemList = generateChatItemList()
+    console.log('chatItemList', chatItemList)
+    chats.props.chatList.setProps({ chatItemList: chatItemList })
 }
 
 // подписываем обновление списка чатов на изменение глобального стора

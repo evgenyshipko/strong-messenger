@@ -69,3 +69,17 @@ export function isEqual(lhs: PlainObject | unknown[], rhs: PlainObject | unknown
     }
     return true
 }
+
+export function convertDateToTime(time: string) {
+    const timestamp = Date.parse(time)
+    const date = new Date(timestamp)
+    let hours = date.getHours().toString()
+    if (hours.length === 1) {
+        hours = `0${hours}`
+    }
+    let minutes = date.getMinutes().toString()
+    if (minutes.length === 1) {
+        minutes = `0${minutes}`
+    }
+    return `${hours}:${minutes}`
+}
