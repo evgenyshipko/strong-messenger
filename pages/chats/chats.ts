@@ -20,7 +20,7 @@ import Message from '../../components/chats/message/Message'
 import EventController from '../../utils/EventController'
 import EventName from '../../constants/EventName'
 
-/* global HTMLInputElement, KeyboardEvent */
+/* global HTMLInputElement, KeyboardEvent, HTMLElement */
 
 // создаем внутренние компоненты для компоненты-страницы CreatePage
 const functionsBlockComponents = [
@@ -70,9 +70,19 @@ const chatHeader = new ChatHeader({
         }
     })
 })
+// при первом показе страницы чатов хидер - скрыт
+chatHeader.hide()
 
 export const messageListComponent = new MessageList({
-    messageItemList: []
+    messageItemList: [],
+    eventData: {
+        name: 'scroll',
+        callback: (e) => {
+            if ((e.target as HTMLElement).scrollTop === 0) {
+                console.log('scroll event', e)
+            }
+        }
+    }
 })
 
 const chatsFooterInputClass = 'chats-footer-input'
@@ -128,6 +138,10 @@ const footerComponents = [
         }
     })
 ]
+// при первом показе страницы чатов футер - скрыт
+footerComponents.forEach((component) => {
+    component.hide()
+})
 
 // сама страница чатов
 export const chats = new ChatsPage({
@@ -137,17 +151,18 @@ export const chats = new ChatsPage({
         chatItemList: []
     }),
     messageBlockComponents: [attachPopup, actionsPopup, messageListComponent],
-    chatHeader: new Block({ class: '', content: '' }),
+    chatHeader: chatHeader,
     addChatModal: addChatModal,
     deleteChatModal: deleteChatModal,
     addUserModal: addUserModal,
     deleteUserModal: deleteUserModal
 })
 
+// объявим глобальный стор, чтобы не объявлять в каждой функции (он - синглтон все равно)
 const store = new Store<MessengerStore>()
 
-const generateChatItemList = () => {
-    return store.content.chatList.map((chatData) => {
+const updateChatItemList = (_state?: MessengerStore) => {
+    const chatItemList = store.content.chatList.map((chatData) => {
         return new Chat({
             id: chatData.id,
             unreadCount: chatData.unreadCount,
@@ -159,26 +174,25 @@ const generateChatItemList = () => {
                     store.setState({ currentChatId: chatData.id })
                     // апдейтим список сообщений на экране
                     updateMessageList(chatData.id)
-                    chatHeader.setProps({
-                        chatName: chatData.title
-                    })
-                    chats.setProps({
-                        chatHeader: chatHeader
+                    // чистим кол-во непрочитанных по клику
+                    clearUnreadCount(chatData.id)
+                    chatHeader.setProps({ chatName: chatData.title })
+                    chatHeader.show()
+                    footerComponents.forEach((component) => {
+                        component.show()
                     })
                 }
             }
         })
     })
-}
-
-const updateChatItemList = (_state: MessengerStore) => {
-    const chatItemList = generateChatItemList()
-    console.log('chatItemList', chatItemList)
     chats.props.chatList.setProps({ chatItemList: chatItemList })
 }
 
-// подписываем обновление списка чатов на изменение глобального стора
-store.subscribe('chatList', updateChatItemList)
+const getChatById = (chatId: number) => {
+    return chats.props.chatList.props.chatItemList.find((chat) => {
+        return chat.props.id === chatId
+    })
+}
 
 const updateMessageList = (chatId: number) => {
     const chatData = store.content.chatList.find((chatData) => {
@@ -200,5 +214,50 @@ const updateMessageList = (chatId: number) => {
     }
 }
 
+const clearUnreadCount = (chatId: number) => {
+    const chatData = store.content.chatList.find((chatData) => {
+        return chatData.id === chatId
+    })
+    if (chatData) {
+        chatData.unreadCount = 0
+        const chat = getChatById(chatId)
+        chat?.setProps({ unreadCount: 0 })
+    }
+}
+
+const refreshLastMessage = (chatId: number) => {
+    const chatData = store.content.chatList.find((chatData) => {
+        return chatData.id === chatId
+    })
+    if (chatData) {
+        const chat = getChatById(chatId)
+        chat?.setProps({ lastMessage: chatData.messageList?.[0] })
+    }
+}
+
+const appendUnreadCount = (chatId: number) => {
+    const chatData = store.content.chatList.find((chatData) => {
+        return chatData.id === chatId
+    })
+    if (chatData) {
+        console.log('beforeUnreadCount', chatData.unreadCount)
+        chatData.unreadCount++
+        console.log('afterUnreadCount', chatData.unreadCount)
+        const chat = getChatById(chatId)
+        chat?.setProps({ unreadCount: chatData.unreadCount })
+    }
+}
+
+// подписываем обновление списка чатов на изменение глобального стора
+store.subscribe('chatList', updateChatItemList)
+
+// делаем поведение чата динамическим в зависимости от получаемых данных
 const eventController = new EventController()
-eventController.subscribe(EventName.newMessageReceived, updateMessageList)
+eventController.subscribe(EventName.refreshMessages, updateMessageList)
+eventController.subscribe(EventName.messagesLoaded, refreshLastMessage)
+eventController.subscribe(EventName.newMessageAdded, refreshLastMessage)
+eventController.subscribe(EventName.newMessageAdded, (chatId: number) => {
+    if (store.content.currentChatId !== chatId) {
+        appendUnreadCount(chatId)
+    }
+})

@@ -1,7 +1,7 @@
-import {EventBus} from '../EventBus'
-import {Nullable} from '../../types/Types'
+import { EventBus } from '../EventBus'
+import { Nullable } from '../../types/Types'
 import Templator from '../templator/Templator'
-import {isEqual, isObject} from '../utils'
+import { isEqual, isObject } from '../utils'
 
 /* global HTMLElement, EventListenerOrEventListenerObject */
 
@@ -9,7 +9,7 @@ enum Event {
     INIT = 'init',
     FLOW_CDM = 'flow:component-did-mount',
     FLOW_RENDER = 'flow:render',
-    FLOW_CDU = 'flow:component-did-update'
+    FLOW_CDU = 'flow:component-did-update',
 }
 
 /*
@@ -21,13 +21,11 @@ class Component<T> {
     props: T
     eventManager: EventBus
     _elements: HTMLElement[] = []
-    _templator: Templator
 
-    hiddenClass = 'hidden'
+    static hiddenClass = 'hidden'
 
     constructor(props: T) {
         this.props = this._makePropsProxy(props)
-        this._templator = new Templator(this._template())
         this.eventManager = new EventBus()
         this._registerEvents(this.eventManager)
         this.eventManager.emit(Event.INIT)
@@ -41,7 +39,7 @@ class Component<T> {
     }
 
     _createResources() {
-        this._elements = this._templator.compile(this.props)
+        this._elements = new Templator(this._template()).compile(this.props)
     }
 
     _init() {
@@ -73,7 +71,7 @@ class Component<T> {
     }
 
     _render() {
-        const newElements = this._templator.compile(this.props)
+        const newElements = new Templator(this._template()).compile(this.props)
         this._elements?.forEach((oldNode, index) => {
             if (oldNode) {
                 const newNode = newElements[index]
@@ -140,21 +138,21 @@ class Component<T> {
     show(): void {
         const contentArr = this.getContent()
         contentArr?.forEach((node) => {
-            node.classList.remove(this.hiddenClass)
+            node.classList.remove(Component.hiddenClass)
         })
     }
 
     hide(): void {
         const contentArr = this.getContent()
         contentArr?.forEach((node) => {
-            node.classList.add(this.hiddenClass)
+            node.classList.add(Component.hiddenClass)
         })
     }
 
     toggle(): void {
         const content = this.getContent()
         if (content && content[0]) {
-            if (content[0].classList.contains(this.hiddenClass)) {
+            if (content[0].classList.contains(Component.hiddenClass)) {
                 this.show()
             } else {
                 this.hide()

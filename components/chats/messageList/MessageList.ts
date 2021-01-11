@@ -1,8 +1,10 @@
 import Component from '../../../utils/component/Component'
 import Message from '../message/Message'
+import { EventData } from '../../../types/Types'
 
 interface MessageListProps {
-    messageItemList: Message[]
+    messageItemList: Message[],
+    eventData?: EventData
 }
 
 class MessageList extends Component<MessageListProps> {
@@ -18,7 +20,7 @@ class MessageList extends Component<MessageListProps> {
     }
 
     template(): string {
-        return `<div class="message-list-wrapper">
+        return `<div class="message-list-wrapper" @event={{eventData}}>
                 <ul class="message-list">{{messageItemList}}</ul>
             </div>`
     }

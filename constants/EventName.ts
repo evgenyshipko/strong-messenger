@@ -1,4 +1,6 @@
 const EventName = Object.freeze({
-    newMessageReceived: 'newMessageReceived'
+    newMessageAdded: 'newMessageReceived',
+    messagesLoaded: 'messagesLoaded',
+    refreshMessages: 'refreshMessages'
 })
 export default EventName

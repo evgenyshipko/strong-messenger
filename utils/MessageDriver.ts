@@ -81,7 +81,7 @@ class MessageDriver {
 
     private _updateMessageList(data: MessageData[]) {
         const store = new Store<MessengerStore>()
-        const chatData = store.content.chatList.find((chatData) => {
+        const chatData = store.content.chatList?.find((chatData) => {
             return chatData.id === this.chatId
         })
         if (chatData && data) {
@@ -93,7 +93,9 @@ class MessageDriver {
                     content: chatData.content
                 } as MessageDataExcluded
             })
-            console.log(this.chatTitle + ' _updateMessageList chatData.messageList', chatData.messageList)
+            const eventController = new EventController()
+            eventController.emit(EventName.messagesLoaded, this.chatId)
+            // console.log(this.chatTitle + ' _updateMessageList chatData.messageList', chatData.messageList)
         }
     }
 
@@ -104,13 +106,13 @@ class MessageDriver {
         })
         if (chatData && data) {
             chatData.messageList?.unshift(data)
-            console.log(this.chatTitle + '_addMessage chatData.messageList', chatData.messageList)
         }
         // если сообщение получено и открыт нужный чат - обновить контент окна чата
+        const eventController = new EventController()
         if (store.content.currentChatId === this.chatId) {
-            const eventController = new EventController()
-            eventController.emit(EventName.newMessageReceived, this.chatId)
+            eventController.emit(EventName.refreshMessages, this.chatId)
         }
+        eventController.emit(EventName.newMessageAdded, this.chatId)
     }
 
     private _isMessageData(obj: unknown): obj is MessageData {

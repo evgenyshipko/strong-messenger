@@ -66,7 +66,7 @@ class TextNode {
 
     _addEventListener(target: HTMLElement, context: Context): void {
         const availableEvents = ['DOMContentLoaded', 'click', 'focus', 'submit', 'keyup',
-            'mousemove', 'mouseup', 'mousedown', 'mouseout', 'mouseover', 'contextmenu', 'change']
+            'mousemove', 'mouseup', 'mousedown', 'mouseout', 'mouseover', 'contextmenu', 'change', 'scroll']
         const EVENT_REGEXP = /@event=\{\{(\w+)}}/gi
         const eventObj = EVENT_REGEXP.exec(this.openingTag!)
         if (eventObj) {
