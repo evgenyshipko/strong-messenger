@@ -78,8 +78,22 @@ export const messageListComponent = new MessageList({
     eventData: {
         name: 'scroll',
         callback: (e) => {
-            if ((e.target as HTMLElement).scrollTop === 0) {
-                console.log('scroll event', e)
+            const element = e.target as HTMLElement
+            const currentChatId = store.content.currentChatId
+            if (element.scrollTop === 0) {
+                // при упоре вверх - догружаем сообщения
+                const chatData = store.content.chatList.find((chatData) => {
+                    return chatData.id === currentChatId
+                })
+                if (chatData) {
+                    const lastMessage = chatData.messageList[chatData.messageList.length - 1]
+                    chatData.messageDriver.getMessages(lastMessage.id)
+                }
+            } else if (element.scrollTop === element.scrollHeight - element.clientHeight && currentChatId) {
+                // при упоре вниз - обнуляем счетчик непрочитанных
+                clearUnreadCount(currentChatId)
+            } else {
+                messageListComponent.setScrollTop(element.scrollTop)
             }
         }
     }
@@ -160,6 +174,7 @@ export const chats = new ChatsPage({
 
 // объявим глобальный стор, чтобы не объявлять в каждой функции (он - синглтон все равно)
 const store = new Store<MessengerStore>()
+const eventController = new EventController()
 
 const updateChatItemList = (_state?: MessengerStore) => {
     const chatItemList = store.content.chatList.map((chatData) => {
@@ -173,9 +188,9 @@ const updateChatItemList = (_state?: MessengerStore) => {
                 callback: () => {
                     store.setState({ currentChatId: chatData.id })
                     // апдейтим список сообщений на экране
-                    updateMessageList(chatData.id)
-                    // чистим кол-во непрочитанных по клику
-                    clearUnreadCount(chatData.id)
+                    eventController.emit(EventName.refreshMessages, chatData.id)
+                    // перемещаем ползунок вниз
+                    messageListComponent.moveViewToBottom()
                     chatHeader.setProps({ chatName: chatData.title })
                     chatHeader.show()
                     footerComponents.forEach((component) => {
@@ -199,6 +214,8 @@ const updateMessageList = (chatId: number) => {
         return chatData.id === chatId
     })
     if (chatData && chatData.messageList) {
+        const oldScrollHeight = messageListComponent.getScrollHeight()
+        const oldMessageItemListLength = messageListComponent.props.messageItemList.length
         messageListComponent.setProps({
             messageItemList: chatData.messageList.map((messageData) => {
                 return new Message({
@@ -210,7 +227,19 @@ const updateMessageList = (chatId: number) => {
                 })
             }).reverse()
         })
-        messageListComponent.moveViewToBottom()
+        const newMessageItemListLength = messageListComponent.props.messageItemList.length
+        const newScrollHeight = messageListComponent.getScrollHeight()
+        // вычисляем положение скролла
+        if (oldScrollHeight && newScrollHeight) {
+            const oldScrollTop = messageListComponent.getScrollTop()
+            // если добавилось только одно сообщение
+            if (newMessageItemListLength - oldMessageItemListLength === 1 && oldScrollTop) {
+                messageListComponent.setScrollTop(oldScrollTop)
+            } else {
+                // Вычисялем из предыдущего и текущего размеров области прокрутки
+                messageListComponent.setScrollTop(newScrollHeight - oldScrollHeight)
+            }
+        }
     }
 }
 
@@ -252,12 +281,18 @@ const appendUnreadCount = (chatId: number) => {
 store.subscribe('chatList', updateChatItemList)
 
 // делаем поведение чата динамическим в зависимости от получаемых данных
-const eventController = new EventController()
 eventController.subscribe(EventName.refreshMessages, updateMessageList)
 eventController.subscribe(EventName.messagesLoaded, refreshLastMessage)
-eventController.subscribe(EventName.newMessageAdded, refreshLastMessage)
-eventController.subscribe(EventName.newMessageAdded, (chatId: number) => {
+eventController.subscribe(EventName.newMessageAdded, (chatId: number, userId: number) => {
+    refreshLastMessage(chatId)
     if (store.content.currentChatId !== chatId) {
         appendUnreadCount(chatId)
+    } else {
+        // если сообщение отправил я - перематываю вид вниз, если отправили мне - увеличиваю счетчик непрочитанных
+        if (userId === store.content.userProps.id) {
+            messageListComponent.moveViewToBottom()
+        } else {
+            appendUnreadCount(chatId)
+        }
     }
 })

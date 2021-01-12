@@ -72,7 +72,8 @@ class ChatsApi {
             ...chatData,
             messageDriver: await MessageDriver.build(currentUserId, chatId, chatData.title),
             userList: await this.getChatUsers(chatId),
-            unreadCount: await this.getUnreadMessagesCount(chatId)
+            unreadCount: await this.getUnreadMessagesCount(chatId),
+            messageList: []
         }
     }
 

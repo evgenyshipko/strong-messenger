@@ -68,9 +68,9 @@ class MessageDriver {
                 console.log(prefix + 'Получены данные', data)
                 // если приходит сообщение или массив сообщений, то записываем их в стор
                 if (isArray(data) && data.length > 0 && this._isMessageData(data[0])) {
-                    this._updateMessageList(data as MessageData[])
+                    this._updateMessageDataList(data as MessageData[])
                 } else if (this._isMessageDataExcluded(data)) {
-                    this._addMessage(data)
+                    this._addMessageData(data)
                 }
             }
         })
@@ -79,13 +79,13 @@ class MessageDriver {
         })
     }
 
-    private _updateMessageList(data: MessageData[]) {
+    private _updateMessageDataList(data: MessageData[]) {
         const store = new Store<MessengerStore>()
         const chatData = store.content.chatList?.find((chatData) => {
             return chatData.id === this.chatId
         })
         if (chatData && data) {
-            chatData.messageList = data.map((chatData) => {
+            const messageData = data.map((chatData) => {
                 return {
                     id: chatData.id,
                     userId: chatData.user_id,
@@ -93,13 +93,17 @@ class MessageDriver {
                     content: chatData.content
                 } as MessageDataExcluded
             })
+            chatData.messageList.push(...messageData)
             const eventController = new EventController()
+            if (store.content.currentChatId === this.chatId) {
+                eventController.emit(EventName.refreshMessages, this.chatId)
+            }
             eventController.emit(EventName.messagesLoaded, this.chatId)
-            // console.log(this.chatTitle + ' _updateMessageList chatData.messageList', chatData.messageList)
+            // console.log(this.chatTitle + ' _updateMessageDataList chatData.messageList', chatData.messageList)
         }
     }
 
-    private _addMessage(data: MessageDataExcluded) {
+    private _addMessageData(data: MessageDataExcluded) {
         const store = new Store<MessengerStore>()
         const chatData = store.content.chatList.find((chatData) => {
             return chatData.id === this.chatId
@@ -112,7 +116,7 @@ class MessageDriver {
         if (store.content.currentChatId === this.chatId) {
             eventController.emit(EventName.refreshMessages, this.chatId)
         }
-        eventController.emit(EventName.newMessageAdded, this.chatId)
+        eventController.emit(EventName.newMessageAdded, this.chatId, data.userId)
     }
 
     private _isMessageData(obj: unknown): obj is MessageData {

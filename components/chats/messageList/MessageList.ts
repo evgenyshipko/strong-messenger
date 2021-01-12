@@ -8,6 +8,8 @@ interface MessageListProps {
 }
 
 class MessageList extends Component<MessageListProps> {
+    scrollTop?: number
+
     componentDidUpdate(_oldProps: MessageListProps, _newProps: MessageListProps) {
         return true
     }
@@ -15,7 +17,23 @@ class MessageList extends Component<MessageListProps> {
     moveViewToBottom = () => {
         const messageListWrapper = this.getContent()?.[0]
         if (messageListWrapper) {
-            messageListWrapper.scrollTop = messageListWrapper.scrollHeight
+            messageListWrapper.scrollTop = messageListWrapper.scrollHeight - messageListWrapper.clientHeight
+        }
+    }
+
+    getScrollHeight = () => {
+        return this.getContent()?.[0].scrollHeight
+    }
+
+    getScrollTop = () => {
+        return this.scrollTop ? this.scrollTop : this.getContent()?.[0].scrollTop
+    }
+
+    setScrollTop(scrollTop: number) {
+        this.scrollTop = scrollTop
+        const messageListWrapper = this.getContent()?.[0]
+        if (messageListWrapper) {
+            messageListWrapper.scrollTop = scrollTop
         }
     }
 
