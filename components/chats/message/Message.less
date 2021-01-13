@@ -5,8 +5,8 @@
 }
 
 .message-mixin{
-  padding: 5px;
-  display: inline-flex;
+  padding: 2px;
+  //display: inline-flex;
   line-height: 30px;
   border-radius: 10px;
 }
@@ -27,26 +27,29 @@
   .global-font();
   font-size: 13px;
   display: block;
+  color: @grey-dark-color;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .message-text{
   .global-font();
   font-size: 13px;
   line-height: 18px;
-  margin-left: 10px;
+  margin-left: 15px;
   max-width: 300px;
   padding-bottom: 5px;
 }
 
-.message-transaction-info{
+.message-info{
   display: flex;
   flex-direction: row;
-  margin-left: 5px;
+  //margin-left: 5px;
 }
 
 .message-time{
   .global-font();
-  margin: auto 1% 1% 1%;
+  margin: auto 1% 1% 5px;
   color: @grey-color;
   font-size: 12px;
   line-height: 16px;

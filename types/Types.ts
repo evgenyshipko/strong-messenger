@@ -37,8 +37,7 @@ export type MessageData = {
     content: string
 }
 
-export type MessageDataExcluded = Exclude<MessageData & {userId: number}, 'chat_id' | 'user_id'>
-
+export type MessageDataExcluded = Exclude<MessageData, 'chat_id' | 'user_id'> & {userId: number}
 
 export interface ChatDataExtended extends ChatData{
     messageDriver: MessageDriver,

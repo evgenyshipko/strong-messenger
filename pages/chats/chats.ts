@@ -92,9 +92,9 @@ export const messageListComponent = new MessageList({
             } else if (element.scrollTop === element.scrollHeight - element.clientHeight && currentChatId) {
                 // при упоре вниз - обнуляем счетчик непрочитанных
                 clearUnreadCount(currentChatId)
-            } else {
-                messageListComponent.setScrollTop(element.scrollTop)
             }
+            // когда крутим колесом - запоминаем scrollTop
+            messageListComponent.setScrollTop(element.scrollTop)
         }
     }
 })
@@ -231,14 +231,7 @@ const updateMessageList = (chatId: number) => {
         const newScrollHeight = messageListComponent.getScrollHeight()
         // вычисляем положение скролла
         if (oldScrollHeight && newScrollHeight) {
-            const oldScrollTop = messageListComponent.getScrollTop()
-            // если добавилось только одно сообщение
-            if (newMessageItemListLength - oldMessageItemListLength === 1 && oldScrollTop) {
-                messageListComponent.setScrollTop(oldScrollTop)
-            } else {
-                // Вычисялем из предыдущего и текущего размеров области прокрутки
-                messageListComponent.setScrollTop(newScrollHeight - oldScrollHeight)
-            }
+            messageListComponent.updateScrollPosition(oldScrollHeight, newScrollHeight, newMessageItemListLength - oldMessageItemListLength)
         }
     }
 }
@@ -269,9 +262,7 @@ const appendUnreadCount = (chatId: number) => {
         return chatData.id === chatId
     })
     if (chatData) {
-        console.log('beforeUnreadCount', chatData.unreadCount)
         chatData.unreadCount++
-        console.log('afterUnreadCount', chatData.unreadCount)
         const chat = getChatById(chatId)
         chat?.setProps({ unreadCount: chatData.unreadCount })
     }

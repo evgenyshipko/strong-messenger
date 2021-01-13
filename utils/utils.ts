@@ -21,8 +21,10 @@ export const handleErrorResponse = (errorData: ErrorResponse) => {
         new Store().setState({ isLogged: false })
     } else if (errorData.status === StatusCode.INTERNAL_SERVER_ERROR) {
         new Router('.app').go(Path.INTERNAL_SERVER_ERROR)
-    } else {
+    } else if (errorData.responseText) {
         window.alert(errorData.responseText)
+    } else {
+        console.log('handleErrorResponse', errorData)
     }
 }
 

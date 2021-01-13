@@ -1,8 +1,8 @@
 import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
-import Url, {ApiPath} from '../../constants/Url'
+import Url, { ApiPath } from '../../constants/Url'
 import Store from '../../utils/Store'
-import {ChatData, ChatDataExtended, MessengerStore, UserProps} from '../../types/Types'
-import {handleErrorResponse} from '../../utils/utils'
+import { ChatData, ChatDataExtended, MessengerStore, UserProps } from '../../types/Types'
+import { handleErrorResponse } from '../../utils/utils'
 import Option from '../../components/dropdown/Option'
 import DropdownInput from '../../components/dropdown/DropdownInput'
 import MessageDriver from '../../utils/MessageDriver'
@@ -20,10 +20,12 @@ class ChatsApi {
                     }
                 })
             .then(async (res) => {
-                const response = JSON.parse(res.response) as ChatData
+                const chatId = (JSON.parse(res.response) as {id: number}).id
+                const chatData: ChatData = { id: chatId, avatar: '', title: title }
                 const store = new Store<MessengerStore>()
                 const chatList = store.content.chatList
-                chatList.push(await this.getExtendedChatParameters(response, store.content.userProps.id))
+                chatList.push(await this.getExtendedChatParameters(chatData, store.content.userProps.id))
+                console.log('create chatList', chatList)
                 store.setState({ chatList: chatList })
             })
             .catch(handleErrorResponse)
@@ -46,6 +48,7 @@ class ChatsApi {
                 const chatList = store.content.chatList.filter((chat) => {
                     return chat.id !== chatIdToDelete
                 })
+                console.log('delete chatList', chatList)
                 store.setState({ chatList: chatList })
             })
             .catch(handleErrorResponse)

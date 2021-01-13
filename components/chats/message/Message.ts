@@ -32,7 +32,7 @@ class Message extends Component<MessageItemProps> {
     }
 
     getUserNameSpan() {
-        return this.props.userId === new Store<MessengerStore>().content.userProps.id ? '' : `<span class="message-username">${this.getUserName()}</span><br />`
+        return this.props.userId === new Store<MessengerStore>().content.userProps.id ? '' : `<span class="message-username">${this.getUserName()}</span>`
     }
 
     template(): string {
@@ -51,10 +51,8 @@ class Message extends Component<MessageItemProps> {
         return `<li class="message-list-item">
               <div class="message-${direction}">
                 ${this.getUserNameSpan()}
-                <span class="message-text">
-                  {{content}}
-                </span>
-                <div class="message-transaction-info">
+                <div class="message-info">
+                  <span class="message-text">{{content}}</span>
                   <span class="message-time">${convertDateToTime(this.props.time)}</span>
                 </div>
               </div>

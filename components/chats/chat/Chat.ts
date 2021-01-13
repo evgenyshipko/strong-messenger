@@ -13,10 +13,28 @@ interface ChatItemProps {
 }
 
 class Chat extends Component<ChatItemProps> {
+    static store = new Store<MessengerStore>()
+
     private getMessage() {
-        if (this.props.lastMessage) {
-            const youIndicator = this.props.lastMessage.userId === new Store<MessengerStore>().content.userProps.id ? 'Вы: ' : ''
-            return `${youIndicator}${this.props.lastMessage.content}`
+        const lastMessage = this.props.lastMessage
+        if (lastMessage) {
+            const userName = lastMessage.userId === Chat.store.content.userProps.id ? 'Вы' : `${this.getUserNameById(lastMessage.userId)}`
+            const maxLength = 35
+            const messageText = lastMessage.content.length > maxLength ? lastMessage.content.substring(0, maxLength) + '...' : lastMessage.content
+            return `${userName}: ${messageText}`
+        }
+        return ''
+    }
+
+    private getUserNameById(userId: number) {
+        const chatData = Chat.store.content.chatList.find((chatData) => {
+            return chatData.id === this.props.id
+        })
+        const userProps = chatData?.userList.find((userProps) => {
+            return userProps.id === userId
+        })
+        if (userProps) {
+            return userProps.display_name ? userProps.display_name : userProps.login
         }
         return ''
     }
