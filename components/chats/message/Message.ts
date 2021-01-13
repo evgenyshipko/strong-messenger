@@ -16,6 +16,25 @@ class Message extends Component<MessageItemProps> {
         return new Store<MessengerStore>().content.userProps.id !== this.props.userId
     }
 
+    getUserName() {
+        const chat = new Store<MessengerStore>().content.chatList.find((chatData) => {
+            return chatData.id === this.props.chatId
+        })
+        if (chat) {
+            const user = chat.userList.find((userProps) => {
+                return userProps.id === this.props.userId
+            })
+            if (user) {
+                return user.display_name ? user.display_name : user.login
+            }
+        }
+        return ''
+    }
+
+    getUserNameSpan() {
+        return this.props.userId === new Store<MessengerStore>().content.userProps.id ? '' : `<span class="message-username">${this.getUserName()}</span><br />`
+    }
+
     template(): string {
         const direction = this.isIncoming() ? 'incoming' : 'outcoming'
         // return `<li class="message-list-item">
@@ -31,6 +50,7 @@ class Message extends Component<MessageItemProps> {
         //     </li>`
         return `<li class="message-list-item">
               <div class="message-${direction}">
+                ${this.getUserNameSpan()}
                 <span class="message-text">
                   {{content}}
                 </span>

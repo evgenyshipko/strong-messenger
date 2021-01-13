@@ -42,7 +42,7 @@ class Chat extends Component<ChatItemProps> {
                   <div class="chat-avatar"></div>
                 </div>
                 <div class="chat-info">
-                  <span class="chat-info__chat-name">{{chatName}}</span><br />
+                  <span class="chat-info__chat-name">{{chatName}}</span>
                   <span class="chat-info__message">${this.getMessage()}</span>
                 </div>
                 <div class="chat-indicators">

@@ -40,7 +40,7 @@ class TextNodeParser {
         // запрещены script, style теги (санитайзинг XSS)
         const availableTagNames = ['div', 'button', 'input', 'span',
             'img', 'label', 'h1', 'h2', 'h3', 'h4',
-            'h5', 'h6', 'i', 'form', 'datalist', 'option', 'li', 'ul', 'p']
+            'h5', 'h6', 'i', 'form', 'datalist', 'option', 'li', 'ul', 'p', 'br']
         return availableTagNames.includes(tagName)
     }
 
