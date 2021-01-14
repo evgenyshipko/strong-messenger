@@ -4,10 +4,10 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
-    entry: './app.ts',
+    entry: './src/app.ts',
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'messenger-yandex.bundle.js'
+        path: path.resolve(__dirname, '../dist'),
+        filename: 'bundle.js'
     },
     plugins: [
         new MiniCssExtractPlugin(),
@@ -27,7 +27,7 @@ module.exports = {
                     {
                         loader: 'ts-loader',
                         options: {
-                            configFile: path.resolve(__dirname, 'tsconfig.json')
+                            configFile: path.resolve(__dirname, '../tsconfig.json')
                         }
                     }
                 ],
@@ -56,3 +56,5 @@ module.exports = {
         ]
     }
 }
+
+console.log('PATH', path.resolve(__dirname, '../tsconfig.json'))

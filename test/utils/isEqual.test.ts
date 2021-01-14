@@ -1,6 +1,6 @@
 import { describe, it } from 'mocha'
 import { assert } from 'chai'
-import { isEqual } from '../../utils/utils'
+import { isEqual } from '../../src/utils/utils'
 
 describe('isEqual', function () {
     describe('Объекты', function () {

@@ -6,11 +6,14 @@
   "license": "",
   "author": "Evgeny Shipko",
   "scripts": {
-    "start": "webpack serve --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "start": "webpack serve --config webpack/webpack.dev.js",
+    "build": "webpack --config webpack/webpack.prod.js",
     "test": "mocha 'test/**/*.test.ts'",
+    "test:watch": "npm run test -- -w",
+    "clean": "rm -r dist/*",
     "lint:eslint": "eslint . --ext .ts --fix",
-    "lint:stylelint": "stylelint . --fix"
+    "lint:stylelint": "stylelint . --fix",
+    "server": "node server.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -62,7 +65,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm-run-all test lint:all"
+      "pre-commit": "npm-run-all test lint:*"
     }
   }
 }
