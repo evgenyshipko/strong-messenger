@@ -7,6 +7,12 @@ import MessageList from '../../chats/messageList/MessageList'
 import Block from '../../Block'
 import Modal from '../../modal/Modal'
 
+import './ActionsPopup.less'
+import './AddUserModal.less'
+import './AttachPopup.less'
+import './DeleteChatModal.less'
+import './ChatsPage.less'
+
 interface ChatsPageProps {
     functionsBlockComponents: (Button | Input)[]
     footerComponents: (Button | Input)[]
@@ -20,7 +26,6 @@ interface ChatsPageProps {
 }
 
 class ChatsPage extends Component<ChatsPageProps> {
-
     template(): string {
         return `
             <div class="chats-wrapper">

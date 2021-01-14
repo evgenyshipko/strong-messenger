@@ -10,7 +10,7 @@ interface OptionProps<T> {
 
 class Option<T> extends Component<OptionProps<T>> {
     template(): string {
-        return `<option class={{class}} @event={{eventData}} >{{label}}</option>`
+        return '<option class={{class}} @event={{eventData}} >{{label}}</option>'
     }
 }
 

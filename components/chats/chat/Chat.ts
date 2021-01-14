@@ -2,6 +2,7 @@ import Component from '../../../utils/component/Component'
 import { EventData, MessageDataExcluded, MessengerStore } from '../../../types/Types'
 import Store from '../../../utils/Store'
 import { convertDateToTime } from '../../../utils/utils'
+import './Chat.less'
 
 interface ChatItemProps {
     id: number,

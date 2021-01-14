@@ -1,9 +1,9 @@
 import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
-import Url, {ApiPath} from '../../constants/Url'
-import {handleErrorResponse} from '../../utils/utils'
-import {MessengerStore, UserProps} from '../../types/Types'
+import Url, { ApiPath } from '../../constants/Url'
+import { handleErrorResponse } from '../../utils/utils'
+import { MessengerStore, UserProps } from '../../types/Types'
 import Store from '../../utils/Store'
-import {uploadAvatarModal} from './uploadAvatarModal'
+import { uploadAvatarModal } from './uploadAvatarModal'
 
 /* global FormData */
 

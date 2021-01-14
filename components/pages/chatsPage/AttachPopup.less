@@ -1,38 +1,37 @@
 @import "../../../styles/common";
 
-.attach-popup{
+.attach-popup {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-
   width: 149px;
   height: 70px;
   background-color: @popup-color;
   border-radius: 10px;
-
   bottom: 0;
   position: absolute;
   margin-left: 3px;
   margin-bottom: 3px;
 }
 
-.attach-popup-btn{
+.attach-popup-btn {
   .button-mixin();
+
   background-color: transparent;
   font-size: 12px;
   text-align: left;
 }
 
-.attach-popup-btn:focus{
+.attach-popup-btn:focus {
   outline-width: 0;
 }
 
-.attach-popup-btn__icon{
+.attach-popup-btn__icon {
   float: left;
   width: 25px;
   height: 25px;
 }
 
-.attach-popup-btn__text{
+.attach-popup-btn__text {
   margin-left: 3%;
 }

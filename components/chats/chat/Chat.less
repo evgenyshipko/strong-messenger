@@ -1,13 +1,13 @@
 @import "../../../styles/common";
 
-.chat-list-item{
+.chat-list-item {
   margin-top: 1%;
   height: 65px;
   width: 95%;
   list-style-type: none;
 }
 
-.chat{
+.chat {
   display: flex;
   height: 100%;
   flex-direction: row;
@@ -15,13 +15,14 @@
   cursor: pointer;
 }
 
-.chat-avatar-wrapper{
+.chat-avatar-wrapper {
   .centered-flex-container-justify-center();
+
   flex-direction: row;
   width: 20%;
 }
 
-.chat-avatar{
+.chat-avatar {
   width: 40px;
   height: 40px;
   background-color: @grey-color;
@@ -29,35 +30,38 @@
   cursor: pointer;
 }
 
-.chat-info{
+.chat-info {
   width: 65%;
   margin-top: 2%;
 }
 
-.chat-info__chat-name{
+.chat-info__chat-name {
   .global-font();
+
   display: block;
   font-size: 13px;
   line-height: 18px;
   color: @black-color;
 }
 
-.chat-info__message{
+.chat-info__message {
   .global-font();
+
   font-size: 12px;
   line-height: 16px;
   color: @grey-dark-color;
 }
 
-.chat-indicators{
+.chat-indicators {
   width: 15%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.chat-indicators__time{
+.chat-indicators__time {
   .global-font();
+
   margin-left: auto;
   margin-top: 1%;
   font-size: 12px;
@@ -65,14 +69,13 @@
   color: @grey-dark-color;
 }
 
-.chat-indicators__unread-quantity{
+.chat-indicators__unread-quantity {
   .global-font();
+
   margin-left: auto;
   margin-bottom: 10%;
   margin-right: 10%;
-
   font-size: 12px;
-
   color: white;
   background-color: @gold-color;
   border-radius: 50%;

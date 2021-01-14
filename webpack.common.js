@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
     entry: './app.ts',
@@ -9,6 +10,7 @@ module.exports = {
         filename: 'messenger-yandex.bundle.js'
     },
     plugins: [
+        new MiniCssExtractPlugin(),
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             title: 'Messenger by Shipko'
@@ -34,7 +36,7 @@ module.exports = {
             {
                 test: /\.less$/,
                 use: [
-                    'style-loader',
+                    MiniCssExtractPlugin.loader,
                     'css-loader',
                     'less-loader'
                 ]

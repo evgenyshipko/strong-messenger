@@ -1,5 +1,6 @@
 import Component from '../../../utils/component/Component'
 import Button from '../../button/Button'
+import './ChatHeader.less'
 
 interface ChatHeaderProps {
     chatName: string,

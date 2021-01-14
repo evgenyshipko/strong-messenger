@@ -1,7 +1,7 @@
 
 /* global EventListenerOrEventListenerObject */
 
-import MessageDriver from "../utils/MessageDriver";
+import MessageDriver from '../utils/MessageDriver'
 
 export type Nullable<T> = T | null
 

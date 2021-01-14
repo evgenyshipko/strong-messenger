@@ -2,6 +2,7 @@ import { EventBus } from '../EventBus'
 import { Nullable } from '../../types/Types'
 import Templator from '../templator/Templator'
 import { isEqual, isObject } from '../utils'
+import './Component.less'
 
 /* global HTMLElement, EventListenerOrEventListenerObject */
 

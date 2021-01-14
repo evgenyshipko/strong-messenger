@@ -7,7 +7,7 @@ interface BlockProps {
 
 class Block extends Component<BlockProps> {
     template(): string {
-        return `<div class={{class}}>{{content}}</div>`
+        return '<div class={{class}}>{{content}}</div>'
     }
 }
 

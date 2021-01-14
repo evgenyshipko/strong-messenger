@@ -1,6 +1,7 @@
 import Component from '../../../utils/component/Component'
 import Message from '../message/Message'
 import { EventData } from '../../../types/Types'
+import './MessageList.less'
 
 interface MessageListProps {
     messageItemList: Message[],

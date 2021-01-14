@@ -1,6 +1,7 @@
 import Component from '../../../utils/component/Component'
-import Form from "../../Form";
-import Button from "../../button/Button";
+import Form from '../../Form'
+import Button from '../../button/Button'
+import './SignupPage.less'
 
 interface SignupPageProps {
     form: Form,

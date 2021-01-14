@@ -1,6 +1,7 @@
 import Component from '../../../utils/component/Component'
 import Form from '../../Form'
 import Button from '../../button/Button'
+import './SigninPage.less'
 
 interface SigninPageProps {
     form: Form,

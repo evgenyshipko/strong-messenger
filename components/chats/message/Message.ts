@@ -2,6 +2,7 @@ import Component from '../../../utils/component/Component'
 import Store from '../../../utils/Store'
 import { MessengerStore } from '../../../types/Types'
 import { convertDateToTime } from '../../../utils/utils'
+import './Message.less'
 
 interface MessageItemProps {
     id: number,

@@ -1,8 +1,8 @@
 import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
-import Url, {ApiPath} from '../../constants/Url'
+import Url, { ApiPath } from '../../constants/Url'
 import Router from '../../utils/router/Router'
 import Path from '../../constants/Path'
-import {handleErrorResponse} from '../../utils/utils'
+import { handleErrorResponse } from '../../utils/utils'
 
 class SignupApi {
     data: Record<string, unknown>

@@ -1,6 +1,6 @@
 import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
-import Url, {ApiPath} from '../../constants/Url'
-import {handleErrorResponse} from '../../utils/utils'
+import Url, { ApiPath } from '../../constants/Url'
+import { handleErrorResponse } from '../../utils/utils'
 import Router from '../../utils/router/Router'
 import Path from '../../constants/Path'
 import CommonApi from '../../api/common.api'

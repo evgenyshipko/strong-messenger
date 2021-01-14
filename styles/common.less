@@ -13,23 +13,24 @@ body {
   margin: 0;
 }
 
-.global-font{
+.global-font {
   font-family: @font-family;
   font-style: normal;
   font-weight: normal;
 }
 
-.centered-flex-container{
+.centered-flex-container {
   display: flex;
   align-items: center;
 }
 
-.centered-flex-container-justify-center{
+.centered-flex-container-justify-center {
   .centered-flex-container();
+
   justify-content: center;
 }
 
-.button-mixin{
+.button-mixin {
   border: none;
   cursor: pointer;
   font-family: @font-family;
@@ -37,57 +38,57 @@ body {
 
 // icons
 
-.icon-mixin{
+.icon-mixin {
   background-repeat: no-repeat;
   background-color: transparent;
 }
 
-.checked-message-icon{
+.checked-message-icon {
   background-image: url("../images/checked.svg");
   .icon-mixin();
 }
 
-.send-icon{
+.send-icon {
   background-image: url("../images/send.svg");
   .icon-mixin();
 }
 
-.attach-icon{
+.attach-icon {
   background-image: url("../images/attach.svg");
   .icon-mixin();
 }
 
-.more-vertical-icon{
+.more-vertical-icon {
   background-image: url("../images/more-vertical.svg");
   background-repeat: no-repeat;
 }
 
-.union-icon{
+.union-icon {
   background-image: url("../images/union.svg");
   background-repeat: no-repeat;
 }
 
-.file-icon{
+.file-icon {
   background-image: url("../images/file.svg");
   .icon-mixin();
 }
 
-.camera-icon{
+.camera-icon {
   background-image: url("../images/camera.svg");
   .icon-mixin();
 }
 
-.plus-icon{
+.plus-icon {
   background-image: url("../images/plus.svg");
   .icon-mixin();
 }
 
-.minus-icon{
+.minus-icon {
   background-image: url("../images/minus.svg");
   .icon-mixin();
 }
 
-.trash-icon{
+.trash-icon {
   background-image: url("../images/trash.svg");
   .icon-mixin();
 }

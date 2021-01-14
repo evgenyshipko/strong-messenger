@@ -1,5 +1,6 @@
 import Component from '../../../utils/component/Component'
-import Button from "../../button/Button";
+import Button from '../../button/Button'
+import './ErrorPage.less'
 
 interface ErrorPageProps {
     errorNumber: string,

@@ -1,4 +1,5 @@
 import Input from '../Input'
+import './FormInput.less'
 
 /* global HTMLFormElement, HTMLInputElement */
 

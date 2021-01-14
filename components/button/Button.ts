@@ -1,5 +1,6 @@
 import Component from '../../utils/component/Component'
 import { EventData } from '../../types/Types'
+import './Button.less'
 
 /* global HTMLElement*/
 

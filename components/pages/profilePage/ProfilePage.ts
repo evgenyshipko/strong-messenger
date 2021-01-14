@@ -3,6 +3,7 @@ import Button from '../../button/Button'
 import Form from '../../Form'
 import Avatar from '../../Avatar'
 import Modal from '../../modal/Modal'
+import './ProfilePage.less'
 
 interface ProfilePageProps {
     avatar: Avatar,

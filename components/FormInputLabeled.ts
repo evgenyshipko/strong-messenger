@@ -7,6 +7,7 @@ interface FormInputLabeledProps extends InputProps{
 }
 
 class FormInputLabeled extends FormInput {
+    // eslint-disable-next-line no-useless-constructor
     constructor(props: FormInputLabeledProps) {
         super(props)
     }

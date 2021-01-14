@@ -1,8 +1,8 @@
 import HTTPExecutor from '../utils/httpExecutor/httpExecutor'
-import Url, {ApiPath} from '../constants/Url'
+import Url, { ApiPath } from '../constants/Url'
 import Store from '../utils/Store'
-import {MessengerStore, UserProps} from '../types/Types'
-import {handleErrorResponse} from '../utils/utils'
+import { MessengerStore, UserProps } from '../types/Types'
+import { handleErrorResponse } from '../utils/utils'
 
 class AuthApi {
     updateUserData() {

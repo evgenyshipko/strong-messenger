@@ -1,6 +1,6 @@
 import Button from '../../components/button/Button'
 import Form from '../../components/Form'
-import {InputName} from '../../utils/validator/InputValidator'
+import { InputName } from '../../utils/validator/InputValidator'
 import ProfilePage from '../../components/pages/profilePage/ProfilePage'
 import FormInputLabeled from '../../components/FormInputLabeled'
 import Avatar from '../../components/Avatar'
@@ -8,8 +8,8 @@ import Path from '../../constants/Path'
 import Router from '../../utils/router/Router'
 import Url from '../../constants/Url'
 import Store from '../../utils/Store'
-import {MessengerStore, UserProps} from '../../types/Types'
-import {uploadAvatarModal} from './uploadAvatarModal'
+import { MessengerStore, UserProps } from '../../types/Types'
+import { uploadAvatarModal } from './uploadAvatarModal'
 import ProfileApi from './profile.api'
 
 /* global FormData, HTMLInputElement */

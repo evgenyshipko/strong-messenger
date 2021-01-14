@@ -70,6 +70,7 @@ class HTTPExecutor {
             }
 
             const rejectFunc = (_ev?: ProgressEvent) => {
+                // eslint-disable-next-line prefer-promise-reject-errors
                 reject({
                     status: xhr.status,
                     response: xhr.response,

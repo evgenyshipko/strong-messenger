@@ -1,8 +1,8 @@
 import Modal from '../../components/modal/Modal'
 import Header from '../../components/Header'
 import Button from '../../components/button/Button'
-import ChatsApi from "./chats.api";
-import {actionsPopup} from "./actionsPopup";
+import ChatsApi from './chats.api'
+import { actionsPopup } from './actionsPopup'
 
 export const deleteChatModal = new Modal({
     content: [
@@ -39,4 +39,3 @@ export const deleteChatModal = new Modal({
     ]
 })
 deleteChatModal.hide()
-

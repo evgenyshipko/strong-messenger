@@ -13,7 +13,7 @@ interface TestComponentProps {
 
 class TestComponent extends Component<TestComponentProps> {
     template(): string {
-        return `<div class={{class}}>{{text}}</div>`
+        return '<div class={{class}}>{{text}}</div>'
     }
 }
 const getInitialProps = () => {

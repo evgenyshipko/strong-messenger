@@ -1,5 +1,6 @@
 import Component from '../../utils/component/Component'
 import { Context } from '../../types/Types'
+import './Modal.less'
 
 interface ModalProps {
     content: Component<Context>[]

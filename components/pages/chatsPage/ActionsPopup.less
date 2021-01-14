@@ -1,38 +1,37 @@
 @import "../../../styles/common";
 
-.actions-popup{
+.actions-popup {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-
   width: 196px;
   height: 109px;
   background-color: @popup-color;
   border-radius: 10px;
-
   right: 0;
   position: absolute;
   margin-top: 3px;
   margin-right: 3px;
 }
 
-.actions-popup-btn{
+.actions-popup-btn {
   .button-mixin();
+
   background-color: transparent;
   font-size: 12px;
   text-align: left;
 }
 
-.actions-popup-btn:focus{
+.actions-popup-btn:focus {
   outline-width: 0;
 }
 
-.actions-popup-btn__icon{
+.actions-popup-btn__icon {
   float: left;
   width: 25px;
   height: 25px;
 }
 
-.actions-popup-btn__text{
+.actions-popup-btn__text {
   margin-left: 3%;
 }

@@ -1,30 +1,33 @@
 @import "../../../styles/common";
 
-.message-list-item{
+.message-list-item {
   display: flex;
 }
 
-.message-mixin{
+.message-mixin {
   padding: 2px;
   //display: inline-flex;
   line-height: 30px;
   border-radius: 10px;
 }
 
-.message-outcoming{
+.message-outcoming {
   .message-mixin();
+
   margin: 1% 1% 1% auto;
   background: rgba(206, 161, 0, 0.2);
 }
 
-.message-incoming{
+.message-incoming {
   .message-mixin();
+
   margin: 1% 0 1% 1%;
   background: @sign-page-background-color;
 }
 
-.message-username{
+.message-username {
   .global-font();
+
   font-size: 13px;
   display: block;
   color: @grey-dark-color;
@@ -32,8 +35,9 @@
   margin-right: 5px;
 }
 
-.message-text{
+.message-text {
   .global-font();
+
   font-size: 13px;
   line-height: 18px;
   margin-left: 15px;
@@ -41,26 +45,28 @@
   padding-bottom: 5px;
 }
 
-.message-info{
+.message-info {
   display: flex;
   flex-direction: row;
   //margin-left: 5px;
 }
 
-.message-time{
+.message-time {
   .global-font();
+
   margin: auto 1% 1% 5px;
   color: @grey-color;
   font-size: 12px;
   line-height: 16px;
 }
 
-.message-outcoming .message-time{
+.message-outcoming .message-time {
   color: @gold-color;
 }
 
-.message-icon{
+.message-icon {
   .checked-message-icon();
+
   float: left;
   width: 21px;
   height: 11px;
