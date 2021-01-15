@@ -9,6 +9,7 @@
     "*.cjs",
     "*.yml",
     "LICENSE.txt",
-    "site.webmanifest"
+    "site.webmanifest",
+    "_redirects"
   ]
 }
