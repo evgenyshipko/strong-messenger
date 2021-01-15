@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
-import Component from '../../utils/component/Component'
+import Component from '../../src/utils/component/Component'
 
 /* global Event */
 
@@ -13,7 +13,7 @@ interface TestComponentProps {
 
 class TestComponent extends Component<TestComponentProps> {
     template(): string {
-        return `<div class={{class}}>{{text}}</div>`
+        return '<div class={{class}}>{{text}}</div>'
     }
 }
 const getInitialProps = () => {

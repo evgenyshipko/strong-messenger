@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, it } from 'mocha'
-import HTTPExecutor, { ErrorResponse } from '../../utils/httpExecutor/httpExecutor'
+import HTTPExecutor, { ErrorResponse } from '../../src/utils/httpExecutor/httpExecutor'
 import { assert } from 'chai'
-import { isEqual } from '../../utils/utils'
+import { isEqual } from '../../src/utils/utils'
 
 const sinon = require('sinon')
 const url = 'https://some.url.com/'

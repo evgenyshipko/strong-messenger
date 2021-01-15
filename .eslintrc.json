@@ -12,10 +12,7 @@
     },
     "rules": {
         "space-before-function-paren": 0,
-        "react/jsx-boolean-value": 0,
         "indent": ["error", 4],
-        "react/jsx-indent": ["error", 4],
-        "react/jsx-indent-props": [0],
         "spaced-comment": ["error", "always"],
         "no-unused-vars": "off"
     },

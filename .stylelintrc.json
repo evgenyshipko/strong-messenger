@@ -1,0 +1,14 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "color-hex-case": "lower",
+    "no-extra-semicolons": true
+  },
+  "ignoreFiles": ["dist/*",
+    "*.json",
+    "*.cjs",
+    "*.yml",
+    "LICENSE.txt",
+    "site.webmanifest"
+  ]
+}

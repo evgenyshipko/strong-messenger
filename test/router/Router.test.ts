@@ -1,7 +1,7 @@
 import { assert } from 'chai'
 import { describe, it, afterEach } from 'mocha'
-import Block from '../../components/Block'
-import Router from '../../utils/router/Router'
+import Block from '../../src/components/Block'
+import Router from '../../src/utils/router/Router'
 
 const defaultPath = '/'
 
