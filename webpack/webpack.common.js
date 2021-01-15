@@ -56,5 +56,3 @@ module.exports = {
         ]
     }
 }
-
-console.log('PATH', path.resolve(__dirname, '../tsconfig.json'))

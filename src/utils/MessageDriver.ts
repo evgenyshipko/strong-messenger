@@ -24,6 +24,7 @@ class MessageDriver {
         }
         await messageDriver._connect()
         messageDriver._initListeners()
+        // пингуем сокеты, чтобы они не отваливались во время сессии
         messageDriver._initPingService()
         return messageDriver
     }
@@ -57,10 +58,6 @@ class MessageDriver {
         this.socket.addEventListener('close', event => {
             event.wasClean ? console.log(prefix + 'Соединение закрыто чисто') : console.log(prefix + 'Обрыв соединения')
             console.log(`Код: ${event.code} | Причина: ${event.reason}`)
-            // if (event.code === 1006 && !event.wasClean) {
-            //     console.log(prefix + 'Переподключение')
-            //     this.connect()
-            // }
         })
         this.socket.addEventListener('message', event => {
             const data = JSON.parse(event.data)
@@ -99,7 +96,6 @@ class MessageDriver {
                 eventController.emit(EventName.refreshMessages, this.chatId)
             }
             eventController.emit(EventName.messagesLoaded, this.chatId)
-            // console.log(this.chatTitle + ' _updateMessageDataList chatData.messageList', chatData.messageList)
         }
     }
 
@@ -140,7 +136,6 @@ class MessageDriver {
     }
 
     private _ping() {
-        console.log('ping')
         this.socket.send('ping')
     }
 }

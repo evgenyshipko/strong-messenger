@@ -25,7 +25,6 @@ class ChatsApi {
                 const store = new Store<MessengerStore>()
                 const chatList = store.content.chatList
                 chatList.push(await this.getExtendedChatParameters(chatData, store.content.userProps.id))
-                console.log('create chatList', chatList)
                 store.setState({ chatList: chatList })
             })
             .catch(handleErrorResponse)
@@ -48,7 +47,6 @@ class ChatsApi {
                 const chatList = store.content.chatList.filter((chat) => {
                     return chat.id !== chatIdToDelete
                 })
-                console.log('delete chatList', chatList)
                 store.setState({ chatList: chatList })
             })
             .catch(handleErrorResponse)
