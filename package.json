@@ -6,8 +6,8 @@
   "license": "",
   "author": "Evgeny Shipko",
   "scripts": {
-    "start": "webpack serve --config webpack/webpack.dev.js && cp _redirects dist/",
-    "build": "webpack --config webpack/webpack.prod.js",
+    "start": "webpack serve --config webpack/webpack.dev.js",
+    "build": "webpack --config webpack/webpack.prod.js && cp _redirects dist/",
     "test": "mocha 'test/**/*.test.ts'",
     "test:watch": "npm run test -- -w",
     "clean": "rm -r dist/*",
