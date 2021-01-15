@@ -1,7 +1,7 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
-import TextNodeParser from '../../utils/templator/TextNodeParser'
-import TextNode from '../../utils/templator/TextNode'
+import TextNodeParser from '../../src/utils/templator/TextNodeParser'
+import TextNode from '../../src/utils/templator/TextNode'
 
 describe('TextNodeParser', function() {
     function getTextNodeParser(template: string) {

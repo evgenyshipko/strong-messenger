@@ -1,0 +1,51 @@
+@import "../../../styles/common";
+
+.signin-wrapper {
+  .centered-flex-container-justify-center();
+
+  flex-direction: column;
+  height: 100vh;
+}
+
+.signin {
+  width: 400px;
+  height: 460px;
+  text-align: center;
+  background: @sign-page-background-color;
+  border-radius: 10px;
+}
+
+.signin-header {
+  display: inline-block;
+  margin: 34px 0 0 0;
+  font-family: @font-family;
+  font-size: 36px;
+  line-height: 49px;
+}
+
+.signin-form {
+  display: inline-block;
+  margin: 35px 0 0 0;
+}
+
+.signin-form__login-input,
+.signin-form__password-input {
+  width: 306px;
+  margin: 10px 0;
+}
+
+.signin-form__login-input:focus,
+.signin-form__password-input:focus {
+  outline-width: 0;
+}
+
+.signin-form__submit-btn {
+  margin-top: 20%;
+  font-size: 17px;
+}
+
+.signin-registration-btn {
+  margin: 23px 0 0 0;
+  font-size: 17px;
+  font-weight: 400;
+}
