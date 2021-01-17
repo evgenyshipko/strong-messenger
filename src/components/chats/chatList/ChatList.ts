@@ -1,6 +1,6 @@
-import Component from '../../../utils/component/Component'
-import Chat from '../chat/Chat'
-import './ChatList.less'
+import Component from 'src/utils/component/Component'
+import Chat from 'src/components/chats/chat/Chat'
+import 'src/components/chats/chatList/ChatList.less'
 
 interface ChatListProps {
     chatItemList: Chat[]

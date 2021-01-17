@@ -1,4 +1,4 @@
-import Component from '../utils/component/Component'
+import Component from 'src/utils/component/Component'
 
 interface HeaderProps {
     class: string,

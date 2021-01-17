@@ -1,5 +1,5 @@
-import FormInput from './formInput/FormInput'
-import { InputProps } from './Input'
+import FormInput from 'src/components/formInput/FormInput'
+import { InputProps } from 'src/components/Input'
 
 interface FormInputLabeledProps extends InputProps{
     label: string,

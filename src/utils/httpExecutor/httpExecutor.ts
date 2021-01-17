@@ -29,6 +29,15 @@ export interface ErrorResponse {
 }
 
 class HTTPExecutor {
+    static __instance: HTTPExecutor
+
+    constructor() {
+        if (HTTPExecutor.__instance) {
+            return HTTPExecutor.__instance
+        }
+        HTTPExecutor.__instance = this
+    }
+
     get = (url: string, optionsGet: OptionsGet = {}) => {
         if (optionsGet.data) {
             url = url + queryStringify(optionsGet.data)
@@ -51,7 +60,6 @@ class HTTPExecutor {
 
     request = (url: string, options: Options = { method: Method.GET }, timeout = 5000) => {
         const { method, data } = options
-
         return new Promise<XMLHttpRequest>((resolve, reject) => {
             const xhr = new XMLHttpRequest()
 

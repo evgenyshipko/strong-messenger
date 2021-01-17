@@ -1,5 +1,5 @@
-import TextNodeParser from './TextNodeParser'
-import { Context } from '../../types/Types'
+import TextNodeParser from 'src/utils/templator/TextNodeParser'
+import { Context } from 'src/types/Types'
 
 /* global HTMLElement */
 

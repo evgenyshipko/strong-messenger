@@ -1,32 +1,35 @@
-import ChatsApi from '../pages/chats/chats.api'
-import { isArray, isObject } from './utils'
-import { MessageData, MessageDataExcluded, MessengerStore } from '../types/Types'
-import Store from './Store'
-import EventController from './EventController'
-import EventName from '../constants/EventName'
+import ChatsApi from 'src/pages/chats/chats.api'
+import { isArray, isObject } from 'src/utils/utils'
+import { MessageData, MessageDataExcluded, MessengerStore } from 'src/types/Types'
+import Store from 'src/utils/Store'
+import EventController from 'src/utils/EventController'
+import EventName from 'src/constants/EventName'
+import Url from 'src/constants/Url'
 
 /* global WebSocket */
 
 class MessageDriver {
-    socket: WebSocket
-    chatId: number
-    chatTitle: string
-    userId: number
-    token: string
+    socket!: WebSocket
+    chatId!: number
+    chatTitle!: string
+    userId!: number
 
     static async build(userId: number, chatId: number, chatTitle?: string) {
         const messageDriver = new MessageDriver()
         messageDriver.chatId = chatId
         messageDriver.userId = userId
-        messageDriver.token = await new ChatsApi().token(chatId)
         if (chatTitle) {
             messageDriver.chatTitle = chatTitle
         }
-        await messageDriver._connect()
-        messageDriver._initListeners()
-        // пингуем сокеты, чтобы они не отваливались во время сессии
-        messageDriver._initPingService()
-        return messageDriver
+        return new ChatsApi()
+            .token(chatId)
+            .then((token) => {
+                messageDriver.socket = new WebSocket(Url.getSocketApiUrl(userId, chatId, token))
+                messageDriver._initListeners()
+                // пингуем сокеты, чтобы они не отваливались во время сессии
+                messageDriver._initPingService()
+                return messageDriver
+            })
     }
 
     send(message: string) {
@@ -41,11 +44,6 @@ class MessageDriver {
             content: `${count}`,
             type: 'get old'
         }))
-    }
-
-    private async _connect() {
-        const url = `wss://ya-praktikum.tech/ws/chats/${this.userId}/${this.chatId}/${this.token}`
-        this.socket = new WebSocket(url)
     }
 
     private _initListeners() {
@@ -104,7 +102,7 @@ class MessageDriver {
         const chatData = store.content.chatList.find((chatData) => {
             return chatData.id === this.chatId
         })
-        if (chatData && data) {
+        if (chatData && data && chatData.messageList) {
             chatData.messageList?.unshift(data)
         }
         // если сообщение получено и открыт нужный чат - обновить контент окна чата
@@ -124,7 +122,7 @@ class MessageDriver {
 
     private _isMessageDataExcluded(obj: unknown): obj is MessageDataExcluded {
         if (isObject(obj)) {
-            return 'id' in obj && 'userId' in obj && 'time' in obj && 'content' in obj
+            return 'id' in obj && 'userId' in obj && 'time' in obj && 'content' in obj && 'type' in obj
         }
         return false
     }

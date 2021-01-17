@@ -1,6 +1,6 @@
-import Component from '../../utils/component/Component'
-import { Context } from '../../types/Types'
-import './Modal.less'
+import Component from 'src/utils/component/Component'
+import { Context } from 'src/types/Types'
+import 'src/components/modal/Modal.less'
 
 interface ModalProps {
     content: Component<Context>[]

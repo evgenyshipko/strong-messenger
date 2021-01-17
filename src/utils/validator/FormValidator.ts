@@ -1,4 +1,4 @@
-import InputValidator from './InputValidator'
+import InputValidator from 'src/utils/validator/InputValidator'
 
 /* global HTMLFormElement */
 

@@ -24,7 +24,7 @@ export const handleErrorResponse = (errorData: ErrorResponse) => {
     } else if (errorData.responseText) {
         window.alert(errorData.responseText)
     } else {
-        // console.log('handleErrorResponse', errorData)
+        console.log('handleErrorResponse', errorData)
     }
 }
 

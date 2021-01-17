@@ -1,5 +1,5 @@
-import Component from '../utils/component/Component'
-import { EventData } from '../types/Types'
+import Component from 'src/utils/component/Component'
+import { EventData } from 'src/types/Types'
 
 export interface InputProps {
     class: string,

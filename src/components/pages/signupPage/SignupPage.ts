@@ -1,7 +1,7 @@
-import Component from '../../../utils/component/Component'
-import Form from '../../Form'
-import Button from '../../button/Button'
-import './SignupPage.less'
+import Component from 'src/utils/component/Component'
+import Form from 'src/components/Form'
+import Button from 'src/components/button/Button'
+import 'src/components/pages/signupPage/SignupPage.less'
 
 interface SignupPageProps {
     form: Form,

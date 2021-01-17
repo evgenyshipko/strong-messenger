@@ -1,9 +1,5 @@
-import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
-import Url, { ApiPath } from '../../constants/Url'
-import { handleErrorResponse } from '../../utils/utils'
-import Router from '../../utils/router/Router'
-import Path from '../../constants/Path'
-import CommonApi from '../../api/common.api'
+import HTTPExecutor, { ErrorResponse } from 'src/utils/httpExecutor/httpExecutor'
+import Url, { ApiPath } from 'src/constants/Url'
 
 /* global FormData */
 
@@ -14,22 +10,18 @@ class SigninApi {
         this.data = formData
     }
 
-    request() {
-        new HTTPExecutor()
+    signin() {
+        return new HTTPExecutor()
             .post(
-                Url.generate(ApiPath.AUTH_SIGNIN),
+                Url.buildFullApiUrl(ApiPath.AUTH_SIGNIN),
                 {
                     data: JSON.stringify(Object.fromEntries(this.data)),
                     credentials: true,
                     headers: { 'Content-Type': 'application/json' }
                 })
-            .then((_res) => {
-                new CommonApi().updateInitialData()
-                    .then(() => {
-                        new Router('.app').go(Path.CHATS)
-                    })
+            .catch((e: ErrorResponse) => {
+                window.alert(e.responseText)
             })
-            .catch(handleErrorResponse)
     }
 }
 
