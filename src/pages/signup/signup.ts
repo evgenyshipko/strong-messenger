@@ -1,11 +1,13 @@
-import Button from '../../components/button/Button'
-import { InputName } from '../../utils/validator/InputValidator'
-import FormInput from '../../components/formInput/FormInput'
-import Form from '../../components/Form'
-import SignupPage from '../../components/pages/signupPage/SignupPage'
-import Router from '../../utils/router/Router'
-import Path from '../../constants/Path'
-import SignupApi from './signup.api'
+import Button from 'src/components/button/Button'
+import { InputName } from 'src/utils/validator/InputValidator'
+import FormInput from 'src/components/formInput/FormInput'
+import Form from 'src/components/Form'
+import SignupPage from 'src/components/pages/signupPage/SignupPage'
+import Router from 'src/utils/router/Router'
+import Path from 'src/constants/Path'
+import SignupApi from 'src/pages/signup/signup.api'
+import CommonApi from 'src/api/common.api'
+import { ErrorResponse } from 'src/utils/httpExecutor/httpExecutor'
 
 /* global HTMLFormElement, HTMLInputElement */
 
@@ -80,7 +82,17 @@ const form = new Form({
 form.addValidator((formData) => {
     const data: Record<string, unknown> = Object.fromEntries(formData)
     delete data[InputName.SECOND_PASSWORD]
-    new SignupApi(data).request()
+    new SignupApi(data)
+        .signup()
+        .then((_res) => {
+            return new CommonApi().updateInitialData()
+        })
+        .then(() => {
+            new Router('.app').go(Path.CHATS)
+        })
+        .catch((e: ErrorResponse) => {
+            window.alert(e.responseText)
+        })
 })
 
 export const signup = new SignupPage({

@@ -1,7 +1,7 @@
 
 /* global HTMLInputElement */
 
-import { Nullable } from '../../types/Types'
+import { Nullable } from 'src/types/Types'
 
 export enum InputName {
     PASSWORD = 'password',

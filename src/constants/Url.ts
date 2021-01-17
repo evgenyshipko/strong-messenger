@@ -19,12 +19,16 @@ class Url {
         return 'https://ya-praktikum.tech'
     }
 
-    static generate(path: ApiPath) {
+    static buildFullApiUrl(path: ApiPath) {
         return Url.getHostUrl() + '/api/v2' + path
     }
 
     static getChatUsersUrl(chatId: number) {
         return `${Url.getHostUrl()}/api/v2/chats/${chatId}/users`
+    }
+
+    static getSocketApiUrl(userId: number, chatId: number, token: string) {
+        return `wss://ya-praktikum.tech/ws/chats/${userId}/${chatId}/${token}`
     }
 }
 

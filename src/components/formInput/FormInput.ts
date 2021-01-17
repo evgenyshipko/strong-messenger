@@ -1,5 +1,5 @@
-import Input from '../Input'
-import './FormInput.less'
+import Input from 'src/components/Input'
+import 'src/components/formInput/FormInput.less'
 
 /* global HTMLFormElement, HTMLInputElement */
 

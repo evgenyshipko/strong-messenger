@@ -1,11 +1,13 @@
-import SigninPage from '../../components/pages/signinPage/SigninPage'
-import Button from '../../components/button/Button'
-import { InputName } from '../../utils/validator/InputValidator'
-import FormInput from '../../components/formInput/FormInput'
-import Form from '../../components/Form'
-import Router from '../../utils/router/Router'
-import Path from '../../constants/Path'
-import SigninApi from './signin.api'
+import SigninPage from 'src/components/pages/signinPage/SigninPage'
+import Button from 'src/components/button/Button'
+import { InputName } from 'src/utils/validator/InputValidator'
+import FormInput from 'src/components/formInput/FormInput'
+import Form from 'src/components/Form'
+import Router from 'src/utils/router/Router'
+import Path from 'src/constants/Path'
+import SigninApi from 'src/pages/signin/signin.api'
+import CommonApi from 'src/api/common.api'
+import { ErrorResponse } from 'src/utils/httpExecutor/httpExecutor'
 
 /* global HTMLFormElement, HTMLInputElement */
 
@@ -31,7 +33,17 @@ const form = new Form({
 })
 
 form.addValidator((formData) => {
-    new SigninApi(formData).request()
+    new SigninApi(formData)
+        .signin()
+        .then((_res) => {
+            return new CommonApi().updateInitialData()
+        })
+        .then(() => {
+            new Router('.app').go(Path.CHATS)
+        })
+        .catch((e: ErrorResponse) => {
+            window.alert(e.responseText)
+        })
 })
 
 export const signin = new SigninPage({

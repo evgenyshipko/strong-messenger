@@ -1,15 +1,15 @@
-import Route from './Route'
-import Component from '../component/Component'
-import { Nullable } from '../../types/Types'
+import Route from 'src/utils/router/Route'
+import Component from 'src/utils/component/Component'
+import { Nullable } from 'src/types/Types'
 
 /* global History, Event, Window */
 
 class Router {
-    routes: Route[]
-    _rootQuery: string
-    history: History
+    routes: Route[] = []
+    _rootQuery!: string
+    history!: History
     static __instance: Nullable<Router>
-    _currentRoute: Nullable<Route>
+    _currentRoute: Nullable<Route> = null
     _notFoundPage?: Component<any>
 
     constructor(rootQuery: string) {

@@ -7,7 +7,7 @@ import { handleErrorResponse } from '../utils/utils'
 class AuthApi {
     updateUserData() {
         return new HTTPExecutor()
-            .get(Url.generate(ApiPath.AUTH_USER), { credentials: true })
+            .get(Url.buildFullApiUrl(ApiPath.AUTH_USER), { credentials: true })
             .then((res) => {
                 const store = new Store<MessengerStore>()
                 store.setState({ userProps: JSON.parse(res.response) as UserProps, isLogged: true })

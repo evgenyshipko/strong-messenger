@@ -7,8 +7,8 @@
 */
 
 class Store<T extends Record<string, unknown>> {
-    private subscribers: Record<string | number, ((state: T) => unknown)[]>
-    private state: T
+    private subscribers: Record<string | number, ((state: T) => unknown)[]> = {}
+    private state!: T
     private static __instance: Store<any>
 
     constructor(initialState: T = {} as T) {

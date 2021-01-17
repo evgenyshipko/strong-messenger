@@ -1,8 +1,8 @@
-import { EventBus } from './EventBus'
+import { EventBus } from 'src/utils/EventBus'
 
 // ивент бас-синглтон, который позволяет использовать ивенты по всему проекту
 class EventController {
-    private eventBus: EventBus
+    private eventBus!: EventBus
     private static __instance: EventController
 
     constructor() {

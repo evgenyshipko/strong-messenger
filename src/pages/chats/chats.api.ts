@@ -1,17 +1,19 @@
-import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
-import Url, { ApiPath } from '../../constants/Url'
-import Store from '../../utils/Store'
-import { ChatData, ChatDataExtended, MessengerStore, UserProps } from '../../types/Types'
-import { handleErrorResponse } from '../../utils/utils'
-import Option from '../../components/dropdown/Option'
-import DropdownInput from '../../components/dropdown/DropdownInput'
-import MessageDriver from '../../utils/MessageDriver'
+import HTTPExecutor from 'src/utils/httpExecutor/httpExecutor'
+import Url, { ApiPath } from 'src/constants/Url'
+import Store from 'src/utils/Store'
+import { ChatData, ChatDataExtended, MessengerStore, UserProps } from 'src/types/Types'
+import { handleErrorResponse } from 'src/utils/utils'
+import Option from 'src/components/dropdown/Option'
+import DropdownInput from 'src/components/dropdown/DropdownInput'
+import MessageDriver from 'src/utils/MessageDriver'
 
 class ChatsApi {
+    store: Store<MessengerStore> = new Store<MessengerStore>()
+
     create(title: string) {
         return new HTTPExecutor()
             .post(
-                Url.generate(ApiPath.CHATS),
+                Url.buildFullApiUrl(ApiPath.CHATS),
                 {
                     data: JSON.stringify({ title: title }),
                     credentials: true,
@@ -19,23 +21,26 @@ class ChatsApi {
                         'Content-Type': 'application/json'
                     }
                 })
-            .then(async (res) => {
+            .then((res) => {
                 const chatId = (JSON.parse(res.response) as {id: number}).id
                 const chatData: ChatData = { id: chatId, avatar: '', title: title }
-                const store = new Store<MessengerStore>()
-                const chatList = store.content.chatList
-                chatList.push(await this.getExtendedChatParameters(chatData, store.content.userProps.id))
-                store.setState({ chatList: chatList })
+                return this.getExtendedChatParameters(chatData, this.store.content.userProps.id)
+            })
+            .then((chatDataExtended) => {
+                if (chatDataExtended) {
+                    const chatList = this.store.content.chatList
+                    chatList.push(chatDataExtended)
+                    this.store.setState({ chatList: chatList })
+                }
             })
             .catch(handleErrorResponse)
     }
 
     delete() {
-        const store = new Store<MessengerStore>()
-        const chatIdToDelete = store.content.currentChatId
+        const chatIdToDelete = this.store.content.currentChatId
         return new HTTPExecutor()
             .delete(
-                Url.generate(ApiPath.CHATS),
+                Url.buildFullApiUrl(ApiPath.CHATS),
                 {
                     data: JSON.stringify({ chatId: chatIdToDelete }),
                     credentials: true,
@@ -44,58 +49,66 @@ class ChatsApi {
                     }
                 })
             .then((_res) => {
-                const chatList = store.content.chatList.filter((chat) => {
+                const chatList = this.store.content.chatList.filter((chat) => {
                     return chat.id !== chatIdToDelete
                 })
-                store.setState({ chatList: chatList })
+                this.store.setState({ chatList: chatList })
             })
             .catch(handleErrorResponse)
     }
 
     getChatsList() {
         return new HTTPExecutor()
-            .get(Url.generate(ApiPath.CHATS), { credentials: true })
+            .get(Url.buildFullApiUrl(ApiPath.CHATS), { credentials: true })
             .then((res) => {
                 return JSON.parse(res.response) as ChatData[]
+            })
+    }
+
+    private initExtendedChatParameters(chatList: ChatData[], currentUserId: number) {
+        return Promise.all(chatList.map((chatData) => (
+            this.getExtendedChatParameters(chatData, currentUserId)
+        ))).then((result) => {
+            return result.filter(value => value !== undefined) as ChatDataExtended[]
+        })
+    }
+
+    private async getExtendedChatParameters(chatData: ChatData, currentUserId: number) {
+        const chatId = chatData.id
+        try {
+            return {
+                ...chatData,
+                messageDriver: await MessageDriver.build(currentUserId, chatId, chatData.title),
+                userList: await this.getChatUsers(chatId),
+                unreadCount: await this.getUnreadMessagesCount(chatId),
+                messageList: []
+            }
+        } catch (e) {
+            handleErrorResponse(e)
+        }
+    }
+
+    updateChatList() {
+        this.getChatsList()
+            .then((chatList) => {
+                return this.initExtendedChatParameters(chatList, this.store.content.userProps.id)
+            })
+            .then((transformedChatList) => {
+                this.store.setState({ chatList: transformedChatList })
             })
             .catch(handleErrorResponse)
     }
 
-    private initExtendedChatParameters(chatList: ChatData[], currentUserId: number) {
-        return Promise.all(chatList.map(async (chatData) => {
-            return await this.getExtendedChatParameters(chatData, currentUserId)
-        }))
-    }
-
-    private async getExtendedChatParameters(chatData: ChatData, currentUserId: number): Promise<ChatDataExtended> {
-        const chatId = chatData.id
-        return {
-            ...chatData,
-            messageDriver: await MessageDriver.build(currentUserId, chatId, chatData.title),
-            userList: await this.getChatUsers(chatId),
-            unreadCount: await this.getUnreadMessagesCount(chatId),
-            messageList: []
-        }
-    }
-
-    async updateChatList() {
-        const store = new Store<MessengerStore>()
-        const chatList = await this.getChatsList()
-        if (chatList) {
-            const transformedChatList = await this.initExtendedChatParameters(chatList, store.content.userProps.id)
-            store.setState({ chatList: transformedChatList })
-        }
-    }
-
     addUser(userId: number, chatId: number) {
         return new HTTPExecutor()
-            .put(Url.generate(ApiPath.CHATS_USERS), {
-                credentials: true,
-                data: JSON.stringify({ users: [userId], chatId: chatId }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            .put(
+                Url.buildFullApiUrl(ApiPath.CHATS_USERS), {
+                    credentials: true,
+                    data: JSON.stringify({ users: [userId], chatId: chatId }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
             .then((_res) => {
                 this.updateChatUsers(chatId)
             })
@@ -104,7 +117,7 @@ class ChatsApi {
 
     deleteUser(userId: number, chatId: number) {
         return new HTTPExecutor()
-            .delete(Url.generate(ApiPath.CHATS_USERS), {
+            .delete(Url.buildFullApiUrl(ApiPath.CHATS_USERS), {
                 credentials: true,
                 data: JSON.stringify({ users: [userId], chatId: chatId }),
                 headers: {
@@ -119,7 +132,7 @@ class ChatsApi {
 
     token(chatId: number) {
         return new HTTPExecutor()
-            .post(`${Url.generate(ApiPath.CHATS_TOKEN)}/${chatId}`, {
+            .post(`${Url.buildFullApiUrl(ApiPath.CHATS_TOKEN)}/${chatId}`, {
                 credentials: true
             })
             .then((res) => {
@@ -136,7 +149,7 @@ class ChatsApi {
     }
 
     getUnreadMessagesCount(chatId: number) {
-        const url = `${Url.generate(ApiPath.CHATS_UNREAD_MESSAGES)}/${chatId}`
+        const url = `${Url.buildFullApiUrl(ApiPath.CHATS_UNREAD_MESSAGES)}/${chatId}`
         return new HTTPExecutor()
             .get(url, { credentials: true })
             .then((res) => {
@@ -144,20 +157,22 @@ class ChatsApi {
             })
     }
 
-    async updateChatUsers(chatId: number) {
-        const userList = await this.getChatUsers(chatId)
-        const store = new Store<MessengerStore>()
-        const chatData = store.content.chatList.find((chatData) => {
-            return chatData.id === store.content.currentChatId
-        })
-        if (chatData && userList && userList.length > 0) {
-            chatData.userList = userList
-        }
+    updateChatUsers(chatId: number) {
+        this.getChatUsers(chatId)
+            .then((userList) => {
+                const chatData = this.store.content.chatList.find((chatData) => {
+                    return chatData.id === this.store.content.currentChatId
+                })
+                if (chatData && userList && userList.length > 0) {
+                    chatData.userList = userList
+                }
+            })
+            .catch(handleErrorResponse)
     }
 
     updateSearchUserDropdownInput(login: string, dropdownInput: DropdownInput<UserProps>) {
         new HTTPExecutor()
-            .post(Url.generate(ApiPath.USER_SEARCH),
+            .post(Url.buildFullApiUrl(ApiPath.USER_SEARCH),
                 {
                     credentials: true,
                     data: JSON.stringify({ login: login }),
