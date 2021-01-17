@@ -1,7 +1,7 @@
 
-/* global EventListenerOrEventListenerObject */
+/* global EventListenerOrEventListenerObject, KeyboardEvent */
 
-import MessageDriver from '../utils/MessageDriver'
+import MessageDriver from 'src/utils/MessageDriver'
 
 export type Nullable<T> = T | null
 

@@ -1,7 +1,7 @@
-import Component from '../../../utils/component/Component'
-import Message from '../message/Message'
-import { EventData } from '../../../types/Types'
-import './MessageList.less'
+import Component from 'src/utils/component/Component'
+import Message from 'src/components/chats/message/Message'
+import { EventData } from 'src/types/Types'
+import 'src/components/chats/messageList/MessageList.less'
 
 interface MessageListProps {
     messageItemList: Message[],

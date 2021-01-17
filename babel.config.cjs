@@ -7,6 +7,9 @@ module.exports = api => {
     ]
     return {
         presets,
-        plugins: ['@babel/plugin-proposal-class-properties']
+        plugins: [
+            '@babel/plugin-proposal-class-properties',
+            ['babel-plugin-webpack-aliases', { config: 'webpack/webpack.common.js' }]
+        ]
     }
 }

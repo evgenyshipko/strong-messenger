@@ -1,8 +1,6 @@
-import HTTPExecutor from '../../utils/httpExecutor/httpExecutor'
-import Url, { ApiPath } from '../../constants/Url'
-import Router from '../../utils/router/Router'
-import Path from '../../constants/Path'
-import { handleErrorResponse } from '../../utils/utils'
+import HTTPExecutor from 'src/utils/httpExecutor/httpExecutor'
+import Url, { ApiPath } from 'src/constants/Url'
+import { handleErrorResponse } from 'src/utils/utils'
 
 class SignupApi {
     data: Record<string, unknown>
@@ -11,18 +9,15 @@ class SignupApi {
         this.data = data
     }
 
-    request() {
-        new HTTPExecutor()
+    signup() {
+        return new HTTPExecutor()
             .post(
-                Url.generate(ApiPath.AUTH_SIGNUP),
+                Url.buildFullApiUrl(ApiPath.AUTH_SIGNUP),
                 {
                     data: JSON.stringify(this.data),
                     credentials: true,
                     headers: { 'Content-Type': 'application/json' }
                 })
-            .then((_res) => {
-                new Router('.app').go(Path.CHATS)
-            })
             .catch(handleErrorResponse)
     }
 }

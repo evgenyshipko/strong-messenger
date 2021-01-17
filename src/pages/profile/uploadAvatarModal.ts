@@ -1,8 +1,8 @@
-import Modal from '../../components/modal/Modal'
-import Header from '../../components/Header'
-import Button from '../../components/button/Button'
-import InputLabeled from '../../components/InputLabeled'
-import ProfileApi from './profile.api'
+import Modal from 'src/components/modal/Modal'
+import Header from 'src/components/Header'
+import Button from 'src/components/button/Button'
+import InputLabeled from 'src/components/InputLabeled'
+import ProfileApi from 'src/pages/profile/profile.api'
 
 /* global FormData, HTMLInputElement, Event */
 

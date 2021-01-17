@@ -1,26 +1,26 @@
-import Button from '../../components/button/Button'
-import Input from '../../components/Input'
-import Chat from '../../components/chats/chat/Chat'
-import ChatHeader from '../../components/chats/chatHeader/ChatHeader'
-import MessageList from '../../components/chats/messageList/MessageList'
-import ChatsPage from '../../components/pages/chatsPage/ChatsPage'
-import ChatList from '../../components/chats/chatList/ChatList'
-import Block from '../../components/Block'
-import Router from '../../utils/router/Router'
-import Path from '../../constants/Path'
-import Store from '../../utils/Store'
-import { MessengerStore } from '../../types/Types'
-import { attachPopup } from './attachPopup'
-import { actionsPopup } from './actionsPopup'
-import { addChatModal } from './addChatModal'
-import { deleteChatModal } from './deleteChatModal'
-import { addUserModal } from './addUserModal'
-import { deleteUserModal } from './deleteUserModal'
-import Message from '../../components/chats/message/Message'
-import EventController from '../../utils/EventController'
-import EventName from '../../constants/EventName'
+import Button from 'src/components/button/Button'
+import Input from 'src/components/Input'
+import Chat from 'src/components/chats/chat/Chat'
+import ChatHeader from 'src/components/chats/chatHeader/ChatHeader'
+import MessageList from 'src/components/chats/messageList/MessageList'
+import ChatsPage from 'src/components/pages/chatsPage/ChatsPage'
+import ChatList from 'src/components/chats/chatList/ChatList'
+import Block from 'src/components/Block'
+import Router from 'src/utils/router/Router'
+import Path from 'src/constants/Path'
+import Store from 'src/utils/Store'
+import { MessengerStore } from 'src/types/Types'
+import { attachPopup } from 'src/pages/chats/attachPopup'
+import { actionsPopup } from 'src/pages/chats/actionsPopup'
+import { addChatModal } from 'src/pages/chats/addChatModal'
+import { deleteChatModal } from 'src/pages/chats/deleteChatModal'
+import { addUserModal } from 'src/pages/chats/addUserModal'
+import { deleteUserModal } from 'src/pages/chats/deleteUserModal'
+import Message from 'src/components/chats/message/Message'
+import EventController from 'src/utils/EventController'
+import EventName from 'src/constants/EventName'
 
-/* global HTMLInputElement, KeyboardEvent, HTMLElement */
+/* global HTMLInputElement, KeyboardEvent, HTMLElement, Event */
 
 // создаем внутренние компоненты для компоненты-страницы CreatePage
 const functionsBlockComponents = [
@@ -86,7 +86,8 @@ export const messageListComponent = new MessageList({
                     return chatData.id === currentChatId
                 })
                 if (chatData) {
-                    const lastMessage = chatData.messageList[chatData.messageList.length - 1]
+                    const messageList = chatData.messageList
+                    const lastMessage = messageList[messageList.length - 1]
                     chatData.messageDriver.getMessages(lastMessage.id)
                 }
             } else if (element.scrollTop === element.scrollHeight - element.clientHeight && currentChatId) {
@@ -118,6 +119,10 @@ const sendMessage = () => {
     }
 }
 
+function isKeyboardEvent(event: Event): event is KeyboardEvent {
+    return 'code' in event
+}
+
 const footerComponents = [
     new Button({
         class: 'chats-footer-attach-btn',
@@ -135,8 +140,8 @@ const footerComponents = [
         placeholder: 'Сообщение',
         eventData: {
             name: 'keyup',
-            callback: (e:KeyboardEvent) => {
-                if (e.code === 'Enter') {
+            callback: (e) => {
+                if (isKeyboardEvent(e) && e.code === 'Enter') {
                     sendMessage()
                 }
             }

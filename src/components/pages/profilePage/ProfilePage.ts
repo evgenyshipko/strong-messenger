@@ -1,9 +1,9 @@
-import Component from '../../../utils/component/Component'
-import Button from '../../button/Button'
-import Form from '../../Form'
-import Avatar from '../../Avatar'
-import Modal from '../../modal/Modal'
-import './ProfilePage.less'
+import Component from 'src/utils/component/Component'
+import Button from 'src/components/button/Button'
+import Form from 'src/components/Form'
+import Avatar from 'src/components/Avatar'
+import Modal from 'src/components/modal/Modal'
+import 'src/components/pages/profilePage/ProfilePage.less'
 
 interface ProfilePageProps {
     avatar: Avatar,

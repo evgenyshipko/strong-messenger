@@ -1,6 +1,6 @@
-import AuthApi from './auth.api'
-import ChatsApi from '../pages/chats/chats.api'
-import { handleErrorResponse } from '../utils/utils'
+import AuthApi from 'src/api/auth.api'
+import ChatsApi from 'src/pages/chats/chats.api'
+import { handleErrorResponse } from 'src/utils/utils'
 
 class CommonApi {
     updateInitialData() {

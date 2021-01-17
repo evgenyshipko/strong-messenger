@@ -10,7 +10,7 @@ import { uploadAvatarModal } from './uploadAvatarModal'
 class ProfileApi {
     logout() {
         new HTTPExecutor()
-            .post(Url.generate(ApiPath.AUTH_LOGOUT), {
+            .post(Url.buildFullApiUrl(ApiPath.AUTH_LOGOUT), {
                 credentials: true,
                 headers: {
                     'Set-Cookie': 'expires=0'
@@ -25,7 +25,7 @@ class ProfileApi {
     changeUserAvatar(formData: FormData) {
         new HTTPExecutor()
             .put(
-                Url.generate(ApiPath.USER_AVATAR),
+                Url.buildFullApiUrl(ApiPath.USER_AVATAR),
                 {
                     data: formData,
                     credentials: true
@@ -39,11 +39,11 @@ class ProfileApi {
     }
 
     changeProfileData(formData: FormData) {
-        this.sendFormData(Url.generate(ApiPath.USER_PROFILE), formData)
+        this.sendFormData(Url.buildFullApiUrl(ApiPath.USER_PROFILE), formData)
     }
 
     changeProfilePassword(formData: FormData) {
-        this.sendFormData(Url.generate(ApiPath.USER_PASSWORD), formData)
+        this.sendFormData(Url.buildFullApiUrl(ApiPath.USER_PASSWORD), formData)
     }
 
     sendFormData = (url: string, formData: FormData) => {

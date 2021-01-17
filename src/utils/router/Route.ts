@@ -1,5 +1,5 @@
-import Component from '../component/Component'
-import { render } from '../renderDom'
+import Component from 'src/utils/component/Component'
+import { render } from 'src/utils/renderDom'
 
 class Route {
     _pathname: string

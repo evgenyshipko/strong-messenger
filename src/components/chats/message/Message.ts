@@ -1,8 +1,8 @@
-import Component from '../../../utils/component/Component'
-import Store from '../../../utils/Store'
-import { MessengerStore } from '../../../types/Types'
-import { convertDateToTime } from '../../../utils/utils'
-import './Message.less'
+import Component from 'src/utils/component/Component'
+import Store from 'src/utils/Store'
+import { MessengerStore } from 'src/types/Types'
+import { convertDateToTime } from 'src/utils/utils'
+import 'src/components/chats/message/Message.less'
 
 interface MessageItemProps {
     id: number,

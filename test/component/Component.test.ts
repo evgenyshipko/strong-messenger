@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
-import Component from '../../src/utils/component/Component'
+import Component from 'src/utils/component/Component'
 
 /* global Event */
 

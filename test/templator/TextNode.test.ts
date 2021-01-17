@@ -1,6 +1,6 @@
 import { assert } from 'chai'
 import { describe, it } from 'mocha'
-import TextNode from '../../src/utils/templator/TextNode'
+import TextNode from 'src/utils/templator/TextNode'
 
 const getEmptyTextNode = () => {
     return new TextNode('', '', undefined, undefined)
