@@ -1,58 +1,56 @@
+### Educational project "messenger"
 
-####  Учебный проект "мессенджер"
+This project is interesting because it minimizes the use of third-party libraries.
 
-Этот проект интересен тем, что в нем минимизировано 
-использование сторонних библиотек.
+Instead of popular libraries, the project uses the following custom modules:
+1. Template engine
+2. Fetch analogue for working with HTTP
+3. Store for working with the global state of the application
+4. Router
+5. Component approach (reactivity)
+6. Form validation module
 
-Вместо популярных библиотек, в проекте используются следующие кастомные модули:
-1. Шаблонизатор
-2. Аналог fetch для работы с HTTP
-3. Стор для работы с глобальным состоянием приложения
-4. Роутер
-5. Компонентный подход (реактивность)
-6. Модуль валидации форм
+**Project hosting on [Netlify](https://distracted-swartz-d8b108.netlify.app/).
+**Layouts in [figma](https://www.figma.com/file/l0jgte4N2dzWv5zMITIC4f/shipko_messenger?node-id=0%3A1)**.
 
-**Хостинг проекта на [Netlify](https://distracted-swartz-d8b108.netlify.app/) и на [heroku](https://shipko-messenger.herokuapp.com/)**.
-**Макеты в [figma](https://www.figma.com/file/l0jgte4N2dzWv5zMITIC4f/shipko_messenger?node-id=0%3A1)**.
+**Project structure:**
+* `./src` - project source files
+* `./dist` - repository for built files
+* `./webpack` - webpack configuration files
+* `./test` - test files
 
-**Структура проекта:** 
-* `./src` - source-файлы проекта 
-* `./dist` - репозиторий для собранных файлов
-* `./webpack` - файлы конфигурации webpack
-* `./test` - файлы тестов
+**Commands:**
+1. Configure production files in dist: `npm run build`
+2. Deploy the project locally (webpack devServer): `npm start`
+2. Deploy the project locally (node ​​js): `npm run server`
+3. Run tests: `npm run test`
+4. Run linting: `npm-run-all lint:*`
 
-**Команды:**
-1. Сконфигурировать продакшн-файлы в dist: `npm run build`
-2. Развернуть проект локально (webpack devServer): `npm start`
-2. Развернуть проект локально (node js): `npm run server`
-3. Запустить тесты: `npm run test`
-4. Запустить линтинг: `npm-run-all lint:*`
+**List of technologies:**
+1. Testing: [mocha](https://mochajs.org/) and [chai](https://www.chaijs.com/).
+Fake server and spy functions [sinon](https://sinonjs.org/).
+Mocking dom-tree [jsdom](https://github.com/jsdom/jsdom).
+2. Preprocessor: [less](http://lesscss.org/).
+3. Bundle: [webpack](https://webpack.js.org/).
+4. Linting: [eslint](https://eslint.org/), [stylelint](https://stylelint.io/).
+5. Precommit: [husky](https://github.com/typicode/husky).
 
-**Список технологий:**
-1. Тестирование: [mocha](https://mochajs.org/) и [chai](https://www.chaijs.com/). 
-Фейковый сервер и функции-шпионы [sinon](https://sinonjs.org/).
-Мокинг дом-дерева [jsdom](https://github.com/jsdom/jsdom).
-2. Препроцессор: [less](http://lesscss.org/).
-3. Сборщик: [webpack](https://webpack.js.org/).
-4. Линтинг: [eslint](https://eslint.org/), [stylelint](https://stylelint.io/).
-5. Прекоммит: [husky](https://github.com/typicode/husky).
+**Current functionality:**
+1. Adding a user to a chat
+2. Removing a user from a chat
+3. Add a chat
+4. Delete a chat
+5. Log in/log out
+6. Change profile settings
+7. Change avatar
+8. Change password
+9. Register
+10. Connecting to a chat and displaying a list of messages with dynamic loading
+11. Send/Receive a message
 
-**Текущая функциональность:**
-1. Добавление юзера в чат
-2. Удаление юзера из чата
-3. Добавить чат
-4. Удалить чат
-5. Залогиниться\разлогиниться
-6. Изменить настройки профиля
-7. Изменить аватар
-8. Изменить пароль
-9. Зарегистрироваться
-10. Подключение к чату и отображение списка сообщений с динамической догрузкой
-11. Отправить/Получить сообщение
-
-**В планах:**
-1. Научить мессенджер понимать прочитано сообщение или нет (на момент сдачи - отсутствует в бэке практикума)
-2. Отправка картинок и видео (на момент сдачи - отсутствует в бэке практикума)
-3. Активировать строку поиска и быстрое создание чата с одним пользователем
-4. Вместо блокирующих алертов показывать красивые всплывающие сообщения
-5. Добавить звук при получении сообщения
+**Planned:**
+1. Teach the messenger to understand whether a message has been read or not (at the time of passing - not in the back of the workshop)
+2. Sending pictures and videos (at the time of passing - not in the back of the workshop)
+3. Activate the search bar and quickly create a chat with one user
+4. Show beautiful pop-up messages instead of blocking alerts
+5. Add a sound when receiving a message
